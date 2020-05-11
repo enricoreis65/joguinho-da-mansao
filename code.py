@@ -1,38 +1,44 @@
 import pygame
-
-
+from os import path
+img_dir = path.join(path.dirname(__file__), 'img')
 pygame.init()
-WIDTH = 480
-HEIGHT = 600
+altura = 480
+largura = 600
 
 # ----- Gera tela principal
 
-window = pygame.display.set_mode((HEIGHT, WIDTH))
+window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('mansao')
 
-heroi_largura=38
-heroi_comprimento=50
-livro_img = pygame.image.load('img/livro2.png').convert_alpha()
-livro_img = pygame.transform.scale(livro_img, (heroi_comprimento, heroi_largura))
+heroi_largura=30
+heroi_altura=50
+player_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
+player_img = pygame.transform.scale(player_img, (heroi_largura, heroi_altura))
 
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH / 2
-        self.rect.bottom = HEIGHT - 10
+        self.rect.centerx = largura / 2
+        self.rect.bottom = altura -1
         self.speedx = 0
-
+        self.speedy=0
     def update(self):
         # Atualização da posição da nave
         self.rect.x += self.speedx
+        self.rect.y += self.speedy
 
         # Mantem dentro da tela
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
+        if self.rect.right > largura:
+            self.rect.right = largura
         if self.rect.left < 0:
             self.rect.left = 0
+
+        if self.rect.top< 0:
+            self.rect.top = 0
+        if self.rect.bottom >altura:
+            self.rect.bottom = altura
     
         
     
@@ -43,7 +49,7 @@ clock = pygame.time.Clock()
 FPS = 30
 all_sprites = pygame.sprite.Group()
 
-player= heroi(livro_img)
+player= heroi(player_img)
 all_sprites.add(player)
 
 game=True
@@ -62,6 +68,10 @@ while game:
                 player.speedx -= 8
             if event.key == pygame.K_RIGHT:
                 player.speedx += 8
+            if event.key == pygame.K_UP:
+                player.speedy -= 4
+            if event.key == pygame.K_DOWN:
+                player.speedy += 4
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
@@ -69,6 +79,10 @@ while game:
                 player.speedx += 8
             if event.key == pygame.K_RIGHT:
                 player.speedx -= 8
+            if event.key == pygame.K_UP:
+                player.speedy -= 8
+            if event.key == pygame.K_DOWN:
+                player.speedy += 8
     all_sprites.update()
     # ----- Gera saídas
     window.fill((0, 0, 0))  # Preenche com a cor branca
