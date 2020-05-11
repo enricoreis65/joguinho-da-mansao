@@ -2,20 +2,38 @@ import pygame
 
 
 pygame.init()
+WIDTH = 480
+HEIGHT = 600
 
 # ----- Gera tela principal
-window = pygame.display.set_mode((500, 400))
+
+window = pygame.display.set_mode((HEIGHT, WIDTH))
 pygame.display.set_caption('mansao')
-cor=(255,0,0)
+
 heroi_largura=38
 heroi_comprimento=50
-vertices=[(50,0),(88,0),(0,0),(0,38)]
-heroisquare=pygame.draw.polygon(window, cor, vertices)
+livro_img = pygame.image.load('img/livro2.png').convert_alpha()
+livro_img = pygame.transform.scale(livro_img, (heroi_comprimento, heroi_largura))
+
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,heroisquare):
+    def __init__(self,img):
         pygame.sprite.Sprite.__init__(self)
-        self.heroisquare=heroisquare
-        
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.bottom = HEIGHT - 10
+        self.speedx = 0
+
+    def update(self):
+        # Atualização da posição da nave
+        self.rect.x += self.speedx
+
+        # Mantem dentro da tela
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.left < 0:
+            self.rect.left = 0
+    
         
     
 
@@ -25,7 +43,7 @@ clock = pygame.time.Clock()
 FPS = 30
 all_sprites = pygame.sprite.Group()
 
-player= heroi(heroisquare)
+player= heroi(livro_img)
 all_sprites.add(player)
 
 game=True
@@ -37,9 +55,23 @@ while game:
         # ----- Verifica consequências
         if event.type == pygame.QUIT:
             game = False
-
+        # Verifica se apertou alguma tecla.
+        if event.type == pygame.KEYDOWN:
+            # Dependendo da tecla, altera a velocidade.
+            if event.key == pygame.K_LEFT:
+                player.speedx -= 8
+            if event.key == pygame.K_RIGHT:
+                player.speedx += 8
+        # Verifica se soltou alguma tecla.
+        if event.type == pygame.KEYUP:
+            # Dependendo da tecla, altera a velocidade.
+            if event.key == pygame.K_LEFT:
+                player.speedx += 8
+            if event.key == pygame.K_RIGHT:
+                player.speedx -= 8
+    all_sprites.update()
     # ----- Gera saídas
-    window.fill((255, 255, 255))  # Preenche com a cor branca
+    window.fill((0, 0, 0))  # Preenche com a cor branca
     
     all_sprites.draw(window)
 
