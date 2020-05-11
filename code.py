@@ -51,7 +51,7 @@ all_sprites = pygame.sprite.Group()
 
 player= heroi(player_img)
 all_sprites.add(player)
-
+keys_down = {}
 game=True
 # ===== Loop principal =====
 while game:
@@ -63,26 +63,28 @@ while game:
             game = False
         # Verifica se apertou alguma tecla.
         if event.type == pygame.KEYDOWN:
+            keys_down[event.key] = True
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
                 player.speedx -= 8
             if event.key == pygame.K_RIGHT:
                 player.speedx += 8
             if event.key == pygame.K_UP:
-                player.speedy -= 4
+                player.speedy -= 5
             if event.key == pygame.K_DOWN:
-                player.speedy += 4
+                player.speedy += 5
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
+            if event.key in keys_down and keys_down[event.key]:
             # Dependendo da tecla, altera a velocidade.
-            if event.key == pygame.K_LEFT:
-                player.speedx += 8
-            if event.key == pygame.K_RIGHT:
-                player.speedx -= 8
-            if event.key == pygame.K_UP:
-                player.speedy -= 8
-            if event.key == pygame.K_DOWN:
-                player.speedy += 8
+                if event.key == pygame.K_LEFT:
+                    player.speedx += 8
+                if event.key == pygame.K_RIGHT:
+                    player.speedx -= 8
+                if event.key == pygame.K_UP:
+                    player.speedy += 5
+                if event.key == pygame.K_DOWN:
+                    player.speedy -= 5
     all_sprites.update()
     # ----- Gera saídas
     window.fill((0, 0, 0))  # Preenche com a cor branca
