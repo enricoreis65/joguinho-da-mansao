@@ -7,9 +7,9 @@ largura = 600
 STILL = 0
 JUMPING = 1
 FALLING = 2
-GRAVITY=2
-GROUND = altura * 5 // 6
-JUMP_SIZE=20
+gravidade=2
+chao = altura * 5 // 6
+tamanho_do_pulo=20
 # ----- Gera tela principal
 
 window = pygame.display.set_mode((largura, altura))
@@ -30,18 +30,18 @@ class heroi(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy=0
     def update(self):
-        # Atualização da posição da nave
+        # Atualização da posição do heroi
         self.rect.x += self.speedx
 
-        self.speedy += GRAVITY
+        self.speedy += gravidade
         # Atualiza o estado para caindo
         if self.speedy > 0:
             self.state = FALLING
         self.rect.y += self.speedy
         # Se bater no chão, para de cair
-        if self.rect.bottom > GROUND:
+        if self.rect.bottom > chao:
             # Reposiciona para a posição do chão
-            self.rect.bottom = GROUND
+            self.rect.bottom = chao
             # Para de cair
             self.speedy = 0
             # Atualiza o estado para parado
@@ -54,7 +54,7 @@ class heroi(pygame.sprite.Sprite):
             self.rect.left = 0
     def pulo(self):
         if self.state == STILL:
-            self.speedy -= JUMP_SIZE
+            self.speedy -= tamanho_do_pulo
             self.state = JUMPING
 
         
