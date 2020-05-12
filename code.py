@@ -27,6 +27,8 @@ heroi_largura=30
 heroi_altura=40
 player_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
 player_img = pygame.transform.scale(player_img, (heroi_largura, heroi_altura))
+inimigos_img=pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
+inimigos_img = pygame.transform.scale(inimigos_img, (heroi_largura, heroi_altura))
 
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img):
@@ -69,10 +71,54 @@ class heroi(pygame.sprite.Sprite):
             self.speedy -= tamanho_do_pulo
             self.state = pulando
 
+class inimigos(pygame.sprite.Sprite):
+    def __init__(self,img,player):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.centerx = largura-10
+        self.rect.bottom = altura -80
+        self.speedx = 0
+        self.speedy=0
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        
+        print(player.rect.x-(self.rect.x))
+        
+        if player.rect.x-self.rect.x<-7 :
+            self.speedx-=0.01
+        if player.rect.x-self.rect.x>-7 and player.rect.x-self.rect.x<7:
+            self.speedx=0
+            self.rect.x=self.rect.x
+        elif player.rect.x-self.rect.x>0:
+            self.speedx+=0.01
+
+
+        
+
+    
+        
+        
+
+
+
+
+
+
+
+
+
+
 class modo_de_jogo():
+
     def __init__(self):
+
         self.aba="menu"
+
+
     def jogando(self):
+
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -96,13 +142,15 @@ class modo_de_jogo():
                         player.speedx += 4
                     if event.key == pygame.K_RIGHT:
                         player.speedx -= 4
-                
         all_sprites.update()
     # ----- Gera saídas
         window.fill((0, 0, 0))  # Preenche com a cor branca
         all_sprites.draw(window)
     # ----- Atualiza estado do jogo
         pygame.display.update()   
+
+
+
     def menu(self):
         text = font.render('Aperte P para jogar', True, (0, 0, 255))
         for event in pygame.event.get():
@@ -129,9 +177,13 @@ class modo_de_jogo():
 clock = pygame.time.Clock()
 FPS = 60
 all_sprites = pygame.sprite.Group()
+all_enemis=pygame.sprite.Group()
 estado_do_jogo= modo_de_jogo()
 player= heroi(player_img)
+inimigo= inimigos(inimigos_img,player)
 all_sprites.add(player)
+all_sprites.add(inimigo)
+all_enemis.add(inimigo)
 keys_down = {}
 game=True
 # ===== Loop principal =====
@@ -139,7 +191,6 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     
-# ===== Finalização =====
-pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
+
 
 
