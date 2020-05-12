@@ -19,6 +19,7 @@ tamanho_do_pulo=18
 
 window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('mansao')
+font = pygame.font.SysFont("comicsansms", 40)
 
 #definindo o player
 
@@ -103,6 +104,7 @@ class modo_de_jogo():
     # ----- Atualiza estado do jogo
         pygame.display.update()   
     def menu(self):
+        text = font.render('Aperte P para jogar', True, (0, 0, 255))
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -113,6 +115,7 @@ class modo_de_jogo():
                 if event.key==pygame.K_p:
                     self.aba="jogando"
         window.fill((255, 255, 255))
+        window.blit(text,(largura-455,altura-360))
         pygame.display.update() 
 
     def controlador_menu(self):
@@ -120,14 +123,6 @@ class modo_de_jogo():
             self.menu()
         if self.aba=="jogando":
             self.jogando()
-
-
-
-            
-
-    
-        
-    
 
 # ----- Inicia estruturas de dados
 
