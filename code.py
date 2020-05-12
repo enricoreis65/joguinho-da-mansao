@@ -2,6 +2,7 @@ import pygame
 from os import path
 img_dir = path.join(path.dirname(__file__), 'img')
 pygame.init()
+import random
 #-----------------dados iniciais
 altura = 480
 largura = 600
@@ -11,7 +12,7 @@ pulando = 1
 caindo = 2
 gravidade=2
 chao = altura * 5 // 6
-tamanho_do_pulo=18
+tamanho_do_pulo=20
 
 
 
@@ -30,13 +31,14 @@ player_img = pygame.transform.scale(player_img, (heroi_largura, heroi_altura))
 inimigos_img=pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
 inimigos_img = pygame.transform.scale(inimigos_img, (heroi_largura, heroi_altura))
 
+
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
-        self.rect.bottom = altura -1
+        self.rect.bottom = chao
         self.speedx = 0
         self.speedy=0
 
@@ -71,43 +73,40 @@ class heroi(pygame.sprite.Sprite):
             self.speedy -= tamanho_do_pulo
             self.state = pulando
 
+
+
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,img,player):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
-        self.rect.centerx = largura-10
-        self.rect.bottom = altura -80
-        self.speedx = 0
-        self.speedy=0
+        self.rect.centerx = largura-30
+        self.rect.bottom = chao
+        self.speedx_inimigo = 0
+       
+        self.speedy_inimigo= 0
     def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-        
-        print(player.rect.x-(self.rect.x))
-        
-        if player.rect.x-self.rect.x<-7 :
-            self.speedx-=0.01
-        if player.rect.x-self.rect.x>-7 and player.rect.x-self.rect.x<7:
-            self.speedx=0
-            self.rect.x=self.rect.x
-        elif player.rect.x-self.rect.x>0:
-            self.speedx+=0.01
+        self.rect.x+= self.speedx_inimigo
+        self.rect.y += self.speedy_inimigo
+        print(player.rect.y-self.rect.y)
+        if player.rect.x-self.rect.x>0 :
+            self.speedx_inimigo = 1
+            
+        if player.rect.x-self.rect.x<0 :
+            self.speedx_inimigo = -1
 
+        if self.rect.bottom > chao:
+            # Reposiciona para a posição do chão
+            self.rect.bottom = chao
 
-        
+        if player.rect.y-self.rect.y>0 :
+            if self.rect.y != altura -80:
+                self.speedy_inimigo = 1
+            else: self.rect.y==360
 
-    
-        
-        
-
-
-
-
-
-
-
-
+            
+        if player.rect.y-self.rect.y<0 :
+            self.speedy_inimigo = -1
 
 
 class modo_de_jogo():
