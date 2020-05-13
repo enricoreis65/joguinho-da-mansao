@@ -5,8 +5,8 @@ import random
 pygame.init()
 
 #-----------------dados iniciais
-altura = 1080
-largura = 1920
+altura = 540
+largura = 960
 #----dados movimento
 espera = 0
 pulando = 1
@@ -18,12 +18,13 @@ indefeso = 0
 ataque = 0
 
 
-
 # ----- Gera tela principal
 
 window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('mansao')
 font = pygame.font.SysFont("comicsansms", 40)
+text_a = font.render(('ataque'), True, (0, 0, 255))
+window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 #definindo o player
 
@@ -36,9 +37,10 @@ player_img = pygame.transform.scale(player_img, (heroi_largura, heroi_altura))
 inimigos_img=pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
 inimigos_img = pygame.transform.scale(inimigos_img, (vilao_largura, vilao_altura))
 
-
+teste_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
+teste_img = pygame.transform.scale(teste_img, (heroi_largura, heroi_altura))
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,img,vida):
+    def __init__(self,img,vida,teste_img):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
@@ -85,9 +87,8 @@ class heroi(pygame.sprite.Sprite):
     def ataque(self):
         self.hora_do_ataque=pygame.time.get_ticks()
         if self.estado == indefeso:
+            self.image=teste_img
             self.estado = ataque
-            self.speedy-= tamanho_do_pulo
-            
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,img,player):
@@ -160,33 +161,37 @@ class modo_de_jogo():
 
                 
         if estado_do_jogo.aba=="jogando":
-            
-            if player.estado==indefeso:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False)
+            if player.vida<=0:
+                player.kill()
                 
-                if len(colisao)>0:
+            else:
+                if player.estado==indefeso:
+                    colisao=pygame.sprite.spritecollide(player,all_enemis,False)
+                
+                    if len(colisao)>0:
                     
-                    player.vida-=10
+                        player.vida-=10
+                        colisao.clear()
+                        player.rect.x-=40
+                        player.rect.y-=tamanho_do_pulo
+                    
+                
                     colisao.clear()
-                    player.rect.x-=40
-                    player.rect.y-=tamanho_do_pulo
-                    
-                
-                colisao.clear()
 
             
-            if player.estado==ataque:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,True)
-                hora_da_colisao=pygame.time.get_ticks()
-                if len(colisao)>0:
-                    player.vida+=1
+                if player.estado==ataque:
+                    colisao=pygame.sprite.spritecollide(player,all_enemis,True)
+                    hora_da_colisao=pygame.time.get_ticks()
+                    if len(colisao)>0:
+                        player.vida+=1
 
-                colisao.clear()
+                    colisao.clear()
         all_sprites.update()
     # ----- Gera saídas
         window.fill((0, 0, 0))  # Preenche com a cor preta
         all_sprites.draw(window)
         window.blit(text,(10,10))
+        
     # ----- Atualiza estado do jogo
         pygame.display.update()   
 
@@ -221,7 +226,7 @@ vida=100
 FPS = 60
 all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
-player= heroi(player_img,vida)
+player= heroi(player_img,vida,teste_img)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(inimigos_img,player)
 all_sprites.add(player)
