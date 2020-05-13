@@ -38,7 +38,7 @@ inimigos_img = pygame.transform.scale(inimigos_img, (vilao_largura, vilao_altura
 
 
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,img):
+    def __init__(self,img,vida):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
@@ -47,12 +47,16 @@ class heroi(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy= 0
         self.estado = indefeso
-
+        self.vida=vida
+        self.hora_do_ataque=pygame.time.get_ticks()
     #update    
     def update(self):
         # Atualização da posição do heroi
         self.rect.x += self.speedx
-        self.estado = indefeso
+        print(self.hora_do_ataque-agora)
+        if self.hora_do_ataque<agora+1000:
+                self.estado=indefeso
+        
         self.speedy += gravidade
         # Atualiza o estado para caindo
         if self.speedy > 0:
@@ -81,7 +85,10 @@ class heroi(pygame.sprite.Sprite):
 
     def ataque(self):
         if self.estado == indefeso:
+            self.hora_do_ataque=pygame.time.get_ticks()
             self.estado = ataque
+            self.speedy-=tamanho_do_pulo
+            
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,img,player):
@@ -92,7 +99,7 @@ class inimigos(pygame.sprite.Sprite):
         self.rect.bottom = chao
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
-
+        
     def update(self):
         self.rect.x += self.speedx_inimigo
         self.rect.y += self.speedy_inimigo
@@ -118,13 +125,14 @@ class inimigos(pygame.sprite.Sprite):
 
 class modo_de_jogo():
 
-    def __init__(self):
+    def __init__(self,player):
 
         self.aba="menu"
-
+        
 
     def jogando(self):
-
+        
+        text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -148,10 +156,41 @@ class modo_de_jogo():
                         player.speedx += 4
                     if event.key == pygame.K_d:
                         player.speedx -= 4
+        # Verifica se apertou o botão do mouse.
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                player.ataque()
+                hora_do_ataque=pygame.time.get_ticks()
+
+
+                
+        if estado_do_jogo.aba=="jogando":
+            
+            if player.estado==indefeso:
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False)
+                
+                if len(colisao)>0:
+                    
+                    player.vida-=10
+                    colisao.clear()
+                    player.rect.x-=40
+                    player.rect.y-=tamanho_do_pulo
+                    
+                
+                colisao.clear()
+
+            
+            if player.estado==ataque:
+                colisao=pygame.sprite.spritecollide(player,all_enemis,True)
+                hora_da_colisao=pygame.time.get_ticks()
+                if len(colisao)>0:
+                    player.vida+=1
+
+                colisao.clear()
         all_sprites.update()
     # ----- Gera saídas
         window.fill((0, 0, 0))  # Preenche com a cor preta
         all_sprites.draw(window)
+        window.blit(text,(10,10))
     # ----- Atualiza estado do jogo
         pygame.display.update()   
 
@@ -182,22 +221,25 @@ class modo_de_jogo():
 # ----- Inicia estruturas de dados
 
 clock = pygame.time.Clock()
+vida=100
 FPS = 60
 all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
-estado_do_jogo= modo_de_jogo()
-player= heroi(player_img)
+player= heroi(player_img,vida)
+estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(inimigos_img,player)
 all_sprites.add(player)
 all_sprites.add(inimigo)
 all_enemis.add(inimigo)
 keys_down = {}
 game=True
+
+agora=pygame.time.get_ticks()
 # ===== Loop principal =====
 while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
+    agora=pygame.time.get_ticks()
     
-
 
 
