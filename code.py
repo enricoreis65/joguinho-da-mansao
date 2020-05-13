@@ -5,8 +5,8 @@ import random
 pygame.init()
 
 #-----------------dados iniciais
-altura = 480
-largura = 600
+altura = 1080
+largura = 1920
 #----dados movimento
 espera = 0
 pulando = 1
@@ -27,10 +27,10 @@ font = pygame.font.SysFont("comicsansms", 40)
 
 #definindo o player
 
-heroi_largura=65
-heroi_altura=100
-vilao_largura=64
-vilao_altura=64
+heroi_largura=52
+heroi_altura=80
+vilao_largura=52
+vilao_altura=52
 player_img = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
 player_img = pygame.transform.scale(player_img, (heroi_largura, heroi_altura))
 inimigos_img=pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
@@ -53,7 +53,6 @@ class heroi(pygame.sprite.Sprite):
     def update(self):
         # Atualização da posição do heroi
         self.rect.x += self.speedx
-        print(self.hora_do_ataque-agora)
         if self.hora_do_ataque<agora+1000:
                 self.estado=indefeso
         
@@ -84,10 +83,10 @@ class heroi(pygame.sprite.Sprite):
             self.state = pulando
 
     def ataque(self):
+        self.hora_do_ataque=pygame.time.get_ticks()
         if self.estado == indefeso:
-            self.hora_do_ataque=pygame.time.get_ticks()
             self.estado = ataque
-            self.speedy-=tamanho_do_pulo
+            self.speedy-= tamanho_do_pulo
             
 
 class inimigos(pygame.sprite.Sprite):
@@ -115,10 +114,9 @@ class inimigos(pygame.sprite.Sprite):
             self.rect.bottom = chao
         
         if player.rect.y-self.rect.y>0 :
-            if self.rect.y != altura -chao:
-                self.speedy_inimigo = 1
-            else:
-                self.rect.y==chao   
+            self.rect.y != altura -chao
+            self.speedy_inimigo = 1 
+
         if player.rect.y-self.rect.y<0 :
             self.speedy_inimigo = -1
 
@@ -159,8 +157,6 @@ class modo_de_jogo():
         # Verifica se apertou o botão do mouse.
             if event.type == pygame.MOUSEBUTTONDOWN:
                 player.ataque()
-                hora_do_ataque=pygame.time.get_ticks()
-
 
                 
         if estado_do_jogo.aba=="jogando":
@@ -240,6 +236,3 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks()
-    
-
-
