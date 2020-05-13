@@ -14,6 +14,8 @@ caindo = 2
 gravidade=2
 chao = altura * 5 // 6
 tamanho_do_pulo=20
+indefeso = 0
+ataque = 0
 
 
 
@@ -43,13 +45,14 @@ class heroi(pygame.sprite.Sprite):
         self.rect.centerx = largura / 2
         self.rect.bottom = chao
         self.speedx = 0
-        self.speedy=0
+        self.speedy= 0
+        self.estado = indefeso
 
     #update    
     def update(self):
         # Atualização da posição do heroi
         self.rect.x += self.speedx
-
+        self.estado = indefeso
         self.speedy += gravidade
         # Atualiza o estado para caindo
         if self.speedy > 0:
@@ -76,7 +79,9 @@ class heroi(pygame.sprite.Sprite):
             self.speedy -= tamanho_do_pulo
             self.state = pulando
 
-
+    def ataque(self):
+        if self.estado == indefeso:
+            self.estado = ataque
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,img,player):
