@@ -1,8 +1,9 @@
 import pygame
 from os import path
 img_dir = path.join(path.dirname(__file__), 'img')
-pygame.init()
 import random
+pygame.init()
+
 #-----------------dados iniciais
 altura = 480
 largura = 600
@@ -83,12 +84,12 @@ class inimigos(pygame.sprite.Sprite):
         self.rect.centerx = largura-30
         self.rect.bottom = chao
         self.speedx_inimigo = 0
-       
         self.speedy_inimigo= 0
+
     def update(self):
-        self.rect.x+= self.speedx_inimigo
+        self.rect.x += self.speedx_inimigo
         self.rect.y += self.speedy_inimigo
-        print(player.rect.y-self.rect.y)
+        
         if player.rect.x-self.rect.x>0 :
             self.speedx_inimigo = 1
             
@@ -98,13 +99,12 @@ class inimigos(pygame.sprite.Sprite):
         if self.rect.bottom > chao:
             # Reposiciona para a posição do chão
             self.rect.bottom = chao
-
+        
         if player.rect.y-self.rect.y>0 :
-            if self.rect.y != altura -80:
+            if self.rect.y != altura -chao:
                 self.speedy_inimigo = 1
-            else: self.rect.y==360
-
-            
+            else:
+                self.rect.y==chaop   
         if player.rect.y-self.rect.y<0 :
             self.speedy_inimigo = -1
 
@@ -143,7 +143,7 @@ class modo_de_jogo():
                         player.speedx -= 4
         all_sprites.update()
     # ----- Gera saídas
-        window.fill((0, 0, 0))  # Preenche com a cor branca
+        window.fill((0, 0, 0))  # Preenche com a cor preta
         all_sprites.draw(window)
     # ----- Atualiza estado do jogo
         pygame.display.update()   
@@ -153,6 +153,7 @@ class modo_de_jogo():
     def menu(self):
         text = font.render('Aperte P para jogar', True, (0, 0, 255))
         for event in pygame.event.get():
+            
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 game = False
@@ -176,7 +177,7 @@ class modo_de_jogo():
 clock = pygame.time.Clock()
 FPS = 60
 all_sprites = pygame.sprite.Group()
-all_enemis=pygame.sprite.Group()
+all_enemis = pygame.sprite.Group()
 estado_do_jogo= modo_de_jogo()
 player= heroi(player_img)
 inimigo= inimigos(inimigos_img,player)
