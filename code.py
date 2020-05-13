@@ -24,7 +24,6 @@ window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('mansao')
 font = pygame.font.SysFont("comicsansms", 40)
 text_a = font.render(('ataque'), True, (0, 0, 255))
-window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 #definindo o player
 
