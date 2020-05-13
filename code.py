@@ -106,7 +106,7 @@ class inimigos(pygame.sprite.Sprite):
             if self.rect.y != altura -chao:
                 self.speedy_inimigo = 1
             else:
-                self.rect.y==chaop   
+                self.rect.y==chao   
         if player.rect.y-self.rect.y<0 :
             self.speedy_inimigo = -1
 
