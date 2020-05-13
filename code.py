@@ -129,9 +129,9 @@ class modo_de_jogo():
             if event.type == pygame.KEYDOWN:
                 keys_down[event.key] = True
             # Dependendo da tecla, altera a velocidade.
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     player.speedx -= 4
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d:
                     player.speedx += 4
                 if event.key == pygame.K_SPACE:
                     player.pulo()
@@ -139,9 +139,9 @@ class modo_de_jogo():
             if event.type == pygame.KEYUP:
                 if event.key in keys_down and keys_down[event.key]:
             # Dependendo da tecla, altera a velocidade.
-                    if event.key == pygame.K_LEFT:
+                    if event.key == pygame.K_a:
                         player.speedx += 4
-                    if event.key == pygame.K_RIGHT:
+                    if event.key == pygame.K_d:
                         player.speedx -= 4
         all_sprites.update()
     # ----- Gera saídas
