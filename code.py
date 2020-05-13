@@ -15,7 +15,7 @@ gravidade=2
 chao = altura * 5 // 6
 tamanho_do_pulo=20
 indefeso = 0
-ataque = 0
+ataque = 1
 
 # ----- Gera tela principal
 
@@ -41,6 +41,8 @@ class heroi(pygame.sprite.Sprite):
     def __init__(self,img,vida,teste_img):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
+        self.image2=teste_img
+        self.image3=img
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
         self.rect.bottom = chao
@@ -53,8 +55,9 @@ class heroi(pygame.sprite.Sprite):
     def update(self):
         # Atualização da posição do heroi
         self.rect.x += self.speedx
-        if self.hora_do_ataque<agora+1000:
+        if self.hora_do_ataque+1000<agora:
                 self.estado=indefeso
+                self.image=self.image3
         
         self.speedy += gravidade
         # Atualiza o estado para caindo
@@ -83,9 +86,9 @@ class heroi(pygame.sprite.Sprite):
             self.state = pulando
 
     def ataque(self):
-        self.hora_do_ataque=pygame.time.get_ticks()
         if self.estado == indefeso:
-            self.image=teste_img
+            self.hora_do_ataque=pygame.time.get_ticks()
+            self.image=self.image2
             self.estado = ataque
 
 class inimigos(pygame.sprite.Sprite):
@@ -175,9 +178,6 @@ class modo_de_jogo():
                         player.rect.x-=40
                         player.rect.y-=tamanho_do_pulo
                     
-                
-                    colisao.clear()
-
             
                 if player.estado==ataque:
                     colisao=pygame.sprite.spritecollide(player,all_enemis,True)
@@ -185,7 +185,7 @@ class modo_de_jogo():
                     if len(colisao)>0:
                         player.vida+=1
 
-                    colisao.clear()
+                    
         all_sprites.update()
     # ----- Gera saídas
         window.fill((0, 0, 0))  # Preenche com a cor preta
