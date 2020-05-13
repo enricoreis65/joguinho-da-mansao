@@ -25,9 +25,9 @@ font = pygame.font.SysFont("comicsansms", 40)
 
 #definindo o player
 
-heroi_largura=30
-heroi_altura=40
-player_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
+heroi_largura=32
+heroi_altura=32
+player_img = pygame.image.load(path.join(img_dir, 'parado.png')).convert_alpha()
 player_img = pygame.transform.scale(player_img, (heroi_largura, heroi_altura))
 inimigos_img=pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
 inimigos_img = pygame.transform.scale(inimigos_img, (heroi_largura, heroi_altura))
