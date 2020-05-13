@@ -17,7 +17,6 @@ tamanho_do_pulo=20
 indefeso = 0
 ataque = 0
 
-
 # ----- Gera tela principal
 
 window = pygame.display.set_mode((largura, altura))
@@ -146,6 +145,8 @@ class modo_de_jogo():
                     player.speedx += 4
                 if event.key == pygame.K_SPACE:
                     player.pulo()
+                if event.key == pygame.K_ESCAPE:
+                    self.aba = 'main menu'
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 if event.key in keys_down and keys_down[event.key]:
@@ -211,12 +212,34 @@ class modo_de_jogo():
         window.fill((255, 255, 255))
         window.blit(text,(largura-455,altura-360))
         pygame.display.update() 
+    
+    # Criando um Menu de Pausa no meio do jogo
+    def main_menu(self):
+        text = font.render('Aperte Esc para voltar e X para sair', True, (0, 0, 255))
+        for event in pygame.event.get():
+        # ----- Verifica consequências
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.aba = 'jogando'
+                elif event.key == pygame.K_x:
+                    game = False
+                    pygame.quit()   
+            if event.type == pygame.QUIT:
+                game = False
+                pygame.quit() 
+
+        window.fill((255, 255, 255))
+        window.blit(text,(largura-600,altura-400))
+        pygame.display.update() 
+
 
     def controlador_menu(self):
         if self.aba=="menu":
             self.menu()
         if self.aba=="jogando":
             self.jogando()
+        if self.aba=='main menu':
+            self.main_menu()
 
 # ----- Inicia estruturas de dados
 
