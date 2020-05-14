@@ -10,15 +10,15 @@ largura = 960
 barra_largura=32
 barra_altura=3
 #----dados movimento
-espera = 0
-pulando = 1
-caindo = 2
+espera = "espera"
+pulando = "pulando"
+caindo = "caindo"
 gravidade=2
 chao = altura * 5 // 6
 tamanho_do_pulo=20
-indefeso = 0
-ataque = 1
-tomando_dano=2
+indefeso = "indefeso"
+ataque = "ataque"
+tomando_dano="tomando_dano"
 # ----- Gera tela principal
 
 window = pygame.display.set_mode((largura, altura))
@@ -54,7 +54,7 @@ class heroi(pygame.sprite.Sprite):
         self.estado = indefeso
         self.vida=vida
         self.hora_do_ataque=pygame.time.get_ticks()
-        self.porrada_ticks = 950
+        self.porrada_ticks = 850
         self.dano_ticks=2000
         self.hora_do_dano=pygame.time.get_ticks()
     #update    
@@ -92,7 +92,7 @@ class heroi(pygame.sprite.Sprite):
             self.state = pulando
 
     def ataque(self):
-        if self.estado==espera:
+        if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
             elapsed_ticks = agora - self.hora_do_ataque
 
@@ -262,20 +262,33 @@ class modo_de_jogo():
             self.main_menu()
 
 class items_adicionais(pygame.sprite.Sprite):
-    def __init__(self,img,player):
+    def __init__(self,img,player,largura):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
+        self.image2 = img
+
         self.rect = self.image.get_rect()
         self.rect.centerx = 0
         self.rect.bottom = 0
+        self.largura=largura
+        self.largura2=largura
 
     def update(self):
+        
         self.rect.centerx = player.rect.centerx
         self.rect.bottom = player.rect.bottom-heroi_altura-2
-        #if player.estado==ataque and player.estado!=espera:
-           #barra_largura-=2
-        #elif player.estado!=ataque and player.estado==espera:
-            #barra_largura=32
+        if player.estado==ataque:
+            if self.largura!=0:
+                self.largura-=1
+                self.largura2=0
+                self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
+        if player.estado==indefeso:
+            if self.largura2!=32:
+                self.largura2=32
+                self.largura=32
+                self.image=pygame.transform.scale(self.image2, (self.largura2, barra_altura))
+
+           
 
 
         
@@ -294,7 +307,7 @@ all_enemis = pygame.sprite.Group()
 player= heroi(player_img,vida,teste_img)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(inimigos_img,player)
-barra= items_adicionais(barra_img,player)
+barra= items_adicionais(barra_img,player,barra_largura)
 all_sprites.add(player)
 all_sprites.add(barra)
 all_sprites.add(inimigo)
@@ -308,5 +321,5 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks()
-    
+    print(player.estado)
       
