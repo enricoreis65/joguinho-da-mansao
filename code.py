@@ -29,6 +29,8 @@ text_a = font.render(('ataque'), True, (0, 0, 255))
 #definindo o player
 barra_img=pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
 barra_img=pygame.transform.scale(barra_img, (barra_largura, barra_altura))
+barra_vermelha_img=pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
+barra_vermelha_img=pygame.transform.scale(barra_vermelha_img, (barra_largura, barra_altura))
 heroi_largura=52
 heroi_altura=80
 vilao_largura=52
@@ -261,7 +263,7 @@ class modo_de_jogo():
         if self.aba=='main menu':
             self.main_menu()
 
-class items_adicionais(pygame.sprite.Sprite):
+class stamina(pygame.sprite.Sprite):
     def __init__(self,img,player,largura):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
@@ -288,14 +290,14 @@ class items_adicionais(pygame.sprite.Sprite):
                 self.largura=32
                 self.image=pygame.transform.scale(self.image2, (self.largura2, barra_altura))
 
+
+
+
            
 
 
         
-        
-        
-
-
+    
 # ----- Inicia estruturas de dados
 
 clock = pygame.time.Clock()
@@ -307,7 +309,7 @@ all_enemis = pygame.sprite.Group()
 player= heroi(player_img,vida,teste_img)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(inimigos_img,player)
-barra= items_adicionais(barra_img,player,barra_largura)
+barra= stamina(barra_img,player,barra_largura)
 all_sprites.add(player)
 all_sprites.add(barra)
 all_sprites.add(inimigo)
@@ -320,6 +322,5 @@ agora=pygame.time.get_ticks()
 while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
-    agora=pygame.time.get_ticks()
-    print(player.estado)
+    agora=pygame.time.get_ticks() 
       
