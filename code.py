@@ -130,11 +130,11 @@ class heroi(pygame.sprite.Sprite):
                     
                     if len(colisao)>0:
                         colisao.clear()
-                        inimigos(inimigos_img,player,vida_inimigo).dano()
+                        inimigo.dano()
+                        player.estado=espera
                         player.rect.x-=8
                         player.rect.y-=3
-                        
-                        vida_verm(barra_vermelha_img,inimigo,barra_largura).diminuir()
+                        barra_vermelha.diminuir()
         
 
 class inimigos(pygame.sprite.Sprite):
@@ -306,24 +306,24 @@ class stamina(pygame.sprite.Sprite):
                 self.image=pygame.transform.scale(self.image2, (self.largura2, barra_altura))
 
 class vida_verm(pygame.sprite.Sprite):
-    def __init__(self,img,inimigo,largura):
+    def __init__(self,img,inimigo):
         pygame.sprite.Sprite.__init__(self)
-        vida_verm.image = img
+        self.image = img
         
 
         self.rect = self.image.get_rect()
         self.rect.centerx = 0
         self.rect.bottom = 0
-        self.largura=largura
+        self.largura=30
         
 
     def update(self):
-        
         self.rect.centerx = inimigo.rect.centerx
         self.rect.bottom = inimigo.rect.bottom-heroi_altura-2
     def diminuir(self):
-            self.largura-=10
-            vida_verm.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
+        if self.largura>0:
+            self.largura-=6
+            self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
         
 
 
@@ -347,7 +347,7 @@ player= heroi(player_img,vida,teste_img)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(inimigos_img,player,vida_inimigo)
 barra= stamina(barra_img,player,barra_largura)
-barra_vermelha=vida_verm(barra_vermelha_img,inimigo,barra_largura)
+barra_vermelha=vida_verm(barra_vermelha_img,inimigo)
 all_sprites.add(player)
 all_sprites.add(barra)
 all_sprites.add(barra_vermelha)
