@@ -1,4 +1,5 @@
 import pygame, sys
+from pygame.locals import *
 import random
 from os import path
 from pygame.locals import *
@@ -28,10 +29,12 @@ ataque = "ataque"
 tomando_dano="tomando_dano"
 
 # ----- Gera tela principal
-window = pygame.display.set_mode((largura, altura))
+monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
+window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
 pygame.display.set_caption('mansao')
 font = pygame.font.SysFont("comicsansms", 40)
 text_a = font.render(('ataque'), True, (0, 0, 255))
+fullscreen = False
 
 # Definindo o player
 barra_img=pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
@@ -45,33 +48,6 @@ inimigos_img = pygame.transform.scale(inimigos_img, (vilao_largura, vilao_altura
 teste_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
 teste_img = pygame.transform.scale(teste_img, (heroi_largura, heroi_altura))
 
-'''
-# Carregar as animações
-global animation_frames
-animation_frames = {}
-
-def load_animation(path,frame_durations):
-    global animation_frames
-    animation_name = path.split('/') [-1]
-    animation_frame_data = []
-    n = 0
-    for frame in frame_durations:
-        animation_frame_id = animation_name + '_' + str(n)
-        img_loc = path + '/' + animation_frame_id + '.png'
-        animation_image = pygame.image.load(img_loc).convert()
-        animation_image.set_colorkey((255,255,255))
-        animation_frames[animation_frame_id] = animation.image.copy()
-        for i in range(frame):
-            animation_frame_data.append(animation_frame_id)
-        n = n + 1
-    return animation_frame_data
-
-animation_database = {}
-
-animation_database['Andando'] = load_animation('joguinho-da-mansao\sprites\Hercule Poirot\Esquerda\Andando',[5,5])
-animation_database['Parado'] = load_animation('joguinho-da-mansao\sprites\Hercule Poirot\Esquerda\Parado',[5,5,5,5])
-
-'''
 
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img,vida,teste_img):
@@ -238,7 +214,9 @@ class modo_de_jogo():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 pygame.quit() 
-
+            if event.type == VIDEORESIZE:
+                if not fullscreen:
+                    window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
         # Verifica se apertou alguma tecla.
             if event.type == pygame.KEYDOWN:
                 keys_down[event.key] = True 
@@ -251,6 +229,12 @@ class modo_de_jogo():
                     player.pulo()
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'main menu'
+                if event.key == K_f:
+                    fullscreen = not fullscreen
+                    if fullscreen:
+                        window = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
+                    else:
+                        window = pygame.display.set_mode((window.get_width(), window.get_height()), pygame.RESIZABLE)
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 if event.key in keys_down and keys_down[event.key]:
@@ -267,7 +251,7 @@ class modo_de_jogo():
                 
      
     # ----- Gera saídas
-        window.fill((0, 0, 0))  # Preenche com a cor preta
+        window.fill((0, 0, 50))  # Preenche com a cor azul
         all_sprites.draw(window)
         window.blit(text,(10,10))
         player.dano()
@@ -292,26 +276,45 @@ class modo_de_jogo():
                 if event.key==pygame.K_p:
                     self.aba="jogando"
         window.fill((255, 255, 255))
-        window.blit(text,(largura-455,altura-360))
+        window.blit(text,(largura-255,altura-160))
         pygame.display.update() 
     
     # Criando um Menu de Pausa no meio do jogo
+    click = False
+
     def main_menu(self):
-        text = font.render('Aperte Esc para voltar e X para sair', True, (0, 0, 255))
+        text = font.render('Aperte Esc para voltar e X para sair', True, (255, 255, 255))
+        click = False
+        mx, my = pygame.mouse.get_pos()
+        button_1 = pygame.Rect(50,100,200,50)
+        button_2 = pygame.Rect(50,200,200,50)
+
+        if button_1.collidepoint((mx,my)):
+            if click:
+                pass
+        if button_2.collidepoint((mx,my)):
+            if click:
+                pass
+
+        pygame.draw.rect(window, (255,0,0), button_1)
+        pygame.draw.rect(window, (255,0,0), button_2)
+
+        
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'jogando'
                 elif event.key == pygame.K_x:
-                    
                     pygame.quit()   
             if event.type == pygame.QUIT:
-                
                 pygame.quit() 
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
 
-        window.fill((255, 255, 255))
-        window.blit(text,(largura-600,altura-400))
+        window.fill((0, 0, 50))
+        window.blit(text,(largura-400,altura-400))
         pygame.display.update() 
 
 
@@ -395,4 +398,3 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    
