@@ -9,6 +9,7 @@ altura = 540
 largura = 960
 barra_largura=32
 barra_altura=3
+
 #----dados movimento
 espera = "espera"
 pulando = "pulando"
@@ -19,6 +20,7 @@ tamanho_do_pulo=20
 indefeso = "indefeso"
 ataque = "ataque"
 tomando_dano="tomando_dano"
+
 # ----- Gera tela principal
 
 window = pygame.display.set_mode((largura, altura))
@@ -42,6 +44,7 @@ inimigos_img = pygame.transform.scale(inimigos_img, (vilao_largura, vilao_altura
 
 teste_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
 teste_img = pygame.transform.scale(teste_img, (heroi_largura, heroi_altura))
+
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img,vida,teste_img):
         pygame.sprite.Sprite.__init__(self)
@@ -177,8 +180,6 @@ class inimigos(pygame.sprite.Sprite):
             barra_vermelha.kill()
         
         
-
-
 
 class modo_de_jogo():
 
@@ -328,12 +329,6 @@ class vida_verm(pygame.sprite.Sprite):
 
 
         
-        
-           
-
-
-        
-    
 # ----- Inicia estruturas de dados
 
 clock = pygame.time.Clock()
