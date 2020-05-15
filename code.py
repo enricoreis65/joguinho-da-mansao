@@ -1,16 +1,18 @@
-import pygame
-from os import path
-img_dir = path.join(path.dirname(__file__), 'img')
+import pygame, sys
 import random
+from os import path
+from pygame.locals import *
+img_dir = path.join(path.dirname(__file__), 'img')
+
 pygame.init()
 
-#-----------------dados iniciais
+#-----------------Dados iniciais
 altura = 540
 largura = 960
 barra_largura=32
 barra_altura=3
 
-#----dados movimento
+#---- Dados movimento
 espera = "espera"
 pulando = "pulando"
 caindo = "caindo"
@@ -22,13 +24,12 @@ ataque = "ataque"
 tomando_dano="tomando_dano"
 
 # ----- Gera tela principal
-
-window = pygame.display.set_mode((largura, altura))
+window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
 pygame.display.set_caption('mansao')
 font = pygame.font.SysFont("comicsansms", 40)
 text_a = font.render(('ataque'), True, (0, 0, 255))
 
-#definindo o player
+# Definindo o player
 barra_img=pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
 barra_img=pygame.transform.scale(barra_img, (barra_largura, barra_altura))
 barra_vermelha_img=pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
@@ -72,7 +73,6 @@ animation_database['Andando'] = load_animation('joguinho-da-mansao\sprites\Hercu
 animation_database['Parado'] = load_animation('joguinho-da-mansao\sprites\Hercule Poirot\Esquerda\Parado',[5,5,5,5])
 
 '''
-
 
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img,vida,teste_img):
@@ -211,23 +211,19 @@ class inimigos(pygame.sprite.Sprite):
         
 
 class modo_de_jogo():
-
     def __init__(self,player):
-
         self.aba="menu"
         
-
     def jogando(self):
-        
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
-                
                 pygame.quit() 
+
         # Verifica se apertou alguma tecla.
             if event.type == pygame.KEYDOWN:
-                keys_down[event.key] = True
+                keys_down[event.key] = True 
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
                     player.speedx -= 4
@@ -248,7 +244,8 @@ class modo_de_jogo():
         # Verifica se apertou o botão do mouse.
             if event.type == pygame.MOUSEBUTTONDOWN:    
                 player.ataque()
-
+            if event.type == VIDEORESIZE:
+                window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
                 
      
     # ----- Gera saídas
@@ -321,7 +318,6 @@ class stamina(pygame.sprite.Sprite):
         self.largura2=largura
 
     def update(self):
-        
         self.rect.centerx = player.rect.centerx
         self.rect.bottom = player.rect.bottom-heroi_altura-2
         if player.estado==ataque:
@@ -339,14 +335,11 @@ class vida_verm(pygame.sprite.Sprite):
     def __init__(self,img,inimigo):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
-        
-
         self.rect = self.image.get_rect()
         self.rect.centerx = 0
         self.rect.bottom = 0
         self.largura=30
-        
-
+    
     def update(self):
         self.rect.centerx = inimigo.rect.centerx
         self.rect.bottom = inimigo.rect.bottom-heroi_altura-2
@@ -355,11 +348,8 @@ class vida_verm(pygame.sprite.Sprite):
             self.largura-=6
             self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
         
-
-
         
 # ----- Inicia estruturas de dados
-
 clock = pygame.time.Clock()
 vida=100
 vida_inimigo=50
@@ -381,6 +371,7 @@ keys_down = {}
 game=True
 
 agora=pygame.time.get_ticks()
+
 # ===== Loop principal =====
 while game:
     clock.tick(FPS)
