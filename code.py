@@ -147,25 +147,36 @@ class heroi(pygame.sprite.Sprite):
                 
             else:
                 if player.estado==indefeso:
-                    colisao=pygame.sprite.spritecollide(player,all_enemis,False)
+                    colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)
                 
                     if len(colisao)>0:
-                        player.hora_do_dano=pygame.time.get_ticks()
-                        player.estado=tomando_dano
-                        player.vida-=10                       
-                        player.rect.x-=60
-                        player.rect.y-=tamanho_do_pulo
-                    
+                        if player.rect.bottom-inimigo.rect.centerx<0:
+                            player.hora_do_dano=pygame.time.get_ticks()
+                            player.estado=tomando_dano
+                            player.vida-=10                       
+                            player.rect.x-=90
+                            player.rect.y-=tamanho_do_pulo*3
+
+                        elif player.rect.right-inimigo.rect.centerx<0:
+                            player.hora_do_dano=pygame.time.get_ticks()
+                            player.estado=tomando_dano
+                            player.vida-=10                       
+                            player.rect.x-=60
+                            player.rect.y-=tamanho_do_pulo
+                        elif player.rect.left-inimigo.rect.centerx>=0:
+                            player.hora_do_dano=pygame.time.get_ticks()
+                            player.estado=tomando_dano
+                            player.vida-=10                       
+                            player.rect.x+=60
+                            player.rect.y-=tamanho_do_pulo
             
                 if player.estado==ataque:
-                    colisao=pygame.sprite.spritecollide(player,all_enemis,False)
-                    
+                    colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
                     if len(colisao)>0:
+                        inimigo.estado=tomando_dano
                         colisao.clear()
                         inimigo.dano()
                         player.estado=espera
-                        player.rect.x-=8
-                        player.rect.y-=3
                         barra_vermelha.diminuir()
         
 
@@ -173,17 +184,20 @@ class inimigos(pygame.sprite.Sprite):
     def __init__(self,img,player,vida_inimigo):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
-        self.rect.centerx = largura-30
+        self.rect.centerx = largura-300
         self.rect.bottom = chao
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
         self.vida=vida_inimigo
+        self.estado=espera
     def update(self):
-        
-        self.rect.x += self.speedx_inimigo
-        self.rect.y += self.speedy_inimigo
-        
+        if self.estado==espera:
+            self.rect.x += self.speedx_inimigo
+            self.rect.y += self.speedy_inimigo
+        elif player.hora_do_ataque+player.porrada_ticks*0.3<agora:
+            self.estado=espera
         if player.rect.x-self.rect.x>0 :
             self.speedx_inimigo = 1
             
@@ -202,8 +216,12 @@ class inimigos(pygame.sprite.Sprite):
             self.speedy_inimigo = -1
     def dano(self):
         inimigo.vida-=10
-        inimigo.rect.x+=30
-        inimigo.rect.y-=15
+        if player.rect.right-inimigo.rect.centerx<0:
+            inimigo.rect.x+=40
+            inimigo.rect.y-=20             
+        elif player.rect.left-inimigo.rect.centerx>=0:    
+            inimigo.rect.x-=40
+            inimigo.rect.y-=20                   
         if inimigo.vida==0:
             inimigo.kill()
             barra_vermelha.kill()
