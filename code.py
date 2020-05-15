@@ -389,6 +389,9 @@ while game:
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
     for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
         if event.type == VIDEORESIZE:
             if not fullscreen:
                 screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
