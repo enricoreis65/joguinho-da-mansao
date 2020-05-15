@@ -6,11 +6,15 @@ img_dir = path.join(path.dirname(__file__), 'img')
 
 pygame.init()
 
-#-----------------Dados iniciais
+#-----------------Dados iniciais de tamanho
 altura = 540
 largura = 960
 barra_largura=32
 barra_altura=3
+heroi_largura=52
+heroi_altura=80
+vilao_largura=52
+vilao_altura=52
 
 #---- Dados movimento
 espera = "espera"
@@ -24,7 +28,7 @@ ataque = "ataque"
 tomando_dano="tomando_dano"
 
 # ----- Gera tela principal
-window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
+window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('mansao')
 font = pygame.font.SysFont("comicsansms", 40)
 text_a = font.render(('ataque'), True, (0, 0, 255))
@@ -34,15 +38,10 @@ barra_img=pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
 barra_img=pygame.transform.scale(barra_img, (barra_largura, barra_altura))
 barra_vermelha_img=pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
 barra_vermelha_img=pygame.transform.scale(barra_vermelha_img, (barra_largura, barra_altura))
-heroi_largura=52
-heroi_altura=80
-vilao_largura=52
-vilao_altura=52
 player_img = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
 player_img = pygame.transform.scale(player_img, (heroi_largura, heroi_altura))
 inimigos_img=pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
 inimigos_img = pygame.transform.scale(inimigos_img, (vilao_largura, vilao_altura))
-
 teste_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
 teste_img = pygame.transform.scale(teste_img, (heroi_largura, heroi_altura))
 
@@ -80,6 +79,7 @@ class heroi(pygame.sprite.Sprite):
         self.image = img
         self.image2=teste_img
         self.image3=img
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
         self.rect.bottom = chao
@@ -262,8 +262,8 @@ class modo_de_jogo():
         # Verifica se apertou o botão do mouse.
             if event.type == pygame.MOUSEBUTTONDOWN:    
                 player.ataque()
-            if event.type == VIDEORESIZE:
-                window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+            # if event.type == VIDEORESIZE:
+            #     window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
                 
      
     # ----- Gera saídas
