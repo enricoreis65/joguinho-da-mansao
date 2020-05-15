@@ -28,7 +28,7 @@ ataque = "ataque"
 tomando_dano="tomando_dano"
 
 # ----- Gera tela principal
-monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
+#monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
 pygame.display.set_caption('mansao')
 font = pygame.font.SysFont("comicsansms", 40)
@@ -392,6 +392,7 @@ while game:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        '''
         if event.type == VIDEORESIZE:
             if not fullscreen:
                 screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
@@ -401,4 +402,4 @@ while game:
                 if fullscreen:
                     screen = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
                 else:
-                    screen = pygame.display.set_mode((screen.get_width(), screen.get_height()), pygame.RESIZABLE)
+                    screen = pygame.display.set_mode((screen.get_width(), screen.get_height()), pygame.RESIZABLE)'''
