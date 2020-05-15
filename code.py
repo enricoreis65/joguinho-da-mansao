@@ -1,5 +1,4 @@
 import pygame, sys
-from pygame.locals import *
 import random
 from os import path
 from pygame.locals import *
@@ -214,9 +213,6 @@ class modo_de_jogo():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 pygame.quit() 
-            if event.type == VIDEORESIZE:
-                if not fullscreen:
-                    window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
         # Verifica se apertou alguma tecla.
             if event.type == pygame.KEYDOWN:
                 keys_down[event.key] = True 
@@ -229,12 +225,6 @@ class modo_de_jogo():
                     player.pulo()
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'main menu'
-                if event.key == K_f:
-                    fullscreen = not fullscreen
-                    if fullscreen:
-                        window = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
-                    else:
-                        window = pygame.display.set_mode((window.get_width(), window.get_height()), pygame.RESIZABLE)
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 if event.key in keys_down and keys_down[event.key]:
@@ -398,3 +388,14 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
+    for event in pygame.event.get():
+        if event.type == VIDEORESIZE:
+            if not fullscreen:
+                screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+        if event.type == KEYDOWN:
+            if event.key == K_f:
+                fullscreen = not fullscreen
+                if fullscreen:
+                    screen = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
+                else:
+                    screen = pygame.display.set_mode((screen.get_width(), screen.get_height()), pygame.RESIZABLE)
