@@ -45,6 +45,35 @@ inimigos_img = pygame.transform.scale(inimigos_img, (vilao_largura, vilao_altura
 teste_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
 teste_img = pygame.transform.scale(teste_img, (heroi_largura, heroi_altura))
 
+'''
+# Carregar as animações
+global animation_frames
+animation_frames = {}
+
+def load_animation(path,frame_durations):
+    global animation_frames
+    animation_name = path.split('/') [-1]
+    animation_frame_data = []
+    n = 0
+    for frame in frame_durations:
+        animation_frame_id = animation_name + '_' + str(n)
+        img_loc = path + '/' + animation_frame_id + '.png'
+        animation_image = pygame.image.load(img_loc).convert()
+        animation_image.set_colorkey((255,255,255))
+        animation_frames[animation_frame_id] = animation.image.copy()
+        for i in range(frame):
+            animation_frame_data.append(animation_frame_id)
+        n = n + 1
+    return animation_frame_data
+
+animation_database = {}
+
+animation_database['Andando'] = load_animation('joguinho-da-mansao\sprites\Hercule Poirot\Esquerda\Andando',[5,5])
+animation_database['Parado'] = load_animation('joguinho-da-mansao\sprites\Hercule Poirot\Esquerda\Parado',[5,5,5,5])
+
+'''
+
+
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img,vida,teste_img):
         pygame.sprite.Sprite.__init__(self)
