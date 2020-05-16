@@ -2,7 +2,16 @@ import pygame, sys
 import random
 from os import path
 from pygame.locals import *
+
+#----------------Configurações para imagens
+
+# Define a pasta que contem figuras e sons    
 img_dir = path.join(path.dirname(__file__), 'img')
+
+# Imagens
+PLAYER_IMG = 'player_img'
+
+#------------------
 
 pygame.init()
 
