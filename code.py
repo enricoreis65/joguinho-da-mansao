@@ -31,7 +31,7 @@ tomando_dano="tomando_dano"
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
 pygame.display.set_caption('mansao')
-font = pygame.font.SysFont("comicsansms", 40)
+font = pygame.font.SysFont("joguinho-da-mansao\fonts\VCR_OSD_MONO_1.001.ttf", 40)
 text_a = font.render(('ataque'), True, (0, 0, 255))
 fullscreen = False
 
@@ -281,21 +281,6 @@ class modo_de_jogo():
         text_rect=text.get_rect()
         text_largura=text_rect.width
         text_altura=text_rect.height
-        click = False
-        mx, my = pygame.mouse.get_pos()
-        button_1 = pygame.Rect(50,100,200,50)
-        button_2 = pygame.Rect(50,200,200,50)
-
-        if button_1.collidepoint((mx,my)):
-            if click:
-                pass
-        if button_2.collidepoint((mx,my)):
-            if click:
-                pass
-
-        pygame.draw.rect(window, (255,0,0), button_1)
-        pygame.draw.rect(window, (255,0,0), button_2)
-
         
         for event in pygame.event.get():
         # ----- Verifica consequências
