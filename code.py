@@ -18,6 +18,8 @@ RALPH_IMG = 'ralph_img'
 MISS_IMG = 'miss_img'
 CHARLES_IMG = 'charles_img'
 CHAO_IMG = 'chao_img'
+PLAY_IMG = 'play_img'
+PLAYAPERTADO_IMG = 'playapertado_img'
 
 #------------------
 
@@ -188,6 +190,9 @@ def load_assets(img_dir):
     assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
     assets[CHAO] = pygame.image.load(path.join(img_dir, 'chao.png')).convert_alpha()
+    assets[PLAY] = pygame.image.load(path.join(img_dir, 'play.png')).convert_alpha()
+    assets[PLAYAPERTADO = pygame.image.load(path.join(img_dir, 'playapertado.png')).convert_alpha()
+
     return assets                        
       
 #------------------
@@ -291,7 +296,7 @@ class modo_de_jogo():
 
 
     def menu(self):
-        text = font.render('Aperte P para jogar', True, (0, 0, 255))
+        text = font.render('Aperte P para jogar', True, (0, 0, 255)) 
         text_rect=text.get_rect()
         text_largura=text_rect.width
         text_altura=text_rect.height
