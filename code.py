@@ -395,9 +395,8 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    text = font.render('Aperte P para jogar', True, (0, 0, 255))
-    a=text.get_rect()
-    print(a.width/2)
+    
+    
     # for event in pygame.event.get():
     #     if event.type == QUIT:
     #         pygame.quit()
