@@ -255,6 +255,10 @@ class modo_de_jogo():
 
     def menu(self):
         text = font.render('Aperte P para jogar', True, (0, 0, 255))
+        text_rect=text.get_rect()
+        text_largura=text_rect.width
+        text_altura=text_rect.height
+        
         for event in pygame.event.get():
             
         # ----- Verifica consequências
@@ -266,7 +270,7 @@ class modo_de_jogo():
                 if event.key==pygame.K_p:
                     self.aba="jogando"
         window.fill((255, 255, 255))
-        window.blit(text,(largura-255,altura-160))
+        window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
         pygame.display.update() 
     
     # Criando um Menu de Pausa no meio do jogo
@@ -274,6 +278,9 @@ class modo_de_jogo():
 
     def main_menu(self):
         text = font.render('Aperte Esc para voltar e X para sair', True, (255, 255, 255))
+        text_rect=text.get_rect()
+        text_largura=text_rect.width
+        text_altura=text_rect.height
         click = False
         mx, my = pygame.mouse.get_pos()
         button_1 = pygame.Rect(50,100,200,50)
@@ -304,7 +311,7 @@ class modo_de_jogo():
                     click = True
 
         window.fill((0, 0, 50))
-        window.blit(text,(largura-400,altura-400))
+        window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
         pygame.display.update() 
 
 
@@ -388,18 +395,21 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-        '''
-        if event.type == VIDEORESIZE:
-            if not fullscreen:
-                screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-        if event.type == KEYDOWN:
-            if event.key == K_f:
-                fullscreen = not fullscreen
-                if fullscreen:
-                    screen = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
-                else:
-                    screen = pygame.display.set_mode((screen.get_width(), screen.get_height()), pygame.RESIZABLE)'''
+    text = font.render('Aperte P para jogar', True, (0, 0, 255))
+    a=text.get_rect()
+    print(a.width/2)
+    # for event in pygame.event.get():
+    #     if event.type == QUIT:
+    #         pygame.quit()
+    #         sys.exit()
+        
+    #     if event.type == VIDEORESIZE:
+    #         if not fullscreen:
+    #             screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+    #     if event.type == KEYDOWN:
+    #         if event.key == K_f:
+    #             fullscreen = not fullscreen
+    #             if fullscreen:
+    #                 screen = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
+    #             else:
+    #                 screen = pygame.display.set_mode((screen.get_width(), screen.get_height()), pygame.RESIZABLE)
