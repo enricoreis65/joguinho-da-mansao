@@ -10,6 +10,14 @@ img_dir = path.join(path.dirname(__file__), 'img')
 
 # Imagens
 PLAYER_IMG = 'player_img'
+ROGER_IMG = 'roger_img'
+SHEPPARD_IMG = 'sheppard_img'
+CAROLINE_IMG = 'caroline_img'
+FANTASMA_IMG = 'fantasma_img'
+RALPH_IMG = 'ralph_img'
+MISS_IMG = 'miss_img'
+CHARLES_IMG = 'charles_img'
+CHAO_IMG = 'chao_img'
 
 #------------------
 
@@ -56,6 +64,10 @@ inimigos_img = pygame.transform.scale(inimigos_img, (vilao_largura, vilao_altura
 teste_img = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
 teste_img = pygame.transform.scale(teste_img, (heroi_largura, heroi_altura))
 
+#----------------Configurações para imagens
+#MAPA
+
+#------------------
 
 class heroi(pygame.sprite.Sprite):
     def __init__(self,img,vida,teste_img):
@@ -162,7 +174,23 @@ class heroi(pygame.sprite.Sprite):
                         inimigo.dano()
                         player.estado=espera
                         barra_vermelha.diminuir()
-        
+
+#----------------Configurações para imagens
+# Carrega todos os assets de uma vez.
+def load_assets(img_dir):
+    assets = {}
+    assets[PLAYER_IMG] = pygame.image.load(path.join(img_dir, 'player.png')).convert_alpha()
+    assets[ROGER_IMG] = pygame.image.load(path.join(img_dir, 'roger.png')).convert_alpha()
+    assets[SHEPPARD_IMG] = pygame.image.load(path.join(img_dir, 'sheppard.png')).convert_alpha()
+    assets[CAROLINE_IMG] = pygame.image.load(path.join(img_dir, 'caroline.png')).convert_alpha()
+    assets[FANTASMA_IMG] = pygame.image.load(path.join(img_dir, 'fantasma.png')).convert_alpha()
+    assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
+    assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
+    assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
+    assets[CHAO] = pygame.image.load(path.join(img_dir, 'chao.png')).convert_alpha()
+    return assets                        
+      
+#------------------
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,img,player,vida_inimigo):
