@@ -70,7 +70,7 @@ def load_assets(img_dir):
     # assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(telainicial_largura, telainicial_altura))
     # assets[TELA_1_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
 
-    # assets[ROGER_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
+    # assets[ROGER_IMG] = pygame.transform.scale(assets[ROGER_IMG],(tela_1_largura, tela_1_altura))
     # assets[SHEPPARD_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
     # assets[CAROLINE_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
     # assets[INIMIGOS_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
@@ -98,7 +98,7 @@ tamanho_do_pulo=20
 indefeso = "indefeso"
 ataque = "ataque"
 tomando_dano="tomando_dano"
-
+defendendo="defendendo"
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
@@ -128,8 +128,10 @@ class heroi(pygame.sprite.Sprite):
         self.vida=vida
         self.hora_do_ataque=pygame.time.get_ticks()
         self.porrada_ticks = 850
-        self.dano_ticks=2000
+        
+        self.desefa_ticks=2500
         self.hora_do_dano=pygame.time.get_ticks()
+        self.hora_da_defesa=pygame.time.get_ticks()
     #update    
     def update(self):
         # Atualização da posição do heroi
@@ -137,7 +139,9 @@ class heroi(pygame.sprite.Sprite):
         if self.hora_do_ataque+self.porrada_ticks<agora:
                 self.estado=indefeso
                 self.image=self.image3
-        
+        if self.hora_da_defesa+self.desefa_ticks<agora:
+                self.estado=indefeso
+                self.image=self.image3
         self.speedy += gravidade
         # Atualiza o estado para caindo
         if self.speedy > 0:
@@ -177,12 +181,33 @@ class heroi(pygame.sprite.Sprite):
                 if self.estado == indefeso:
                     self.image=self.image2
                     self.estado = ataque
+    def defesa(self):
+        if self.state==espera:
+        # Verifica quantos ticks se passaram desde o último tiro.
+            elapsed_ticks = agora - self.hora_da_defesa
+
+        # Se já pode atirar novamente...
+            
+            if elapsed_ticks > self.defesa_ticks:
+            # Marca o tick da nova imagem.
+                self.hora_da_defesa = agora
+                if self.estado == indefeso:
+                    self.image=self.image2
+                    self.estado = defendendo
 
     def dano(self):
         if estado_do_jogo.aba=="jogando":
             if player.vida<=0:
                 player.kill()
                 barra.kill()
+                estado_do_jogo.aba = "menu"
+                # player = heroi(vida, assets)
+                # all_sprites.add(player)
+                
+        #if now - explosion_tick > explosion_duration:
+           # state = PLAYING
+           # player = Ship(groups, assets)
+           # all_sprites.add(player)
                 
             else:
                 if player.estado==indefeso:
@@ -290,6 +315,8 @@ class modo_de_jogo():
                     player.pulo()
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'main menu'
+                if event.key == pygame.K_ESCAPE:
+                    player.defesa()
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 if event.key in keys_down and keys_down[event.key]:
@@ -326,6 +353,7 @@ class modo_de_jogo():
         text_altura=text_rect.height
         
         for event in pygame.event.get():
+            print(event)
             
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
