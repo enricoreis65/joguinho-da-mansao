@@ -193,9 +193,9 @@ def load_assets(img_dir):
     assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
     assets[CHAO] = pygame.image.load(path.join(img_dir, 'chao.png')).convert_alpha()
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play.png')).convert_alpha()
-    assets[PLAYAPERTADO = pygame.image.load(path.join(img_dir, 'playapertado.png')).convert_alpha()
+    assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado.png')).convert_alpha()
     assets[MENU] = pygame.image.load(path.join(img_dir, 'menu.png')).convert_alpha()
-    assets[MENUAPERTADO = pygame.image.load(path.join(img_dir, 'menuapertado.png')).convert_alpha()
+    assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado.png')).convert_alpha()
 
     return assets                        
       
