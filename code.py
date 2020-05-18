@@ -126,22 +126,21 @@ class heroi(pygame.sprite.Sprite):
         self.speedy= 0
         self.estado = indefeso
         self.vida=vida
-        self.hora_do_ataque=pygame.time.get_ticks()
-        self.porrada_ticks = 850
+        self.hora_da_acao=pygame.time.get_ticks()
+        self.acao_ticks = 850
         
-        self.desefa_ticks=2500
+        
         self.hora_do_dano=pygame.time.get_ticks()
-        self.hora_da_defesa=pygame.time.get_ticks()
+        self.hora_da_acao=pygame.time.get_ticks()
     #update    
     def update(self):
         # Atualização da posição do heroi
         self.rect.x += self.speedx
-        if self.hora_do_ataque+self.porrada_ticks<agora:
+        if self.hora_da_acao+self.acao_ticks<agora:      
                 self.estado=indefeso
                 self.image=self.image3
-        if self.hora_da_defesa+self.desefa_ticks<agora:
-                self.estado=indefeso
-                self.image=self.image3
+        
+        
         self.speedy += gravidade
         # Atualiza o estado para caindo
         if self.speedy > 0:
@@ -171,29 +170,31 @@ class heroi(pygame.sprite.Sprite):
     def ataque(self):
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
-            elapsed_ticks = agora - self.hora_do_ataque
+            elapsed_ticks = agora - self.hora_da_acao
 
         # Se já pode atirar novamente...
             
-            if elapsed_ticks > self.porrada_ticks*1.5:
+            if elapsed_ticks > self.acao_ticks*1.5:
             # Marca o tick da nova imagem.
-                self.hora_do_ataque = agora
+                self.hora_da_acao = agora
                 if self.estado == indefeso:
                     self.image=self.image2
                     self.estado = ataque
     def defesa(self):
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
-            elapsed_ticks = agora - self.hora_da_defesa
+            elapsed_ticks = agora - self.hora_da_acao
 
         # Se já pode atirar novamente...
             
-            if elapsed_ticks > self.defesa_ticks:
+            if elapsed_ticks > self.acao_ticks:
             # Marca o tick da nova imagem.
-                self.hora_da_defesa = agora
+                self.hora_da_acao = agora
                 if self.estado == indefeso:
-                    self.image=self.image2
                     self.estado = defendendo
+                    self.image=self.image2
+                    
+                    
 
     def dano(self):
         if estado_do_jogo.aba=="jogando":
@@ -242,7 +243,15 @@ class heroi(pygame.sprite.Sprite):
                         inimigo.dano()
                         player.estado=espera
                         barra_vermelha.diminuir()
+                if player.estado==defendendo:
+                    if player.estado==defendendo:
+                        player.speedy*=0.5
+                        player.speedx*=0.5
+                    
 
+                 
+                    
+                    
 
 
 class inimigos(pygame.sprite.Sprite):
@@ -261,7 +270,7 @@ class inimigos(pygame.sprite.Sprite):
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
             self.rect.y += self.speedy_inimigo
-        elif player.hora_do_ataque+player.porrada_ticks*0.3<agora:
+        elif player.hora_da_acao+player.acao_ticks*0.3<agora:
             self.estado=espera
         if player.rect.x-self.rect.x>0 :
             self.speedx_inimigo = 1
@@ -315,8 +324,7 @@ class modo_de_jogo():
                     player.pulo()
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'main menu'
-                if event.key == pygame.K_ESCAPE:
-                    player.defesa()
+                
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 if event.key in keys_down and keys_down[event.key]:
@@ -326,8 +334,12 @@ class modo_de_jogo():
                     if event.key == pygame.K_d:
                         player.speedx -= 4
         # Verifica se apertou o botão do mouse.
-            if event.type == pygame.MOUSEBUTTONDOWN:    
-                player.ataque()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button==1 :   
+                    player.ataque()
+                if event.button==3:
+                    player.defesa()
+
             # if event.type == VIDEORESIZE:
             #     window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
                 
@@ -418,7 +430,7 @@ class adicionais(pygame.sprite.Sprite):
         if self.quem_ta_seguindo==player:
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
             self.rect.bottom = self.quem_ta_seguindo.rect.bottom-heroi_altura-2
-            if self.quem_ta_seguindo.estado==ataque:
+            if self.quem_ta_seguindo.estado==ataque or self.quem_ta_seguindo.estado==defendendo :
                 if self.largura!=0:
                     self.largura-=1
                     self.largura2=0
