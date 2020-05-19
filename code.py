@@ -141,7 +141,7 @@ class heroi(pygame.sprite.Sprite):
         if self.estado!=defendendo:
             self.rect.x += self.speedx
         else:
-            self.rect.x += self.speedx*0.2
+            self.rect.x += self.speedx*0.25
 
         if self.hora_da_acao+self.acao_ticks<agora:
             if self.estado!=indefeso:      
@@ -257,6 +257,12 @@ def colisoes():
                     inimigo.dano()
                     player.estado=espera
                     barra_vermelha.diminuir()
+            if player.estado==defendendo:
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
+                if len(colisao)>0:
+                    colisao.clear()
+                    inimigo.dano()
+                    
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,vida_inimigo,player,assets):
@@ -271,6 +277,9 @@ class inimigos(pygame.sprite.Sprite):
         self.vida=vida_inimigo
         self.estado=espera
     def update(self):
+        if self.vida==0:
+            self.kill()
+            barra_vermelha.kill()
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
             self.rect.y += self.speedy_inimigo
@@ -293,17 +302,21 @@ class inimigos(pygame.sprite.Sprite):
         if player.rect.y-self.rect.y<0 :
             self.speedy_inimigo = -1
     def dano(self):
-        inimigo.vida-=10
-        if player.rect.right-inimigo.rect.centerx<0:
-            inimigo.rect.x+=40
-            inimigo.rect.y-=20             
-        elif player.rect.left-inimigo.rect.centerx>=0:    
-            inimigo.rect.x-=40
-            inimigo.rect.y-=20                   
-        if inimigo.vida==0:
-            inimigo.kill()
-            barra_vermelha.kill()
-        
+        if player.estado==ataque:
+            inimigo.vida-=10
+            if player.rect.right-inimigo.rect.centerx<0:
+                inimigo.rect.x+=40
+                inimigo.rect.y-=20             
+            elif player.rect.left-inimigo.rect.centerx>=0:    
+                inimigo.rect.x-=40
+                inimigo.rect.y-=20                   
+        if player.estado==defendendo:
+            if player.rect.right-inimigo.rect.centerx<0:
+                inimigo.rect.x+=60
+                inimigo.rect.y-=25             
+            elif player.rect.left-inimigo.rect.centerx>=0:    
+                inimigo.rect.x-=60
+                inimigo.rect.y-=25   
         
 
 class modo_de_jogo():
@@ -323,9 +336,9 @@ class modo_de_jogo():
                 
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
-                    player.speedx -= 4
+                    player.speedx -= 4.0
                 if event.key == pygame.K_d:                  
-                    player.speedx += 4
+                    player.speedx += 4.0
                 if event.key == pygame.K_SPACE:
                     player.pulo()
                 if event.key == pygame.K_ESCAPE:
@@ -336,9 +349,9 @@ class modo_de_jogo():
                 if event.key in keys_down and keys_down[event.key]:
             # Dependendo da tecla, altera a velocidade.
                     if event.key == pygame.K_a:   
-                        player.speedx += 4
+                        player.speedx += 4.0
                     if event.key == pygame.K_d:
-                        player.speedx -= 4
+                        player.speedx -= 4.0
         # Verifica se apertou o botão do mouse.
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button==1 :   
@@ -445,7 +458,6 @@ class adicionais(pygame.sprite.Sprite):
                 if self.largura2!=32:
                     self.largura2=32
                     self.largura=32
-                    
                     self.image=pygame.transform.scale(self.image2, (self.largura2, barra_altura))
         if self.quem_ta_seguindo==inimigo:
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
@@ -453,7 +465,7 @@ class adicionais(pygame.sprite.Sprite):
     def diminuir(self):
         if self.quem_ta_seguindo==inimigo:
             if self.largura>0:
-                self.largura-=6
+                self.largura-=8
                 self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
 
 # class vida_verm(pygame.sprite.Sprite):
@@ -477,7 +489,7 @@ class adicionais(pygame.sprite.Sprite):
 # ----- Inicia estruturas de dados
 clock = pygame.time.Clock()
 vida=100
-vida_inimigo=50
+vida_inimigo=40
 FPS = 60
 all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
