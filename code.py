@@ -99,6 +99,8 @@ indefeso = "indefeso"
 ataque = "ataque"
 tomando_dano="tomando_dano"
 defendendo="defendendo"
+pronto_para_acao="pronto_para_acao"
+
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
@@ -127,19 +129,30 @@ class heroi(pygame.sprite.Sprite):
         self.estado = indefeso
         self.vida=vida
         self.hora_da_acao=pygame.time.get_ticks()
-        self.acao_ticks = 850
-        
+        self.acao_ticks = 1050
+        self.state=espera
         
         self.hora_do_dano=pygame.time.get_ticks()
         self.hora_da_acao=pygame.time.get_ticks()
     #update    
     def update(self):
+    
         # Atualização da posição do heroi
-        self.rect.x += self.speedx
-        if self.hora_da_acao+self.acao_ticks<agora:      
-                self.estado=indefeso
+        if self.estado!=defendendo:
+            self.rect.x += self.speedx
+        else:
+            self.rect.x += self.speedx*0.2
+
+        if self.hora_da_acao+self.acao_ticks<agora:
+            if self.estado!=indefeso:      
                 self.image=self.image3
-        
+                
+                
+                
+        if self.hora_da_acao+self.acao_ticks*1.2<agora:
+            if self.estado!=indefeso:
+                self.estado=indefeso
+
         
         self.speedy += gravidade
         # Atualiza o estado para caindo
@@ -196,63 +209,54 @@ class heroi(pygame.sprite.Sprite):
                     
                     
 
-    def dano(self):
-        if estado_do_jogo.aba=="jogando":
-            if player.vida<=0:
-                player.kill()
-                barra.kill()
-                estado_do_jogo.aba = "menu"
-                # player = heroi(vida, assets)
-                # all_sprites.add(player)
-                
-        #if now - explosion_tick > explosion_duration:
-           # state = PLAYING
-           # player = Ship(groups, assets)
-           # all_sprites.add(player)
-                
-            else:
-                if player.estado==indefeso:
-                    colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)
-                
-                    if len(colisao)>0:
-                        if player.rect.bottom-inimigo.rect.top<0:
-                            player.hora_do_dano=pygame.time.get_ticks()
-                            player.estado=tomando_dano
-                            player.vida-=10                       
-                            player.rect.x-=90
-                            player.rect.y-=tamanho_do_pulo*3
-
-                        elif player.rect.right-inimigo.rect.centerx<0:
-                            player.hora_do_dano=pygame.time.get_ticks()
-                            player.estado=tomando_dano
-                            player.vida-=10                       
-                            player.rect.x-=60
-                            player.rect.y-=tamanho_do_pulo
-                        elif player.rect.left-inimigo.rect.centerx>0:
-                            player.hora_do_dano=pygame.time.get_ticks()
-                            player.estado=tomando_dano
-                            player.vida-=10                       
-                            player.rect.x+=60
-                            player.rect.y-=tamanho_do_pulo
+def colisoes():
+    
+    if estado_do_jogo.aba=="jogando":
+        if player.vida<=0:
+            player.kill()
+            barra.kill()
+            estado_do_jogo.aba = "menu"
+            # player = heroi(vida, assets)
+            # all_sprites.add(player)
             
-                if player.estado==ataque:
-                    colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
-                    if len(colisao)>0:
-                        inimigo.estado=tomando_dano
-                        colisao.clear()
-                        inimigo.dano()
-                        player.estado=espera
-                        barra_vermelha.diminuir()
-                if player.estado==defendendo:
-                    if player.estado==defendendo:
-                        player.speedy*=0.5
-                        player.speedx*=0.5
-                    
+    #if now - explosion_tick > explosion_duration:
+        # state = PLAYING
+        # player = Ship(groups, assets)
+        # all_sprites.add(player)
+            
+        else:
+            if player.estado==indefeso:
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)
+            
+                if len(colisao)>0:
+                    if player.rect.bottom-inimigo.rect.top<0:
+                        player.hora_do_dano=pygame.time.get_ticks()
+                        player.estado=tomando_dano
+                        player.vida-=10                       
+                        player.rect.x-=90
+                        player.rect.y-=tamanho_do_pulo*3
 
-                 
-                    
-                    
-
+                    elif player.rect.right-inimigo.rect.centerx<0:
+                        player.hora_do_dano=pygame.time.get_ticks()
+                        player.estado=tomando_dano
+                        player.vida-=10                       
+                        player.rect.x-=60
+                        player.rect.y-=tamanho_do_pulo
+                    elif player.rect.left-inimigo.rect.centerx>0:
+                        player.hora_do_dano=pygame.time.get_ticks()
+                        player.estado=tomando_dano
+                        player.vida-=10                       
+                        player.rect.x+=60
+                        player.rect.y-=tamanho_do_pulo
+        
+            if player.estado==ataque:
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
+                if len(colisao)>0:
+                    inimigo.estado=tomando_dano
+                    colisao.clear()
+                    inimigo.dano()
+                    player.estado=espera
+                    barra_vermelha.diminuir()
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,vida_inimigo,player,assets):
@@ -307,6 +311,7 @@ class modo_de_jogo():
         self.aba="menu"
         
     def jogando(self):
+        
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         for event in pygame.event.get():
         # ----- Verifica consequências
@@ -315,6 +320,7 @@ class modo_de_jogo():
         # Verifica se apertou alguma tecla.
             if event.type == pygame.KEYDOWN:
                 keys_down[event.key] = True 
+                
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
                     player.speedx -= 4
@@ -339,7 +345,7 @@ class modo_de_jogo():
                     player.ataque()
                 if event.button==3:
                     player.defesa()
-
+            
             # if event.type == VIDEORESIZE:
             #     window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
                 
@@ -348,7 +354,7 @@ class modo_de_jogo():
         window.fill((0, 0, 50))  # Preenche com a cor azul
         all_sprites.draw(window)
         window.blit(text,(10,10))
-        player.dano()
+        colisoes()
                 
         all_sprites.update()
         
@@ -365,7 +371,7 @@ class modo_de_jogo():
         text_altura=text_rect.height
         
         for event in pygame.event.get():
-            print(event)
+            
             
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -439,6 +445,7 @@ class adicionais(pygame.sprite.Sprite):
                 if self.largura2!=32:
                     self.largura2=32
                     self.largura=32
+                    
                     self.image=pygame.transform.scale(self.image2, (self.largura2, barra_altura))
         if self.quem_ta_seguindo==inimigo:
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
@@ -495,7 +502,7 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    
+    print(player.speedx)
     
     # for event in pygame.event.get():
     #     if event.type == QUIT:
