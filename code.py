@@ -41,12 +41,12 @@ BARRA_VERMELHA_IMG = 'vida_inimigo.png'
 # Carrega todos os assets de uma vez.
 def load_assets(img_dir):
     assets = {}
+
     # assets[TELA_INICIAL_IMG] = pygame.image.load(path.join(img_dir, 'telainicial.png')).convert_alpha()
     # assets[TELA_1_IMG] = pygame.image.load(path.join(img_dir, 'tela1.png')).convert_alpha()
     # assets[ROGER_IMG] = pygame.image.load(path.join(img_dir, 'roger.png')).convert_alpha()
     # assets[SHEPPARD_IMG] = pygame.image.load(path.join(img_dir, 'sheppard.png')).convert_alpha()
     # assets[CAROLINE_IMG] = pygame.image.load(path.join(img_dir, 'caroline.png')).convert_alpha()
-    assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
     # assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
     # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
@@ -55,11 +55,13 @@ def load_assets(img_dir):
     #assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado.png')).convert_alpha()
     # assets[MENU] = pygame.image.load(path.join(img_dir, 'menu.png')).convert_alpha()
     # assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado.png')).convert_alpha()
+
     # Definindo o player e imagens de teste
     assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
     assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
+    assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
 
     #Escalas das imagens
     assets[BARRA_IMG]=pygame.transform.scale(assets[BARRA_IMG], (barra_largura, barra_altura))
@@ -67,21 +69,20 @@ def load_assets(img_dir):
     assets[PLAYER_PARADO_IMG] = pygame.transform.scale(assets[PLAYER_PARADO_IMG], (heroi_largura, heroi_altura))
     assets[INIMIGOS_IMG] = pygame.transform.scale(assets[INIMIGOS_IMG], (vilao_largura, vilao_altura))
     assets[TESTE_IMG] = pygame.transform.scale(assets[TESTE_IMG], (heroi_largura, heroi_altura))
+
     # assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(telainicial_largura, telainicial_altura))
     # assets[TELA_1_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-
-    # assets[ROGER_IMG] = pygame.transform.scale(assets[ROGER_IMG],(tela_1_largura, tela_1_altura))
-    # assets[SHEPPARD_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[CAROLINE_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[INIMIGOS_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[RALPH_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[MISS_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[CHARLES_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[CHAO] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[PLAY] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[PLAYAPERTADO] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    #assets[MENU] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    #assets[MENUAPERTADO] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
+    # assets[ROGER_IMG] = pygame.transform.scale(assets[ROGER_IMG],(roger_largura, roger_altura))
+    # assets[SHEPPARD_IMG] = pygame.transform.scale(assets[SHEPPARD_IMG],(tela_1_largura, tela_1_altura))
+    # assets[CAROLINE_IMG] = pygame.transform.scale(assets[CAROLINE_IMG],(caroline_largura, caroline_altura))
+    # assets[RALPH_IMG] = pygame.transform.scale(assets[RALPH_IMG],ralph_largura, ralph_altura))
+    # assets[MISS_IMG] = pygame.transform.scale(assets[MISS_IMG],(miss_largura, miss_altura))
+    # assets[CHARLES_IMG] = pygame.transform.scale(assets[CHARLES_IMG],(charles_largura, charles_altura))
+    # assets[CHAO] = pygame.transform.scale(assets[CHAO],(chao_largura, chao_altura))
+    # assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
+    # assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
+    #assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
+    #assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO,(menuapertado_largura, apertado_altura))
     return assets                        
 #------------------
 
@@ -377,11 +378,19 @@ class modo_de_jogo():
 
 
     def menu(self):
-        
+        #window.blit(assets[TELA_INICIAL_IMG], (0, 0))
+        #window.blit(assets[PLAY], (50, 50))
+        #    if event.type == pygame.MOUSEBUTTONDOWN:
+        #        keys_down[event.key] = True
+        #        if event.key==pygame.assets[PLAY]:
+        #            window.blit(assets[PLAYAPERTADO], (50, 50))
+        #            self.aba="jogando"
+
         text = font.render('Aperte P para jogar', True, (0, 0, 255)) 
         text_rect=text.get_rect()
         text_largura=text_rect.width
         text_altura=text_rect.height
+
         
         for event in pygame.event.get():
             
