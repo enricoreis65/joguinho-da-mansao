@@ -37,6 +37,7 @@ PLAYER_PARADO_IMG = 'parado (2).png'
 TESTE_IMG = 'hero-single.png'
 BARRA_IMG = 'barra.png'
 BARRA_VERMELHA_IMG = 'vida_inimigo.png'
+TUTORIAL = 'tutorial.png'
 
 # Carrega todos os assets de uma vez.
 def load_assets(img_dir):
@@ -55,6 +56,7 @@ def load_assets(img_dir):
     #assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado.png')).convert_alpha()
     # assets[MENU] = pygame.image.load(path.join(img_dir, 'menu.png')).convert_alpha()
     # assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado.png')).convert_alpha()
+    # assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
 
     # Definindo o player e imagens de teste
     assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
@@ -62,6 +64,7 @@ def load_assets(img_dir):
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
     assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
+
 
     #Escalas das imagens
     assets[BARRA_IMG]=pygame.transform.scale(assets[BARRA_IMG], (barra_largura, barra_altura))
@@ -82,7 +85,8 @@ def load_assets(img_dir):
     # assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
     # assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
     #assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
-    #assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO,(menuapertado_largura, apertado_altura))
+    #assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, apertado_altura))
+    #assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(tutorial_largura, tutorial_altura))
     return assets                        
 #------------------
 
@@ -373,9 +377,16 @@ class modo_de_jogo():
         all_sprites.update()
         
     # ----- Atualiza estado do jogo
-        pygame.display.update()   
+        pygame.display.update()  
 
-
+    # tutorial
+        #window.blit(assets[TUTORIAL], (0, 0))
+        #window.blit(assets[PLAY], (50, 50))
+        #    if event.type == pygame.MOUSEBUTTONDOWN:
+        #        keys_down[event.key] = True
+        #        if event.key==pygame.assets[PLAY]:
+        #            window.blit(assets[PLAYAPERTADO], (50, 50))
+        #            self.aba="jogando"
 
     def menu(self):
         #window.blit(assets[TELA_INICIAL_IMG], (0, 0))
@@ -384,7 +395,7 @@ class modo_de_jogo():
         #        keys_down[event.key] = True
         #        if event.key==pygame.assets[PLAY]:
         #            window.blit(assets[PLAYAPERTADO], (50, 50))
-        #            self.aba="jogando"
+        #            (entrar no tutorial?)
 
         text = font.render('Aperte P para jogar', True, (0, 0, 255)) 
         text_rect=text.get_rect()
