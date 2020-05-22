@@ -105,7 +105,7 @@ ataque = "ataque"
 tomando_dano="tomando_dano"
 defendendo="defendendo"
 pronto_para_acao="pronto_para_acao"
-
+dash="dash"
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
@@ -133,6 +133,7 @@ class heroi(pygame.sprite.Sprite):
         self.speedy= 0
         self.estado = indefeso
         self.vida=vida
+        self.quantdash=3
         self.hora_da_acao=pygame.time.get_ticks()
         self.acao_ticks = 1050
         self.state=espera
@@ -143,10 +144,16 @@ class heroi(pygame.sprite.Sprite):
     def update(self):
     
         # Atualização da posição do heroi
-        if self.estado!=defendendo:
+        if  self.estado!=dash and self.estado!=defendendo :
             self.rect.x += self.speedx
-        else:
+        elif self.estado==defendendo:
             self.rect.x += self.speedx*0.25
+        elif self.estado==dash:
+            self.rect.x += self.speedx*41
+            self.image=self.image3
+            self.estado=indefeso
+            
+
 
         if self.hora_da_acao+self.acao_ticks<agora:
             if self.estado!=indefeso:      
@@ -211,7 +218,21 @@ class heroi(pygame.sprite.Sprite):
                 if self.estado == indefeso:
                     self.estado = defendendo
                     self.image=self.image2
-                    
+    def dash(self):
+        if self.quantdash>0:
+            if self.speedx!=0:   
+        # Verifica quantos ticks se passaram desde o último tiro.
+                elapsed_ticks = agora - self.hora_da_acao
+
+            # Se já pode atirar novamente...
+                
+                if elapsed_ticks > self.acao_ticks:
+                # Marca o tick da nova imagem.
+                    self.hora_da_acao = agora
+                    if self.estado == indefeso:
+                        self.estado = dash
+                        self.quantdash-=1
+                        self.image=self.image2                
                     
 
 def colisoes():
@@ -331,6 +352,7 @@ class modo_de_jogo():
     def jogando(self):
         
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
+        text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -348,6 +370,8 @@ class modo_de_jogo():
                     player.pulo()
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'main menu'
+                if event.key == pygame.K_w:
+                    player.dash()
                 
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
@@ -372,6 +396,7 @@ class modo_de_jogo():
         window.fill((0, 0, 50))  # Preenche com a cor azul
         all_sprites.draw(window)
         window.blit(text,(10,10))
+        window.blit(text2,(70,10))
         colisoes()
                 
         all_sprites.update()
@@ -534,7 +559,7 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    print(player.speedx)
+    
     
     # for event in pygame.event.get():
     #     if event.type == QUIT:
