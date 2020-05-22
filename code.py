@@ -4,8 +4,8 @@ from os import path
 from pygame.locals import *
 
 #-----------------Dados iniciais de tamanho
-altura = 540
-largura = 960
+altura = 720
+largura = 1280
 barra_largura=32
 barra_altura=3
 heroi_largura=52
