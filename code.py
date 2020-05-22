@@ -383,7 +383,7 @@ class modo_de_jogo():
                     player.pulo()
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'main menu'
-                if event.key == pygame.K_w:
+                if event.key == pygame.K_l:
                     player.dash()
                 
         # Verifica se soltou alguma tecla.
@@ -394,13 +394,10 @@ class modo_de_jogo():
                         player.speedx += 4.0
                     if event.key == pygame.K_d:
                         player.speedx -= 4.0
-        # Verifica se apertou o botão do mouse.
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button==1 :   
-                    player.ataque()
-                if event.button==3:
-                    player.defesa()
-            
+                    if event.key == pygame.K_j:   
+                        player.ataque()
+                    if event.key == pygame.K_k:
+                        player.defesa()
             # if event.type == VIDEORESIZE:
             #     window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
                 
