@@ -111,7 +111,7 @@ dash="dash"
 window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
 pygame.display.set_caption('mansao')
 font = pygame.font.SysFont(None, 40)
-text_a = font.render(('ataque'), True, (0, 0, 255))
+
 fullscreen = False
 
 #----------------Configurações para imagens
@@ -277,12 +277,25 @@ def colisoes():
         
             if player.estado==ataque:
                 colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
-                if len(colisao)>0:
-                    inimigo.estado=tomando_dano
-                    colisao.clear()
-                    inimigo.dano()
-                    player.estado=espera
-                    barra_vermelha.diminuir()
+                if len(colisao)>0:  
+                    if player.rect.right-inimigo.rect.centerx<0:
+                        inimigo.estado=tomando_dano
+                        colisao.clear()
+                        inimigo.dano()
+                        player.estado=espera
+                        barra_vermelha.diminuir()                    
+                        player.rect.x-=40
+                        player.rect.y-=tamanho_do_pulo
+                    elif player.rect.left-inimigo.rect.centerx>0:
+                        inimigo.estado=tomando_dano
+                        colisao.clear()
+                        inimigo.dano()
+                        player.estado=espera
+                        barra_vermelha.diminuir()                      
+                        player.rect.x+=40
+                        player.rect.y-=tamanho_do_pulo
+
+
             if player.estado==defendendo:
                 colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
                 if len(colisao)>0:
