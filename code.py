@@ -121,7 +121,7 @@ fullscreen = False
 def carrega_spritesheet(spritesheet, linhas, colunas):
     sprite_width = spritesheet.get_width() // colunas
     sprite_height = spritesheet.get_height() // linhas
-
+  
     sprites = []
     for linha in range(linhas):
         for coluna in range(colunas):
@@ -130,22 +130,27 @@ def carrega_spritesheet(spritesheet, linhas, colunas):
             dest_rect = pygame.Rect(x,y,sprite_width,sprite_height) 
             image = pygame.Surface((sprite_width, sprite_height))
             image.blit(spritesheet, (0,0), dest_rect)
-
+            sprites.append(image)
     return sprites
 
 #------------------
 class heroi(pygame.sprite.Sprite):
     def __init__(self,vida,player_sheet):
         pygame.sprite.Sprite.__init__(self)
-        player_sheet = pygame.transform.scale(player_sheet, (heroi_altura, heroi_largura))
-        spritesheet = carrega_spritesheet(player_sheet, 2, 4)
+        player_sheet = pygame.transform.scale(player_sheet, (52*4, 80*2))
+        spritesheet = carrega_spritesheet(player_sheet, 2, 3)
 
-        self.animation = {
-            indefeso: spritesheet[0:4]
+        self.animations = {
+            indefeso: spritesheet[0:4],
+            ataque: spritesheet[0:4],
+            defendendo: spritesheet[0:4],
+            tomando_dano: spritesheet[0:4],
+            dash: spritesheet[0:4]
+
             }
         
         self.estado = indefeso
-        self.animation = self.animation[self.estado]
+        self.animation = self.animations[self.estado]
         self.frame = 0
         self.image = self.animation[self.frame]
 
@@ -159,23 +164,24 @@ class heroi(pygame.sprite.Sprite):
         
         self.vida=vida
         self.quantdash=3
-        self.hora_da_acao=pygame.time.get_ticks()
-        self.acao_ticks = 1050
+        
+        self.acao_ticks = 300*4
         self.frame_ticks = 300
         self.last_update = pygame.time.get_ticks()
 
         self.hora_do_dano=pygame.time.get_ticks()
         self.hora_da_acao=pygame.time.get_ticks()
-
+        self.estado=indefeso
     # Update    
     def update(self):
+        
         now = pygame.time.get_ticks()
-        elapsed_ticks = now - self.last_update
+        elapsed2_ticks = now - self.last_update
 
-        if elapsed_ticks > self.frame_ticks:
+        if elapsed2_ticks > self.frame_ticks:
             self.last_update = now
             self.frame += 1
-            self.animation = self.animation[self.estado]
+            self.animation = self.animations[self.estado]
 
             if self.frame >= len(self.animation):
                 self.frame = 0
@@ -396,6 +402,7 @@ class modo_de_jogo():
         
     def jogando(self):
         
+        
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
         for event in pygame.event.get():
@@ -435,7 +442,7 @@ class modo_de_jogo():
                 
      
     # ----- Gera saídas
-        window.fill((0, 0, 50))  # Preenche com a cor azul
+        window.fill((0, 0, 0))  # Preenche com a cor preta
         all_sprites.draw(window)
         window.blit(text,(10,10))
         window.blit(text2,(70,10))
@@ -603,7 +610,6 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    
     
     # for event in pygame.event.get():
     #     if event.type == QUIT:
