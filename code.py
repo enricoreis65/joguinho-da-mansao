@@ -97,9 +97,9 @@ pygame.init()
 espera = "espera"
 pulando = "pulando"
 caindo = "caindo"
-gravidade=2
+gravidade = 2
 chao = altura * 5 // 6
-tamanho_do_pulo=20
+tamanho_do_pulo = 20
 indefeso = "indefeso"
 ataque = "ataque"
 tomando_dano="tomando_dano"
@@ -109,40 +109,82 @@ dash="dash"
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
-pygame.display.set_caption('mansao')
+pygame.display.set_caption('Fenrly Park')
 font = pygame.font.SysFont(None, 40)
 
 fullscreen = False
 
 #----------------Configurações para imagens
-#MAPA
+# MAPA
+
+# SPRITESHEET
+def carrega_spritesheet(spritesheet, linhas, colunas):
+    sprite_width = spritesheet.get_width() // colunas
+    sprite_height = spritesheet.get_height() // linhas
+
+    sprites = []
+    for linha in range(linhas):
+        for coluna in range(colunas):
+            x = coluna * sprite_width
+            y = linha * sprite_height
+            dest_rect = pygame.Rect(x,y,sprite_width,sprite_height) 
+            image = pygame.Surface((sprite_width, sprite_height))
+            image.blit(spritesheet, (0,0), dest_rect)
+
+    return sprites
 
 #------------------
-
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,vida,assets):
+    def __init__(self,vida,player_sheet):
         pygame.sprite.Sprite.__init__(self)
-        self.image = assets[PLAYER_PARADO_IMG]
-        self.image2 = assets[TESTE_IMG]
-        self.image3=assets[PLAYER_PARADO_IMG]
+        player_sheet = pygame.transform.scale(player_sheet, (heroi_altura, heroi_largura))
+        spritesheet = carrega_spritesheet(player_sheet, 2, 4)
+
+        self.animation = {
+            indefeso: spritesheet[0:4]
+            }
+        
+        self.estado = indefeso
+        self.animation = self.animation[self.estado]
+        self.frame = 0
+        self.image = self.animation[self.frame]
+
+        self.state = espera
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
         self.rect.bottom = chao
         self.speedx = 0
         self.speedy= 0
-        self.estado = indefeso
+        
         self.vida=vida
         self.quantdash=3
         self.hora_da_acao=pygame.time.get_ticks()
         self.acao_ticks = 1050
-        self.state=espera
-        
+        self.frame_ticks = 300
+        self.last_update = pygame.time.get_ticks()
+
         self.hora_do_dano=pygame.time.get_ticks()
         self.hora_da_acao=pygame.time.get_ticks()
-    #update    
+
+    # Update    
     def update(self):
-    
+        now = pygame.time.get_ticks()
+        elapsed_ticks = now - self.last_update
+
+        if elapsed_ticks > self.frame_ticks:
+            self.last_update = now
+            self.frame += 1
+            self.animation = self.animation[self.estado]
+
+            if self.frame >= len(self.animation):
+                self.frame = 0
+   
+            center = self.rect.center
+            self.image = self.animation[self.frame]
+            self.rect = self.image.get_rect()
+            self.rect.center = center
+
         # Atualização da posição do heroi
         if  self.estado!=dash and self.estado!=defendendo :
             self.rect.x += self.speedx
@@ -150,22 +192,13 @@ class heroi(pygame.sprite.Sprite):
             self.rect.x += self.speedx*0.25
         elif self.estado==dash:
             self.rect.x += self.speedx*41
-            self.image=self.image3
             self.estado=indefeso
-            
-
-
-        if self.hora_da_acao+self.acao_ticks<agora:
-            if self.estado!=indefeso:      
-                self.image=self.image3
-                
-                
-                
+                  
         if self.hora_da_acao+self.acao_ticks*1.2<agora:
             if self.estado!=indefeso:
                 self.estado=indefeso
 
-        
+
         self.speedy += gravidade
         # Atualiza o estado para caindo
         if self.speedy > 0:
@@ -203,8 +236,8 @@ class heroi(pygame.sprite.Sprite):
             # Marca o tick da nova imagem.
                 self.hora_da_acao = agora
                 if self.estado == indefeso:
-                    self.image=self.image2
                     self.estado = ataque
+
     def defesa(self):
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
@@ -217,7 +250,7 @@ class heroi(pygame.sprite.Sprite):
                 self.hora_da_acao = agora
                 if self.estado == indefeso:
                     self.estado = defendendo
-                    self.image=self.image2
+
     def dash(self):
         if self.quantdash>0:
             if self.speedx!=0:   
@@ -231,8 +264,7 @@ class heroi(pygame.sprite.Sprite):
                     self.hora_da_acao = agora
                     if self.estado == indefeso:
                         self.estado = dash
-                        self.quantdash-=1
-                        self.image=self.image2                
+                        self.quantdash-=1             
                     
 
 def colisoes():
@@ -542,6 +574,8 @@ class adicionais(pygame.sprite.Sprite):
         
         
 # ----- Inicia estruturas de dados
+player_sheet = pygame.image.load(path.join(img_dir, 'hp existindo.png')).convert_alpha()
+
 clock = pygame.time.Clock()
 vida=100
 vida_inimigo=40
@@ -549,7 +583,7 @@ FPS = 60
 all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
 assets = load_assets(img_dir)
-player= heroi(vida,assets)
+player= heroi(vida,player_sheet)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(vida_inimigo,player,assets)
 barra= adicionais(assets[BARRA_IMG],player,barra_largura)
