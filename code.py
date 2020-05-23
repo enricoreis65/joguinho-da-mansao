@@ -142,10 +142,10 @@ class heroi(pygame.sprite.Sprite):
 
         self.animations = {
             indefeso: spritesheet[0:4],
-            ataque: spritesheet[0:4],
-            defendendo: spritesheet[0:4],
-            tomando_dano: spritesheet[0:4],
-            dash: spritesheet[0:4]
+            ataque: spritesheet[0:1],
+            defendendo: spritesheet[0:1],
+            tomando_dano: spritesheet[0:1],
+            dash: spritesheet[0:1]
 
             }
         
@@ -171,10 +171,10 @@ class heroi(pygame.sprite.Sprite):
 
         self.hora_do_dano=pygame.time.get_ticks()
         self.hora_da_acao=pygame.time.get_ticks()
-        self.estado=indefeso
+        
     # Update    
     def update(self):
-        
+        self.mask = pygame.mask.from_surface(self.image)
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
 
@@ -290,8 +290,8 @@ def colisoes():
             
         else:
             if player.estado==indefeso:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)
-            
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False)
+                print(len(colisao))
                 if len(colisao)>0:
                     if player.rect.bottom-inimigo.rect.top<0:
                         player.hora_do_dano=pygame.time.get_ticks()
@@ -314,13 +314,13 @@ def colisoes():
                         player.rect.y-=tamanho_do_pulo
         
             if player.estado==ataque:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False)   
                 if len(colisao)>0:  
                     if player.rect.right-inimigo.rect.centerx<0:
                         inimigo.estado=tomando_dano
                         colisao.clear()
                         inimigo.dano()
-                        player.estado=espera
+                        player.estado=indefeso
                         barra_vermelha.diminuir()                    
                         player.rect.x-=40
                         player.rect.y-=tamanho_do_pulo
@@ -335,7 +335,7 @@ def colisoes():
 
 
             if player.estado==defendendo:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False,pygame.sprite.collide_mask)   
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False)   
                 if len(colisao)>0:
                     colisao.clear()
                     inimigo.dano()
@@ -581,7 +581,7 @@ class adicionais(pygame.sprite.Sprite):
         
         
 # ----- Inicia estruturas de dados
-player_sheet = pygame.image.load(path.join(img_dir, 'hp existindo.png')).convert_alpha()
+player_sheet = pygame.image.load(path.join(img_dir, 'hp existindo.png')).convert()
 
 clock = pygame.time.Clock()
 vida=100
