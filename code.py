@@ -453,23 +453,24 @@ class modo_de_jogo():
     # ----- Atualiza estado do jogo
         pygame.display.update()  
 
-    # tutorial
-        #window.blit(assets[TUTORIAL], (0, 0))
-        #window.blit(assets[PLAY], (50, 50))
-        #    if event.type == pygame.MOUSEBUTTONDOWN:
-        #        keys_down[event.key] = True
-        #        if event.key==pygame.assets[PLAY]:
-        #            window.blit(assets[PLAYAPERTADO], (50, 50))
-        #            self.aba="jogando"
 
     def menu(self):
-        #window.blit(assets[TELA_INICIAL_IMG], (0, 0))
-        #window.blit(assets[PLAY], (50, 50))
-        #    if event.type == pygame.MOUSEBUTTONDOWN:
-        #        keys_down[event.key] = True
-        #        if (event.key==pygame.MOUSEBUTTONDOWN) and ():
-        #            window.blit(assets[PLAYAPERTADO], (50, 50))
-        #            (entrar no tutorial?)
+
+        # tentativa de tutorial
+        """
+        window.blit(assets[TELA_INICIAL_IMG], (0, 0))
+        window.blit(assets[PLAY], (50, 50))
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                keys_down[event.key] = True
+                if event.key==pygame.assets[PLAY]:
+                    window.blit(assets[PLAYAPERTADO], (50, 50))
+                    window.blit(assets[TUTORIAL], (0, 0))
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        keys_down[event.key] = True
+                        if event.key==pygame.assets[PLAY]:
+                            window.blit(assets[PLAYAPERTADO], (50, 50))
+                            self.aba="jogando"
+                            """
 
         text = font.render('Aperte P para jogar', True, (0, 0, 255)) 
         text_rect=text.get_rect()
