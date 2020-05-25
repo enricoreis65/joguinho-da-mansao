@@ -51,12 +51,12 @@ def load_assets(img_dir):
     # assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
     # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
-    # assets[CHAO] = pygame.image.load(path.join(img_dir, 'chao.png')).convert_alpha()
-    # assets[PLAY] = pygame.image.load(path.join(img_dir, 'play.png')).convert_alpha()
-    #assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado.png')).convert_alpha()
-    # assets[MENU] = pygame.image.load(path.join(img_dir, 'menu.png')).convert_alpha()
-    # assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado.png')).convert_alpha()
-    # assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
+    assets[CHAO] = pygame.image.load(path.join(img_dir, 'chao.png')).convert_alpha()
+    assets[PLAY] = pygame.image.load(path.join(img_dir, 'play.png')).convert_alpha()
+    assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado.png')).convert_alpha()
+    assets[MENU] = pygame.image.load(path.join(img_dir, 'menu.png')).convert_alpha()
+    assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado.png')).convert_alpha()
+    assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
 
     # Definindo o player e imagens de teste
     assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
@@ -81,12 +81,12 @@ def load_assets(img_dir):
     # assets[RALPH_IMG] = pygame.transform.scale(assets[RALPH_IMG],ralph_largura, ralph_altura))
     # assets[MISS_IMG] = pygame.transform.scale(assets[MISS_IMG],(miss_largura, miss_altura))
     # assets[CHARLES_IMG] = pygame.transform.scale(assets[CHARLES_IMG],(charles_largura, charles_altura))
-    # assets[CHAO] = pygame.transform.scale(assets[CHAO],(chao_largura, chao_altura))
-    # assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
-    # assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
-    #assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
-    #assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, apertado_altura))
-    #assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(tutorial_largura, tutorial_altura))
+    assets[CHAO] = pygame.transform.scale(assets[CHAO],(chao_largura, chao_altura))
+    assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
+    assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
+    assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
+    assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, apertado_altura))
+    assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(tutorial_largura, tutorial_altura))
     return assets                        
 #------------------
 
@@ -467,7 +467,7 @@ class modo_de_jogo():
         #window.blit(assets[PLAY], (50, 50))
         #    if event.type == pygame.MOUSEBUTTONDOWN:
         #        keys_down[event.key] = True
-        #        if event.key==pygame.assets[PLAY]:
+        #        if (event.key==pygame.MOUSEBUTTONDOWN) and ():
         #            window.blit(assets[PLAYAPERTADO], (50, 50))
         #            (entrar no tutorial?)
 
