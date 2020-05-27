@@ -2,7 +2,7 @@ import pygame, sys
 import random
 from os import path
 from pygame.locals import *
-
+from mapa.py import BLOCK,EMPTY,MAP,TILE
 #-----------------Dados iniciais de tamanho
 altura = 720
 largura = 1280
