@@ -12,8 +12,7 @@ heroi_largura=52
 heroi_altura=80
 vilao_largura=52
 vilao_altura=52
-chao_largura = 48
-chao_altura = 25
+
 play_largura = 100
 play_altura = 50
 playapertado_largura = 100
@@ -40,7 +39,7 @@ INIMIGOS_IMG = 'tile2-block.png'
 RALPH_IMG = 'ralph_img'
 MISS_IMG = 'miss_img'
 CHARLES_IMG = 'charles_img'
-CHAO = "tile-block.png"
+
 PLAY = 'play_img.png'
 PLAYAPERTADO = 'playapertado_img.png'
 MENU = 'menu_img.png'
@@ -65,7 +64,7 @@ def load_assets(img_dir):
     # assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
     # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
-    assets[BLOCK] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
+    assets[BLOCK] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert()
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
     assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
     assets[MENU] = pygame.image.load(path.join(img_dir, 'menu_img.png')).convert_alpha()
@@ -95,7 +94,7 @@ def load_assets(img_dir):
     # assets[RALPH_IMG] = pygame.transform.scale(assets[RALPH_IMG],ralph_largura, ralph_altura))
     # assets[MISS_IMG] = pygame.transform.scale(assets[MISS_IMG],(miss_largura, miss_altura))
     # assets[CHARLES_IMG] = pygame.transform.scale(assets[CHARLES_IMG],(charles_largura, charles_altura))
-    assets[BLOCK] = pygame.transform.scale(assets[BLOCK],(chao_largura, chao_altura))
+    
     assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
     assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
     assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
@@ -593,22 +592,7 @@ class adicionais(pygame.sprite.Sprite):
                 self.largura-=8
                 self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
 
-# class vida_verm(pygame.sprite.Sprite):
-#     def __init__(self,img,inimigo):
-#         pygame.sprite.Sprite.__init__(self)
-#         self.image = img
-#         self.rect = self.image.get_rect()
-#         self.rect.centerx = 0
-#         self.rect.bottom = 0
-#         self.largura=30
-    
-#     def update(self):
-#         self.rect.centerx = inimigo.rect.centerx
-#         self.rect.bottom = inimigo.rect.bottom-heroi_altura-2
-#     def diminuir(self):
-#         if self.largura>0:
-#             self.largura-=6
-#             self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
+
         
         
 # ----- Inicia estruturas de dados
