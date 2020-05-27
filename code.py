@@ -14,10 +14,10 @@ vilao_largura=52
 vilao_altura=52
 chao_largura = 48
 chao_altura = 25
-play_largura = 10
-play_altura = 5
-playapertado_largura = 10
-playapertado_altura = 5
+play_largura = 100
+play_altura = 50
+playapertado_largura = 100
+playapertado_altura = 50
 menu_largura = 10
 menu_altura = 5
 menuapertado_largura = 10
@@ -57,7 +57,7 @@ TUTORIAL = 'tutorial.png'
 def load_assets(img_dir):
     assets = {}
 
-    # assets[TELA_INICIAL_IMG] = pygame.image.load(path.join(img_dir, 'tela_inicial_img.png')).convert_alpha()
+    assets[TELA_INICIAL_IMG] = pygame.image.load(path.join(img_dir, 'tela_inicial_img.png')).convert_alpha()
     # assets[TELA_1_IMG] = pygame.image.load(path.join(img_dir, 'tela1.png')).convert_alpha()
     # assets[ROGER_IMG] = pygame.image.load(path.join(img_dir, 'roger.png')).convert_alpha()
     # assets[SHEPPARD_IMG] = pygame.image.load(path.join(img_dir, 'sheppard.png')).convert_alpha()
@@ -87,7 +87,7 @@ def load_assets(img_dir):
     assets[INIMIGOS_IMG] = pygame.transform.scale(assets[INIMIGOS_IMG], (vilao_largura, vilao_altura))
     assets[TESTE_IMG] = pygame.transform.scale(assets[TESTE_IMG], (heroi_largura, heroi_altura))
 
-    # assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(telainicial_largura, telainicial_altura))
+    assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(largura,altura))
     # assets[TELA_1_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
     # assets[ROGER_IMG] = pygame.transform.scale(assets[ROGER_IMG],(roger_largura, roger_altura))
     # assets[SHEPPARD_IMG] = pygame.transform.scale(assets[SHEPPARD_IMG],(tela_1_largura, tela_1_altura))
@@ -100,7 +100,7 @@ def load_assets(img_dir):
     assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
     assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
     assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, menuapertado_altura))
-    assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(tutorial_largura, tutorial_altura))
+    assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(largura, altura))
     return assets                        
 #------------------
 
@@ -416,7 +416,20 @@ class inimigos(pygame.sprite.Sprite):
 class modo_de_jogo():
     def __init__(self,player):
         self.aba="menu"
+        self.timer_do_tutorial = pygame.time.get_ticks()
+        self.duracao_do_tutorial=1000
+
+    def esta_dentro(self,pos,x,y):
+        self.posicaox=x
+        self.posicaoy=y
         
+        if pos[0]> self.posicaox and pos[0]<self.posicaox+playapertado_largura:
+            if pos[1]>self.posicaoy and pos[1]<self.posicaoy+playapertado_altura:
+                return True
+        else:
+            return False
+        
+
     def jogando(self):
         
         
@@ -459,7 +472,7 @@ class modo_de_jogo():
                 
      
     # ----- Gera saídas
-        window.fill((0, 0, 255))  # Preenche com a cor preta
+        window.fill((0, 0, 0))  # Preenche com a cor preta
         all_sprites.draw(window)
         window.blit(text,(10,10))
         window.blit(text2,(70,10))
@@ -472,50 +485,45 @@ class modo_de_jogo():
 
 
     def menu(self):
-
-        # tentativa de tutorial
-        
-        # # window.blit(assets[TELA_INICIAL_IMG], (0, 0))
-        # window.blit(assets[PLAY], (50, 50))
-        # for event in pygame.event.get():
-        #     if event.type == pygame.QUIT:
-        #         pygame.quit()
-        #     if event.type == pygame.MOUSEBUTTONDOWN:
-        #         keys_down[event.key] = True
-        #         if event.key==pygame.assets[PLAY]:
-        #             window.blit(assets[PLAYAPERTADO], (50, 50))
-        #             window.blit(assets[TUTORIAL], (0, 0))
-        #             if event.type == pygame.MOUSEBUTTONDOWN:
-        #                 keys_down[event.key] = True
-        #                 if event.key==pygame.assets[PLAY]:
-        #                     window.blit(assets[PLAYAPERTADO], (50, 50))
-        #                     self.aba="jogando"
-                            
-        
-        text = font.render('Aperte P para jogar', True, (0, 0, 0)) 
-        text_rect=text.get_rect()
-        text_largura=text_rect.width
-        text_altura=text_rect.height
-
+        global a
         
         for event in pygame.event.get():
+            pos=pygame.mouse.get_pos()
             
-            
-        # ----- Verifica consequências
             if event.type == pygame.QUIT:
-                
                 pygame.quit()
-            if event.type == pygame.KEYDOWN:
-                keys_down[event.key] = True
-                if event.key==pygame.K_p:
-                    self.aba="jogando"
-        window.fill((255, 255, 255))
-        window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
+       
         
-        pygame.display.update() 
-    
-    # Criando um Menu de Pausa no meio do jogo
-    click = False
+        #tentativa de tutorial
+        
+            if a==1:
+                window.blit(assets[TELA_INICIAL_IMG], (0,0))
+                window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
+            
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
+                        a=2
+                        self.timer_do_tutorial=agora
+            tempo=agora-self.timer_do_tutorial                
+            if a==2:
+                
+                window.blit(assets[TELA_INICIAL_IMG], (0,0))
+                window.blit(assets[PLAYAPERTADO],((largura/2)-(play_largura/2), altura-100))  
+                if  tempo> self.duracao_do_tutorial:
+                    self.timer_do_tutorial=agora
+                    a=3
+            if a==3 :                
+                window.blit(assets[TUTORIAL], (0, 0))
+                if  tempo> self.duracao_do_tutorial:
+                    window.blit(assets[PLAY], ((largura-300, altura-100)))
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
+                            window.fill((0, 0, 0))
+                            self.aba="jogando"
+
+        pygame.display.update()
+       
 
     def main_menu(self):
         text = font.render('Aperte Esc para voltar e X para sair', True, (255, 255, 255))
@@ -524,6 +532,7 @@ class modo_de_jogo():
         text_altura=text_rect.height
         
         for event in pygame.event.get():
+            
         # ----- Verifica consequências
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -604,7 +613,7 @@ class adicionais(pygame.sprite.Sprite):
         
 # ----- Inicia estruturas de dados
 player_sheet = pygame.image.load(path.join(img_dir, 'hp existindo.png')).convert_alpha()
-
+a=1
 clock = pygame.time.Clock()
 vida=100
 vida_inimigo=40
@@ -623,6 +632,7 @@ all_sprites.add(barra_vermelha)
 all_sprites.add(inimigo)
 all_enemis.add(inimigo)
 keys_down = {}
+mouse_pres=[]
 game=True
 
 agora=pygame.time.get_ticks()
