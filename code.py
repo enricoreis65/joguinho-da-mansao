@@ -188,7 +188,7 @@ class heroi(pygame.sprite.Sprite):
         
     # Update    
     def update(self):
-        self.mask = pygame.mask.from_surface(self.image)
+        
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
 
@@ -202,9 +202,11 @@ class heroi(pygame.sprite.Sprite):
    
             center = self.rect.center
             self.image = self.animation[self.frame]
+            self.mask = pygame.mask.from_surface(self.image)
             self.rect = self.image.get_rect()
             self.rect.center = center
 
+        self.mask = pygame.mask.from_surface(self.image)
         # Atualização da posição do heroi
         if  self.estado!=dash and self.estado!=defendendo :
             self.rect.x += self.speedx
@@ -304,7 +306,7 @@ def colisoes():
             
         else:
             if player.estado==indefeso:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False)
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)
                 print(len(colisao))
                 if len(colisao)>0:
                     if player.rect.bottom-inimigo.rect.top<0:
@@ -328,7 +330,7 @@ def colisoes():
                         player.rect.y-=tamanho_do_pulo
         
             if player.estado==ataque:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False)   
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)   
                 if len(colisao)>0:  
                     if player.rect.right-inimigo.rect.centerx<0:
                         inimigo.estado=tomando_dano
@@ -349,7 +351,7 @@ def colisoes():
 
 
             if player.estado==defendendo:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False)   
+                colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)   
                 if len(colisao)>0:
                     colisao.clear()
                     inimigo.dano()
