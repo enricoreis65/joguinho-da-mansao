@@ -492,7 +492,7 @@ class modo_de_jogo():
         #                     self.aba="jogando"
                             
         
-        text = font.render('Aperte P para jogar', True, (0, 0, 255)) 
+        text = font.render('Aperte P para jogar', True, (0, 0, 0)) 
         text_rect=text.get_rect()
         text_largura=text_rect.width
         text_altura=text_rect.height
