@@ -142,7 +142,8 @@ def carrega_spritesheet(spritesheet, linhas, colunas):
             x = coluna * sprite_width
             y = linha * sprite_height
             dest_rect = pygame.Rect(x,y,sprite_width,sprite_height) 
-            image = pygame.Surface((sprite_width, sprite_height))
+            image = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
+            
             image.blit(spritesheet, (0,0), dest_rect)
             sprites.append(image)
     return sprites
@@ -169,7 +170,7 @@ class heroi(pygame.sprite.Sprite):
         self.image = self.animation[self.frame]
 
         self.state = espera
-        self.mask = pygame.mask.from_surface(self.animation[self.frame])
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
         self.rect.bottom = chao
@@ -458,7 +459,7 @@ class modo_de_jogo():
                 
      
     # ----- Gera saídas
-        window.fill((0, 0, 0))  # Preenche com a cor preta
+        window.fill((0, 0, 255))  # Preenche com a cor preta
         all_sprites.draw(window)
         window.blit(text,(10,10))
         window.blit(text2,(70,10))
@@ -602,7 +603,7 @@ class adicionais(pygame.sprite.Sprite):
         
         
 # ----- Inicia estruturas de dados
-player_sheet = pygame.image.load(path.join(img_dir, 'hp existindo.png')).convert()
+player_sheet = pygame.image.load(path.join(img_dir, 'hp existindo.png')).convert_alpha()
 
 clock = pygame.time.Clock()
 vida=100
