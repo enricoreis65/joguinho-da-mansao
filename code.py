@@ -345,7 +345,7 @@ def colisoes():
                         inimigo.estado=tomando_dano
                         colisao.clear()
                         inimigo.dano()
-                        player.estado=espera
+                        player.estado=indefeso
                         barra_vermelha.diminuir()                      
                         player.rect.x+=40
                         player.rect.y-=tamanho_do_pulo
