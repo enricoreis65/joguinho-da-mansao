@@ -2,7 +2,7 @@ import pygame, sys
 import random
 from os import path
 from pygame.locals import *
-from mapa.py import BLOCK,EMPTY,MAP,TILE
+from mapa import BLOCK,EMPTY,MAP,Tile
 #-----------------Dados iniciais de tamanho
 altura = 720
 largura = 1280
@@ -36,11 +36,11 @@ img_dir = path.join(path.dirname(__file__), 'img')
 ROGER_IMG = 'roger_imgla_inicial_img'
 SHEPPARD_IMG = 'sheppard_img'
 CAROLINE_IMG = 'caroline_img'
-INIMIGOS_IMG = 'tile-block.png'
+INIMIGOS_IMG = 'tile2-block.png'
 RALPH_IMG = 'ralph_img'
 MISS_IMG = 'miss_img'
 CHARLES_IMG = 'charles_img'
-CHAO = 'chao_img'
+CHAO = "tile-block.png"
 PLAY = 'play_img.png'
 PLAYAPERTADO = 'playapertado_img.png'
 MENU = 'menu_img.png'
@@ -65,7 +65,7 @@ def load_assets(img_dir):
     # assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
     # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
-    assets[CHAO] = pygame.image.load(path.join(img_dir, 'chao.png')).convert_alpha()
+    assets[BLOCK] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
     assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
     assets[MENU] = pygame.image.load(path.join(img_dir, 'menu_img.png')).convert_alpha()
@@ -77,7 +77,7 @@ def load_assets(img_dir):
     assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
-    assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
+    assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block2.png')).convert_alpha()
 
 
     #Escalas das imagens
@@ -95,7 +95,7 @@ def load_assets(img_dir):
     # assets[RALPH_IMG] = pygame.transform.scale(assets[RALPH_IMG],ralph_largura, ralph_altura))
     # assets[MISS_IMG] = pygame.transform.scale(assets[MISS_IMG],(miss_largura, miss_altura))
     # assets[CHARLES_IMG] = pygame.transform.scale(assets[CHARLES_IMG],(charles_largura, charles_altura))
-    assets[CHAO] = pygame.transform.scale(assets[CHAO],(chao_largura, chao_altura))
+    assets[BLOCK] = pygame.transform.scale(assets[BLOCK],(chao_largura, chao_altura))
     assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
     assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
     assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
@@ -620,7 +620,17 @@ vida_inimigo=40
 FPS = 60
 all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
-assets = load_assets(img_dir)
+assets=load_assets(img_dir)
+blocks = pygame.sprite.Group()
+# Cria tiles de acordo com o mapa
+for row in range(len(MAP)):
+    for column in range(len(MAP[row])):
+        tile_type = MAP[row][column]
+        if tile_type == BLOCK:
+            tile = Tile(assets[tile_type], row, column)
+            all_sprites.add(tile)
+            blocks.add(tile)
+
 player= heroi(vida,player_sheet)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(vida_inimigo,player,assets)
@@ -634,6 +644,7 @@ all_enemis.add(inimigo)
 keys_down = {}
 mouse_pres=[]
 game=True
+
 
 agora=pygame.time.get_ticks()
 
