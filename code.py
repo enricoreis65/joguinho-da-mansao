@@ -31,7 +31,7 @@ tutorial_altura = 5
 img_dir = path.join(path.dirname(__file__), 'img')
 
 # Imagens
-ROGER_IMG = 'roger_img'
+ROGER_IMG = 'roger_imgla_inicial_img'
 SHEPPARD_IMG = 'sheppard_img'
 CAROLINE_IMG = 'caroline_img'
 INIMIGOS_IMG = 'tile-block.png'
@@ -43,7 +43,7 @@ PLAY = 'play_img.png'
 PLAYAPERTADO = 'playapertado_img.png'
 MENU = 'menu_img.png'
 MENUAPERTADO = 'menuapertado_img.png'
-TELA_INICIAL_IMG = 'telainicial.png'
+TELANICIAL_IMG = 'telainicial.png'__img
 TELA_1_IMG = 'tela1.png'
 PLAYER_PARADO_IMG = 'parado (2).png'
 TESTE_IMG = 'hero-single.png'
@@ -55,7 +55,7 @@ TUTORIAL = 'tutorial.png'
 def load_assets(img_dir):
     assets = {}
 
-    # assets[TELA_INICIAL_IMG] = pygame.image.load(path.join(img_dir, 'telainicial.png')).convert_alpha()
+    assets[TELA_INICIAL_IMG] = pygame.image.load(path.join(img_dir, 'tela_inicial_img.png')).convert_alpha()
     # assets[TELA_1_IMG] = pygame.image.load(path.join(img_dir, 'tela1.png')).convert_alpha()
     # assets[ROGER_IMG] = pygame.image.load(path.join(img_dir, 'roger.png')).convert_alpha()
     # assets[SHEPPARD_IMG] = pygame.image.load(path.join(img_dir, 'sheppard.png')).convert_alpha()
@@ -73,7 +73,7 @@ def load_assets(img_dir):
     # Definindo o player e imagens de teste
     assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
     assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
-    assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
+    sets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
     assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert_alpha()
 
@@ -469,9 +469,12 @@ class modo_de_jogo():
     def menu(self):
 
         # tentativa de tutorial
-        """
+        
         window.blit(assets[TELA_INICIAL_IMG], (0, 0))
         window.blit(assets[PLAY], (50, 50))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 keys_down[event.key] = True
                 if event.key==pygame.assets[PLAY]:
@@ -482,8 +485,8 @@ class modo_de_jogo():
                         if event.key==pygame.assets[PLAY]:
                             window.blit(assets[PLAYAPERTADO], (50, 50))
                             self.aba="jogando"
-                            """
-
+                            
+        """
         text = font.render('Aperte P para jogar', True, (0, 0, 255)) 
         text_rect=text.get_rect()
         text_largura=text_rect.width
@@ -503,6 +506,7 @@ class modo_de_jogo():
                     self.aba="jogando"
         window.fill((255, 255, 255))
         window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
+        """
         pygame.display.update() 
     
     # Criando um Menu de Pausa no meio do jogo
