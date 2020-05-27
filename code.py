@@ -169,7 +169,7 @@ class heroi(pygame.sprite.Sprite):
         self.image = self.animation[self.frame]
 
         self.state = espera
-        self.mask = pygame.mask.from_surface(self.image)
+        self.mask = pygame.mask.from_surface(self.animation[self.frame])
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
         self.rect.bottom = chao
@@ -206,7 +206,7 @@ class heroi(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             self.rect.center = center
 
-        self.mask = pygame.mask.from_surface(self.image)
+        
         # Atualização da posição do heroi
         if  self.estado!=dash and self.estado!=defendendo :
             self.rect.x += self.speedx
@@ -307,7 +307,7 @@ def colisoes():
         else:
             if player.estado==indefeso:
                 colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)
-                print(len(colisao))
+                
                 if len(colisao)>0:
                     if player.rect.bottom-inimigo.rect.top<0:
                         player.hora_do_dano=pygame.time.get_ticks()
