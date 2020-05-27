@@ -260,7 +260,7 @@ class heroi(pygame.sprite.Sprite):
     def dash(self):
         if self.quantdash>0:
             if self.speedx!=0:   
-        # Verifica quantos ticks se passaram desde o último tiro.
+            # Verifica quantos ticks se passaram desde o último tiro.
                 elapsed_ticks = agora - self.hora_da_acao
 
             # Se já pode atirar novamente...
