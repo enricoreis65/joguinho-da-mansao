@@ -12,6 +12,18 @@ heroi_largura=52
 heroi_altura=80
 vilao_largura=52
 vilao_altura=52
+chao_largura = 48
+chao_altura = 25
+play_largura = 10
+play_altura = 5
+playapertado_largura = 10
+playapertado_altura = 5
+menu_largura = 10
+menu_altura = 5
+menuapertado_largura = 10
+menuapertado_altura = 5
+tutorial_largura = 10
+tutorial_altura = 5
 
 #----------------Configurações para imagens
 
@@ -54,8 +66,8 @@ def load_assets(img_dir):
     assets[CHAO] = pygame.image.load(path.join(img_dir, 'chao.png')).convert_alpha()
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
     assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
-    assets[MENU] = pygame.image.load(path.join(img_dir, 'menu.png')).convert_alpha()
-    assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado.png')).convert_alpha()
+    assets[MENU] = pygame.image.load(path.join(img_dir, 'menu_img.png')).convert_alpha()
+    assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado_img.png')).convert_alpha()
     assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
 
     # Definindo o player e imagens de teste
@@ -85,7 +97,7 @@ def load_assets(img_dir):
     assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
     assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
     assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
-    assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, apertado_altura))
+    assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, menuapertado_altura))
     assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(tutorial_largura, tutorial_altura))
     return assets                        
 #------------------
