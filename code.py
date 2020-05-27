@@ -658,3 +658,5 @@ while game:
     #                 screen = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
     #             else:
     #                 screen = pygame.display.set_mode((screen.get_width(), screen.get_height()), pygame.RESIZABLE)
+
+    
