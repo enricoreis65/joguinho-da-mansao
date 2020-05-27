@@ -4,8 +4,8 @@ from os import path
 # Define os tipos de tiles
 BLOCK = 0
 EMPTY = -1
-TILE_SIZE_largura = 85
-TILE_SIZE_altura = 60
+TILE_SIZE_largura = 48
+TILE_SIZE_altura = 106
 # Define o mapa com os tipos de tiles
 MAP = [
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
@@ -33,7 +33,7 @@ class Tile(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Aumenta o tamanho do tile.
-        tile_img = pygame.transform.scale(tile_img, (TILE_SIZE_largura, TILE_SIZE_altura))
+        tile_img = pygame.transform.scale(tile_img, (TILE_SIZE_altura, TILE_SIZE_largura))
 
         # Define a imagem do tile.
         self.image = tile_img
