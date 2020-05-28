@@ -111,8 +111,8 @@ espera = "espera"
 pulando = "pulando"
 caindo = "caindo"
 gravidade = 2
-chao = altura * 5 // 6
-tamanho_do_pulo = 20
+
+tamanho_do_pulo = 25
 indefeso = "indefeso"
 ataque = "ataque"
 tomando_dano="tomando_dano"
@@ -149,11 +149,11 @@ def carrega_spritesheet(spritesheet, linhas, colunas):
 
 #------------------
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,vida,player_sheet):
+    def __init__(self,vida,player_sheet,blocks):
         pygame.sprite.Sprite.__init__(self)
         player_sheet = pygame.transform.scale(player_sheet, (52*4, 80*2))
         spritesheet = carrega_spritesheet(player_sheet, 2, 3)
-
+        self.blocks=blocks
         self.animations = {
             indefeso: spritesheet[0:4],
             ataque: spritesheet[0:1],
@@ -172,14 +172,14 @@ class heroi(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
-        self.rect.bottom = chao
+        self.rect.bottom = row*48
         self.speedx = 0
         self.speedy= 0
         
         self.vida=vida
         self.quantdash=3
         
-        self.acao_ticks = 300*4
+        self.acao_ticks = 300*2
         self.frame_ticks = 300
         self.last_update = pygame.time.get_ticks()
 
@@ -227,21 +227,39 @@ class heroi(pygame.sprite.Sprite):
             self.state = caindo
         self.rect.y += self.speedy
         # Se bater no chão, para de cair
-        if self.rect.bottom > chao:
-            # Reposiciona para a posição do chão
-            self.rect.bottom = chao
+        collisions = pygame.sprite.spritecollide(self, self.blocks, False)
+        # Corrige a posição do personagem para antes da colisão
+        for collision in collisions:
+            # Estava indo para baixo
+            if self.speedy > 0:
+                self.rect.bottom = collision.rect.top
+                # Se colidiu com algo, para de cair
+                self.speedy = 0
+                # Atualiza o estado para parado
+                self.state = espera
+            # Estava indo para cima
+            elif self.speedy < 0:
+                self.rect.top = collision.rect.bottom
+                # Se colidiu com algo, para de cair
+                self.speedy = 0
+                # Atualiza o estado para parado
+                self.state = espera
 
-            # Para de cair
-            self.speedy = 0
-            # Atualiza o estado para parado
-            self.state = espera
 
         # Mantem dentro da tela
         if self.rect.right > largura:
             self.rect.right = largura
         if self.rect.left < 0:
             self.rect.left = 0
-
+        collisions = pygame.sprite.spritecollide(self, self.blocks, False)
+        # Corrige a posição do personagem para antes da colisão
+        for collision in collisions:
+            # Estava indo para a direita
+            if self.speedx > 0:
+                self.rect.right = collision.rect.left
+            # Estava indo para a esquerda
+            elif self.speedx < 0:
+                self.rect.left = collision.rect.right
     def pulo(self):
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
@@ -314,20 +332,20 @@ def colisoes():
                         player.estado=tomando_dano
                         player.vida-=10                       
                         player.rect.x-=90
-                        player.rect.y-=tamanho_do_pulo*3
+                        
 
                     elif player.rect.right-inimigo.rect.centerx<0:
                         player.hora_do_dano=pygame.time.get_ticks()
                         player.estado=tomando_dano
                         player.vida-=10                       
                         player.rect.x-=60
-                        player.rect.y-=tamanho_do_pulo
+                        
                     elif player.rect.left-inimigo.rect.centerx>0:
                         player.hora_do_dano=pygame.time.get_ticks()
                         player.estado=tomando_dano
                         player.vida-=10                       
                         player.rect.x+=60
-                        player.rect.y-=tamanho_do_pulo
+                        
         
             if player.estado==ataque:
                 colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)   
@@ -339,7 +357,7 @@ def colisoes():
                         player.estado=indefeso
                         barra_vermelha.diminuir()                    
                         player.rect.x-=40
-                        player.rect.y-=tamanho_do_pulo
+                        
                     elif player.rect.left-inimigo.rect.centerx>0:
                         inimigo.estado=tomando_dano
                         colisao.clear()
@@ -347,7 +365,7 @@ def colisoes():
                         player.estado=indefeso
                         barra_vermelha.diminuir()                      
                         player.rect.x+=40
-                        player.rect.y-=tamanho_do_pulo
+                        
 
 
             if player.estado==defendendo:
@@ -364,7 +382,7 @@ class inimigos(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura-300
-        self.rect.bottom = chao
+        self.rect.bottom = random.randint(0,altura)
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
         self.vida=vida_inimigo
@@ -384,12 +402,10 @@ class inimigos(pygame.sprite.Sprite):
         if player.rect.x-self.rect.x<0 :
             self.speedx_inimigo = -1
 
-        if self.rect.bottom > chao:
-            # Reposiciona para a posição do chão
-            self.rect.bottom = chao
+        
         
         if player.rect.y-self.rect.y>0 :
-            self.rect.y != altura -chao
+            self.rect.y != altura
             self.speedy_inimigo = 1 
 
         if player.rect.y-self.rect.y<0 :
@@ -615,7 +631,7 @@ for row in range(len(MAP)):
             all_sprites.add(tile)
             blocks.add(tile)
 
-player= heroi(vida,player_sheet)
+player= heroi(vida,player_sheet,blocks)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(vida_inimigo,player,assets)
 barra= adicionais(assets[BARRA_IMG],player,barra_largura)
