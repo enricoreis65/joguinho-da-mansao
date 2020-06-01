@@ -18,7 +18,7 @@ espera = "espera"
 pulando = "pulando"
 caindo = "caindo"
 gravidade = 2
-
+andandoesq="andandoesq"
 tamanho_do_pulo = 25
 indefeso = "indefeso"
 ataque = "ataque"
@@ -38,35 +38,24 @@ fullscreen = False
 # MAPA
 
 # SPRITESHEET
-def carrega_spritesheet(spritesheet, linhas, colunas):
-    sprite_width = spritesheet.get_width() // colunas
-    sprite_height = spritesheet.get_height() // linhas
-  
-    sprites = []
-    for linha in range(linhas):
-        for coluna in range(colunas):
-            x = coluna * sprite_width
-            y = linha * sprite_height
-            dest_rect = pygame.Rect(x,y,sprite_width,sprite_height) 
-            image = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
-            
-            image.blit(spritesheet, (0,0), dest_rect)
-            sprites.append(image)
-    return sprites
+
 
 #------------------
 class heroi(pygame.sprite.Sprite):
     def __init__(self,vida,player_sheet,blocks):
         pygame.sprite.Sprite.__init__(self)
-        player_sheet = pygame.transform.scale(player_sheet, (52*4, 80*2))
-        spritesheet = carrega_spritesheet(player_sheet, 2, 3)
+        
+        
+        
         self.blocks=blocks
         self.animations = {
-            indefeso: spritesheet[0:4],
-            ataque: spritesheet[0:1],
-            defendendo: spritesheet[0:1],
-            tomando_dano: spritesheet[0:1],
-            dash: spritesheet[0:1]
+            indefeso: dicio['existindo'][0:4],
+            ataque: dicio['atacando'][3:5],
+            andandoesq:dicio["andandoesq"][0:2],
+            tomando_dano:dicio["dano"][1:3]
+            # defendendo: spritesheet[0:1],
+            # tomando_dano: spritesheet[0:1],
+            # dash: spritesheet[0:1]
             }
         
         self.estado = indefeso
@@ -89,7 +78,7 @@ class heroi(pygame.sprite.Sprite):
         self.frame_ticks = 300
         self.last_update = pygame.time.get_ticks()
 
-        self.hora_do_dano=pygame.time.get_ticks()
+        
         self.hora_da_acao=pygame.time.get_ticks()
         
     # Update    
@@ -101,7 +90,22 @@ class heroi(pygame.sprite.Sprite):
         if elapsed2_ticks > self.frame_ticks:
             self.last_update = now
             self.frame += 1
-            self.animation = self.animations[self.estado]
+            if self.estado==indefeso:
+                if self.speedx>0:
+                    self.animation = self.animations[andandoesq]
+                if self.speedx<0:
+                    self.animation = self.animations[andandoesq]
+                if self.speedx==0:
+                    self.animation = self.animations[indefeso]
+            if self.estado==tomando_dano:
+                if self.speedx>0:
+                    self.animation = self.animations[tomando_dano]
+                if self.speedx<0:
+                    self.animation = self.animations[tomando_dano]
+                if self.speedx==0:
+                    self.animation = self.animations[tomando_dano]
+            else:
+                self.animation = self.animations[self.estado]
 
             if self.frame >= len(self.animation):
                 self.frame = 0
@@ -121,10 +125,13 @@ class heroi(pygame.sprite.Sprite):
         elif self.estado==dash:
             self.rect.x += self.speedx*41
             self.estado=indefeso
-                  
-        if self.hora_da_acao+self.acao_ticks*1.2<agora:
-            if self.estado!=indefeso:
+
+        if self.estado!=indefeso:          
+            if agora -self.hora_da_acao>self.acao_ticks:
                 self.estado=indefeso
+
+        
+            
 
 
         self.speedy += gravidade
@@ -219,9 +226,7 @@ def colisoes():
         if player.vida <= 0:
             player.kill()
             barra.kill()
-            estado_do_jogo.aba = "menu"
-            #window.blit(assets[GAMEOVER1], (0,0))
-            #window.blit(assets[GAMEOVER2], (0,0))
+            estado_do_jogo.aba = "gameover"
             
             
         else:
@@ -230,24 +235,24 @@ def colisoes():
                 
                 if len(colisao)>0:
                     if player.rect.bottom-inimigo.rect.top<0:
-                        player.hora_do_dano=pygame.time.get_ticks()
+                        player.hora_da_acao=agora
                         player.estado=tomando_dano
                         player.vida-=10                       
                         player.rect.x-=90
                         
 
                     elif player.rect.right-inimigo.rect.centerx<0:
-                        player.hora_do_dano=pygame.time.get_ticks()
+                        player.hora_da_acao=agora
                         player.estado=tomando_dano
                         player.vida-=10                       
                         player.rect.x-=60
                         
                     elif player.rect.left-inimigo.rect.centerx>0:
-                        player.hora_do_dano=pygame.time.get_ticks()
+                        player.hora_da_acao=agora
                         player.estado=tomando_dano
                         player.vida-=10                       
                         player.rect.x+=60
-                        
+                    
         
             if player.estado==ataque:
                 colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)   
@@ -294,7 +299,7 @@ class inimigos(pygame.sprite.Sprite):
         if self.vida==0:
             self.kill()
             barra_vermelha.kill()
-            fase=2
+            
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
             self.rect.y += self.speedy_inimigo
@@ -348,7 +353,16 @@ class modo_de_jogo():
         else:
             return False
         
-
+    def game_over(self):
+        
+        window.fill((0, 0, 0))
+        window.blit(assets[GAMEOVER1], (0,0))
+        window.blit(assets[GAMEOVER2], (0,0))
+        for event in pygame.event.get():
+        # ----- Verifica consequências
+            if event.type == pygame.QUIT:
+                pygame.quit()  
+        pygame.display.update()  
     def jogando(self):
         
               
@@ -475,7 +489,8 @@ class modo_de_jogo():
             self.jogando()
         if self.aba=='main menu':
             self.main_menu()
-
+        if self.aba=="gameover":
+            self.game_over()
 class adicionais(pygame.sprite.Sprite):
     def __init__(self,img,quem_ta_seguindo,largura):
         pygame.sprite.Sprite.__init__(self)
@@ -513,7 +528,7 @@ class adicionais(pygame.sprite.Sprite):
 
 
 # ----- Inicia estruturas de dados
-player_sheet = pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha()
+
 sequencia=1
 clock = pygame.time.Clock()
 vida=100
@@ -532,7 +547,7 @@ for row in range(len(MAP1)):
             all_sprites.add(tile)
             blocks.add(tile)
 keys_down = {}
-player= heroi(vida,player_sheet,blocks)
+player= heroi(vida,dicio,blocks)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(vida_inimigo,player,assets)
 barra= adicionais(assets[BARRA_IMG],player,barra_largura)
@@ -554,3 +569,4 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
+    print(player.estado)
