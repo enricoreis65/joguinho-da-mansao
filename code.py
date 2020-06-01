@@ -3,34 +3,13 @@ import random
 from os import path
 from pygame.locals import *
 from mapa import BLOCK,EMPTY,MAP1,MAP2,Tile
-from imagens import img_dir, load_assets
+from imagens import *
 from medidas import *
+from fases import *
 #----------------Configurações para imagens
 
 # Define a pasta que contem figuras e sons    
 img_dir = path.join(path.dirname(__file__), 'img')
-
-
-def fases(self):
-    if fase==1:
-        for row in range(len(MAP1)):
-            for column in range(len(MAP1[row])):
-                tile_type = MAP1[row][column]
-                if tile_type == BLOCK:
-                    tile = Tile(assets[tile_type], row, column)
-                    all_sprites.add(tile)
-                    blocks.add(tile)
-
-    elif fase==2:
-        for row in range(len(MAP2)):
-            for column in range(len(MAP2[row])):
-                tile_type = MAP2[row][column]
-                if tile_type == BLOCK:
-                    tile = Tile(assets[tile_type], row, column)
-                    all_sprites.add(tile)
-                    blocks.add(tile)
-        
-        
 
 pygame.init()
 
@@ -242,13 +221,7 @@ def colisoes():
             player.kill()
             barra.kill()
             estado_do_jogo.aba = "menu"
-            # player = heroi(vida, assets)
-            # all_sprites.add(player)
             
-    #if now - explosion_tick > explosion_duration:
-        # state = PLAYING
-        # player = Ship(groups, assets)
-        # all_sprites.add(player)
             
         else:
             if player.estado==indefeso:
@@ -375,8 +348,8 @@ class modo_de_jogo():
             return False
         
 
-    def jogando(self):
-        
+    def jogando(self,qual_a_fase):
+        fases(qual_a_fase)
               
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
@@ -408,12 +381,11 @@ class modo_de_jogo():
                         player.speedx += 4.0
                     if event.key == pygame.K_d:
                         player.speedx -= 4.0
-                    if event.key == pygame.K_j:   
+                    if event.key == pygame.K_k:   
                         player.ataque()
-                    if event.key == pygame.K_k:
+                    if event.key == pygame.K_j:
                         player.defesa()
-            # if event.type == VIDEORESIZE:
-            #     window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+            
                 
      
     # ----- Gera saídas
@@ -499,7 +471,7 @@ class modo_de_jogo():
         if self.aba=="menu":
             self.menu()
         if self.aba=="jogando":
-            self.jogando()
+            self.jogando(fase)
         if self.aba=='main menu':
             self.main_menu()
 
@@ -578,20 +550,4 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    # for event in pygame.event.get():
-    #     if event.type == QUIT:
-    #         pygame.quit()
-    #         sys.exit()
-        
-    #     if event.type == VIDEORESIZE:
-    #         if not fullscreen:
-    #             screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-    #     if event.type == KEYDOWN:
-    #         if event.key == K_f:
-    #             fullscreen = not fullscreen
-    #             if fullscreen:
-    #                 screen = pygame.display.set_mode(monitor_size, pygame.FULLSCREEN)
-    #             else:
-    #                 screen = pygame.display.set_mode((screen.get_width(), screen.get_height()), pygame.RESIZABLE)
-
-    
+   
