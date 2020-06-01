@@ -3,54 +3,13 @@ import random
 from os import path
 from pygame.locals import *
 from mapa import BLOCK,EMPTY,MAP1,MAP2,Tile
-#-----------------Dados iniciais de tamanho
-altura = 720
-largura = 1280
-barra_largura=32
-barra_altura=3
-heroi_largura=52
-heroi_altura=80
-vilao_largura=52
-vilao_altura=52
-
-play_largura = 100
-play_altura = 50
-playapertado_largura = 100
-playapertado_altura = 50
-menu_largura = 10
-menu_altura = 5
-menuapertado_largura = 10
-menuapertado_altura = 5
-tutorial_largura = 10
-tutorial_altura = 5
-telainicial_largura = largura
-telainicial_altura = altura
-
+from imagens import img_dir, load_assets
+from medidas import *
 #----------------Configurações para imagens
 
 # Define a pasta que contem figuras e sons    
 img_dir = path.join(path.dirname(__file__), 'img')
 
-# Imagens
-ROGER_IMG = 'roger_imgla_inicial_img'
-SHEPPARD_IMG = 'sheppard_img'
-CAROLINE_IMG = 'caroline_img'
-INIMIGOS_IMG = 'tile2-block.png'
-RALPH_IMG = 'ralph_img'
-MISS_IMG = 'miss_img'
-CHARLES_IMG = 'charles_img'
-
-PLAY = 'play_img.png'
-PLAYAPERTADO = 'playapertado_img.png'
-MENU = 'menu_img.png'
-MENUAPERTADO = 'menuapertado_img.png'
-TELA_INICIAL_IMG = 'tela_inicial_img.png'
-TELA_1_IMG = 'tela1.png'
-PLAYER_PARADO_IMG = 'parado (2).png'
-TESTE_IMG = 'hero-single.png'
-BARRA_IMG = 'barra.png'
-BARRA_VERMELHA_IMG = 'vida_inimigo.png'
-TUTORIAL = 'tutorial.png'
 
 def fases(self):
     if fase==1:
@@ -72,56 +31,6 @@ def fases(self):
                     blocks.add(tile)
         
         
-# Carrega todos os assets de uma vez.
-def load_assets(img_dir):
-    assets = {}
-
-    assets[TELA_INICIAL_IMG] = pygame.image.load(path.join(img_dir, 'tela_inicial_img.png')).convert_alpha()
-    # assets[TELA_1_IMG] = pygame.image.load(path.join(img_dir, 'tela1.png')).convert_alpha()
-    # assets[ROGER_IMG] = pygame.image.load(path.join(img_dir, 'roger.png')).convert_alpha()
-    # assets[SHEPPARD_IMG] = pygame.image.load(path.join(img_dir, 'sheppard.png')).convert_alpha()
-    # assets[CAROLINE_IMG] = pygame.image.load(path.join(img_dir, 'caroline.png')).convert_alpha()
-    # assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
-    # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
-    # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
-    assets[BLOCK] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert()
-    assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
-    assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
-    assets[MENU] = pygame.image.load(path.join(img_dir, 'menu_img.png')).convert_alpha()
-    assets[MENUAPERTADO] = pygame.image.load(path.join(img_dir, 'menuapertado_img.png')).convert_alpha()
-    assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
-
-    # Definindo o player e imagens de teste
-    assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
-    assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
-    assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
-    assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
-    assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block2.png')).convert_alpha()
-
-
-    #Escalas das imagens
-    assets[BARRA_IMG]=pygame.transform.scale(assets[BARRA_IMG], (barra_largura, barra_altura))
-    assets[BARRA_VERMELHA_IMG]=pygame.transform.scale(assets[BARRA_VERMELHA_IMG], (barra_largura, barra_altura))
-    assets[PLAYER_PARADO_IMG] = pygame.transform.scale(assets[PLAYER_PARADO_IMG], (heroi_largura, heroi_altura))
-    assets[INIMIGOS_IMG] = pygame.transform.scale(assets[INIMIGOS_IMG], (vilao_largura, vilao_altura))
-    assets[TESTE_IMG] = pygame.transform.scale(assets[TESTE_IMG], (heroi_largura, heroi_altura))
-
-    assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(largura,altura))
-    # assets[TELA_1_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
-    # assets[ROGER_IMG] = pygame.transform.scale(assets[ROGER_IMG],(roger_largura, roger_altura))
-    # assets[SHEPPARD_IMG] = pygame.transform.scale(assets[SHEPPARD_IMG],(tela_1_largura, tela_1_altura))
-    # assets[CAROLINE_IMG] = pygame.transform.scale(assets[CAROLINE_IMG],(caroline_largura, caroline_altura))
-    # assets[RALPH_IMG] = pygame.transform.scale(assets[RALPH_IMG],ralph_largura, ralph_altura))
-    # assets[MISS_IMG] = pygame.transform.scale(assets[MISS_IMG],(miss_largura, miss_altura))
-    # assets[CHARLES_IMG] = pygame.transform.scale(assets[CHARLES_IMG],(charles_largura, charles_altura))
-    
-    assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
-    assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
-    assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
-    assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, menuapertado_altura))
-    assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(largura, altura))
-    return assets                        
-#------------------
 
 pygame.init()
 
@@ -141,7 +50,7 @@ pronto_para_acao="pronto_para_acao"
 dash="dash"
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
-window = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
+window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Fenrly Park')
 font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 
@@ -191,7 +100,7 @@ class heroi(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
-        self.rect.bottom = 48
+        self.rect.bottom = 12*48
         self.speedx = 0
         self.speedy= 0
         
@@ -397,7 +306,7 @@ def colisoes():
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,vida_inimigo,player,assets):
         pygame.sprite.Sprite.__init__(self)
-        spritesheet = carrega_spritesheet(inimigo_sheet, 4, 5)
+        #spritesheet = carrega_spritesheet(inimigo_sheet, 4, 5)
         self.image = assets[INIMIGOS_IMG]
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
@@ -468,7 +377,7 @@ class modo_de_jogo():
 
     def jogando(self):
         
-        
+              
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
         for event in pygame.event.get():
@@ -660,7 +569,7 @@ keys_down = {}
 mouse_pres=[]
 game=True
 
-fases(fase)
+
 agora=pygame.time.get_ticks()
 
 # ===== Loop principal =====
