@@ -2,8 +2,8 @@ import pygame, sys
 import random
 from os import path
 from pygame.locals import *
-from mapa import BLOCK,EMPTY,MAP1,Tile
 from imagens import *
+from mapa import BLOCK,EMPTY,MAP1,Tile
 from medidas import *
 
 #----------------Configurações para imagens
@@ -524,6 +524,14 @@ all_enemis = pygame.sprite.Group()
 assets=load_assets(img_dir)
 blocks = pygame.sprite.Group()
 
+for row in range(len(MAP1)):
+    for column in range(len(MAP1[row])):
+        tile_type = MAP1[row][column]
+        if tile_type == BLOCK:
+            tile = Tile(assets[Chao], row, column)
+            all_sprites.add(tile)
+            blocks.add(tile)
+keys_down = {}
 player= heroi(vida,player_sheet,blocks)
 estado_do_jogo= modo_de_jogo(player)
 inimigo= inimigos(vida_inimigo,player,assets)
@@ -534,14 +542,6 @@ all_sprites.add(barra)
 all_sprites.add(barra_vermelha)
 all_sprites.add(inimigo)
 all_enemis.add(inimigo)
-for row in range(len(MAP1)):
-    for column in range(len(MAP1[row])):
-        tile_type = MAP1[row][column]
-        if tile_type == BLOCK:
-            tile = Tile(assets[tile_type], row, column)
-            all_sprites.add(tile)
-            blocks.add(tile)
-keys_down = {}
 mouse_pres=[]
 game=True
 

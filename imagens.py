@@ -13,7 +13,7 @@ INIMIGOS_IMG = 'tile2-block.png'
 RALPH_IMG = 'ralph_img'
 MISS_IMG = 'miss_img'
 CHARLES_IMG = 'charles_img'
-BLOCK="chao"
+Chao="chao"
 PLAY = 'play_img.png'
 PLAYAPERTADO = 'playapertado_img.png'
 MENU = 'menu_img.png'
@@ -29,14 +29,14 @@ GAMEOVER1 = 'gameovercima.png'
 GAMEOVER2 = 'gameoverbaixo.png'
 
 
-spritesheet_heroi = ['existindo': spritesheet_existindoLeft.png,
-                     'healing': spritesheet_healingLeft.png,
-                     'andando': spritesheet_andandoLeft.png, 
-                     'atacando': spritesheet_atacandoLeft.png
-                     'defendendo': spritesheet_defendendoLeft.png,
-                     # dash': spritesheet_dashLeft.png, 
-                     'dano': spritesheet_danoLeft.png
-                     ]
+# spritesheet_heroi = ['existindo': spritesheet_existindoLeft.png,
+#                      'healing': spritesheet_healingLeft.png,
+#                      'andando': spritesheet_andandoLeft.png, 
+#                      'atacando': spritesheet_atacandoLeft.png
+#                      'defendendo': spritesheet_defendendoLeft.png,
+#                      # dash': spritesheet_dashLeft.png, 
+#                      'dano': spritesheet_danoLeft.png
+#                     ]
 
 # Carrega todos os assets de uma vez.
 def load_assets(img_dir):
@@ -50,7 +50,7 @@ def load_assets(img_dir):
     # assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
     # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
-    assets[BLOCK] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert()
+    assets[Chao] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert()
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
     assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
     assets[MENU] = pygame.image.load(path.join(img_dir, 'menu_img.png')).convert_alpha()
