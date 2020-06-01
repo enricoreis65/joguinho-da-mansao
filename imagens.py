@@ -46,21 +46,23 @@ def carrega_spritesheet(spritesheet, linhas, colunas):
             sprites.append(image)
     return sprites
 
-spritesheet_heroi = {'existindo':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_existindoLeft.png')).convert_alpha(), (52*3, 80*2)),
+spritesheet_todos = {'existindo':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_existindoLeft.png')).convert_alpha(), (52*3, 80*2)),
                      'healing': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingLeft.png')).convert_alpha(), (52*4, 80*2)),
                      'andandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoLeft.png')).convert_alpha(), (52*2, 80)), 
                      'atacando': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (52*4, 80*4)),
                      #'defendendo': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (52*4, 80*2)),
                      # dash': pygame.transform.scale("spritesheet_dashLeft.png")).concert_alpha(), (52*4, 80*2)) ,
-                     'dano': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2))
+                     'dano': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
+                     "inimigo":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha(), (52*5, 80*4))
 }
 
 dicio={}
 
-dicio['existindo']=carrega_spritesheet(spritesheet_heroi["existindo"], 2, 3)
-dicio['atacando']=carrega_spritesheet(spritesheet_heroi['atacando'], 3, 2)
-dicio['andandoesq']=carrega_spritesheet(spritesheet_heroi['andandoesq'], 1, 2)
-dicio['dano']=carrega_spritesheet(spritesheet_heroi['dano'], 2, 2)
+dicio['existindo']=carrega_spritesheet(spritesheet_todos["existindo"], 2, 3)
+dicio['atacando']=carrega_spritesheet(spritesheet_todos['atacando'], 3, 2)
+dicio['andandoesq']=carrega_spritesheet(spritesheet_todos['andandoesq'], 1, 2)
+dicio['dano']=carrega_spritesheet(spritesheet_todos['dano'], 2, 2)
+dicio["inimigo"]=carrega_spritesheet(spritesheet_todos['inimigo'], 4, 5)
 # Carrega todos os assets de uma vez.
 def load_assets(img_dir):
     assets = {}
@@ -87,7 +89,7 @@ def load_assets(img_dir):
     #assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
-    assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block2.png')).convert_alpha()
+    assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha()
 
     #Escalas imagens
     assets[BARRA_IMG]=pygame.transform.scale(assets[BARRA_IMG], (barra_largura, barra_altura))

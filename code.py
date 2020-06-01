@@ -285,8 +285,19 @@ def colisoes():
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,vida_inimigo,player,assets):
         pygame.sprite.Sprite.__init__(self)
+        self.estado=espera
+        self.animations = {
+            espera: dicio['inimigo'][0:6],
+            tomando_dano: dicio['inimigo'][0:6],
+            }
+        
+        
+        self.animation = self.animations[self.estado]
+        self.frame = 0
+        self.image = self.animation[self.frame]
+
         #spritesheet = carrega_spritesheet(inimigo_sheet, 4, 5)
-        self.image = assets[INIMIGOS_IMG]
+    
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura-300
@@ -294,8 +305,27 @@ class inimigos(pygame.sprite.Sprite):
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
         self.vida=vida_inimigo
-        self.estado=espera
+        
+        self.frame_ticks = 200
+        self.last_update = pygame.time.get_ticks()
     def update(self):
+        now = pygame.time.get_ticks()
+        elapsed2_ticks = now - self.last_update
+
+        if elapsed2_ticks > self.frame_ticks:
+            self.last_update = now
+            self.frame += 1
+        self.animation = self.animations[self.estado]
+
+        if self.frame >= len(self.animation):
+            self.frame = 0
+   
+        center = self.rect.center
+        self.image = self.animation[self.frame]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+
         if self.vida==0:
             self.kill()
             barra_vermelha.kill()
@@ -549,7 +579,7 @@ for row in range(len(MAP1)):
 keys_down = {}
 player= heroi(vida,dicio,blocks)
 estado_do_jogo= modo_de_jogo(player)
-inimigo= inimigos(vida_inimigo,player,assets)
+inimigo= inimigos(vida_inimigo,player,dicio)
 barra= adicionais(assets[BARRA_IMG],player,barra_largura)
 barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura)
 all_sprites.add(player)
