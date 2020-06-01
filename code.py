@@ -569,4 +569,3 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-   
