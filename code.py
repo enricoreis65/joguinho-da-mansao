@@ -50,7 +50,7 @@ class heroi(pygame.sprite.Sprite):
         self.blocks=blocks
         self.animations = {
             indefeso: dicio['existindo'][0:4],
-            ataque: dicio['atacando'][3:5],
+            ataque: dicio['atacando'][2:5],
             andandoesq:dicio["andandoesq"][0:2],
             tomando_dano:dicio["dano"][1:3]
             # defendendo: spritesheet[0:1],
