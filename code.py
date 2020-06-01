@@ -3,7 +3,7 @@ import random
 from os import path
 from pygame.locals import *
 from imagens import *
-from mapa import BLOCK,EMPTY,MAP1,Tile
+from mapa import BLOCK,EMPTY,MAP1,Tile,MAP2
 from medidas import *
 
 #----------------Configurações para imagens
@@ -296,7 +296,7 @@ class inimigos(pygame.sprite.Sprite):
         self.frame = 0
         self.image = self.animation[self.frame]
 
-        #spritesheet = carrega_spritesheet(inimigo_sheet, 4, 5)
+    
     
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
@@ -384,7 +384,7 @@ class modo_de_jogo():
             return False
         
     def game_over(self):
-        
+        global fase
         window.fill((0, 0, 0))
         window.blit(assets[GAMEOVER1], (0,0))
         window.blit(assets[GAMEOVER2], (0,0))
@@ -417,7 +417,9 @@ class modo_de_jogo():
                     self.aba = 'main menu'
                 if event.key == pygame.K_l:
                     player.dash()
-                
+                    
+                    fases(2)
+
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 if event.key in keys_down and keys_down[event.key]:
@@ -555,7 +557,32 @@ class adicionais(pygame.sprite.Sprite):
             if self.largura>0:
                 self.largura-=8
                 self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
-
+def fases(fase):
+    if fase==1:
+        for row in range(len(MAP1)):
+            for column in range(len(MAP1[row])):
+                tile_type = MAP1[row][column]
+                if tile_type == BLOCK:
+                    tile = Tile(assets[Chao], row, column)
+                    all_sprites.add(tile)
+                    blocks.add(tile)
+    if fase ==2:
+        for row in range(len(MAP1)):
+                for column in range(len(MAP1[row])):
+                    tile_type = MAP1[row][column]
+                    if tile_type == BLOCK:
+                        tile = Tile(assets[Chao], row, column)
+                        tile.kill()
+                        
+                  
+    
+        for row in range(len(MAP2)):
+            for column in range(len(MAP2[row])):
+                tile_type = MAP2[row][column]
+                if tile_type == BLOCK:
+                    tile = Tile(assets[Chao], row, column)
+                    all_sprites.add(tile)
+                    blocks.add(tile)
 
 # ----- Inicia estruturas de dados
 
@@ -568,14 +595,8 @@ all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
 assets=load_assets(img_dir)
 blocks = pygame.sprite.Group()
-
-for row in range(len(MAP1)):
-    for column in range(len(MAP1[row])):
-        tile_type = MAP1[row][column]
-        if tile_type == BLOCK:
-            tile = Tile(assets[Chao], row, column)
-            all_sprites.add(tile)
-            blocks.add(tile)
+fase=1
+fases(fase)
 keys_down = {}
 player= heroi(vida,dicio,blocks)
 estado_do_jogo= modo_de_jogo(player)
