@@ -28,15 +28,16 @@ TUTORIAL = 'tutorial.png'
 GAMEOVER1 = 'gameovercima.png'
 GAMEOVER2 = 'gameoverbaixo.png'
 
-'''
-spritesheet_heroiLeft = ['existindo': spritesheet_existindo.png,
-                     'healing': spritesheet_healing.png,
-                     'atacando': spritesheet_atacando.png, 
-                     'defendendo': spritesheet_defendendo.png,
-                     'dash': spritesheet_dash.png, 
-                     'dano': spritesheet_dano.png
+
+spritesheet_heroi = ['existindo': spritesheet_existindoLeft.png,
+                     'healing': spritesheet_healingLeft.png,
+                     'andando': spritesheet_andandoLeft.png, 
+                     'atacando': spritesheet_atacandoLeft.png
+                     'defendendo': spritesheet_defendendoLeft.png,
+                     # dash': spritesheet_dashLeft.png, 
+                     'dano': spritesheet_danoLeft.png
                      ]
-'''
+
 # Carrega todos os assets de uma vez.
 def load_assets(img_dir):
     assets = {}
@@ -59,8 +60,8 @@ def load_assets(img_dir):
     #assets[GAMEOVER2] = pygame.image.load(path.join(img_dir, 'gameoverbaixo.png')).convert_alpha()
     
     # Definindo o player e imagens de teste
-    assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
-    assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
+    #assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
+    #assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
     assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'tile-block2.png')).convert_alpha()
@@ -69,9 +70,9 @@ def load_assets(img_dir):
     #Escalas das imagens
     assets[BARRA_IMG]=pygame.transform.scale(assets[BARRA_IMG], (barra_largura, barra_altura))
     assets[BARRA_VERMELHA_IMG]=pygame.transform.scale(assets[BARRA_VERMELHA_IMG], (barra_largura, barra_altura))
-    assets[PLAYER_PARADO_IMG] = pygame.transform.scale(assets[PLAYER_PARADO_IMG], (heroi_largura, heroi_altura))
+    #assets[PLAYER_PARADO_IMG] = pygame.transform.scale(assets[PLAYER_PARADO_IMG], (heroi_largura, heroi_altura))
     assets[INIMIGOS_IMG] = pygame.transform.scale(assets[INIMIGOS_IMG], (vilao_largura, vilao_altura))
-    assets[TESTE_IMG] = pygame.transform.scale(assets[TESTE_IMG], (heroi_largura, heroi_altura))
+    #assets[TESTE_IMG] = pygame.transform.scale(assets[TESTE_IMG], (heroi_largura, heroi_altura))
     #assets[GAMEOVER1] = pygame.transform.scale(assets[GAMEOVER1], (gameover1_largura, gameover1_altura))
     #assets[GAMEOVER2] = pygame.transform.scale(assets[GAMEOVER2], (gameover2_largura, gameover2_altura))
 
