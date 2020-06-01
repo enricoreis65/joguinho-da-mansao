@@ -113,3 +113,4 @@ def load_assets(img_dir):
     assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, menuapertado_altura))
     assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(largura, altura))
     return assets                        
+print(dicio['existindo'][0:3])

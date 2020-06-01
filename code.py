@@ -52,7 +52,7 @@ class heroi(pygame.sprite.Sprite):
             indefeso: dicio['existindo'][0:4],
             ataque: dicio['atacando'][2:5],
             andandoesq:dicio["andandoesq"][0:2],
-            tomando_dano:dicio["dano"][1:3]
+            tomando_dano:dicio["dano"][1:2]
             # defendendo: spritesheet[0:1],
             # tomando_dano: spritesheet[0:1],
             # dash: spritesheet[0:1]
@@ -97,7 +97,7 @@ class heroi(pygame.sprite.Sprite):
                     self.animation = self.animations[andandoesq]
                 if self.speedx==0:
                     self.animation = self.animations[indefeso]
-            if self.estado==tomando_dano:
+            elif self.estado==tomando_dano:
                 if self.speedx>0:
                     self.animation = self.animations[tomando_dano]
                 if self.speedx<0:
@@ -235,21 +235,21 @@ def colisoes():
                 
                 if len(colisao)>0:
                     if player.rect.bottom-inimigo.rect.top<0:
-                        player.hora_da_acao=agora
                         player.estado=tomando_dano
+                        player.hora_da_acao=agora
                         player.vida-=10                       
                         player.rect.x-=90
                         
 
                     elif player.rect.right-inimigo.rect.centerx<0:
-                        player.hora_da_acao=agora
                         player.estado=tomando_dano
+                        player.hora_da_acao=agora
                         player.vida-=10                       
                         player.rect.x-=60
                         
                     elif player.rect.left-inimigo.rect.centerx>0:
-                        player.hora_da_acao=agora
                         player.estado=tomando_dano
+                        player.hora_da_acao=agora
                         player.vida-=10                       
                         player.rect.x+=60
                     
@@ -569,4 +569,4 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    print(player.estado)
+    
