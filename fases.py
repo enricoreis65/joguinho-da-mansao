@@ -5,8 +5,8 @@ from pygame.locals import *
 from mapa import BLOCK,EMPTY,MAP1,MAP2,Tile
 from imagens import *
 from medidas import *
-
-def fases(nivel_da_fase):
+from code import blocks,all_sprites
+def fases_manipula(nivel_da_fase):
     if nivel_da_fase==1:
         for row in range(len(MAP1)):
             for column in range(len(MAP1[row])):

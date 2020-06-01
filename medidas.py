@@ -25,3 +25,7 @@ tutorial_largura = 10
 tutorial_altura = 5
 telainicial_largura = largura
 telainicial_altura = altura
+gameover1_altura = altura
+gameover1_largura = largura
+gameover2_altura = altura
+gameover2_largura = largura

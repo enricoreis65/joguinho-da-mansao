@@ -5,11 +5,13 @@ from pygame.locals import *
 from mapa import BLOCK,EMPTY,MAP1,MAP2,Tile
 from imagens import *
 from medidas import *
-from fases import *
+
 #----------------Configurações para imagens
 
 # Define a pasta que contem figuras e sons    
 img_dir = path.join(path.dirname(__file__), 'img')
+
+
 
 pygame.init()
 
@@ -217,10 +219,12 @@ class heroi(pygame.sprite.Sprite):
 def colisoes():
     
     if estado_do_jogo.aba=="jogando":
-        if player.vida<=0:
+        if player.vida <= 0:
             player.kill()
             barra.kill()
             estado_do_jogo.aba = "menu"
+            #window.blit(assets[GAMEOVER1], (0,0))
+            #window.blit(assets[GAMEOVER2], (0,0))
             
             
         else:
@@ -348,8 +352,8 @@ class modo_de_jogo():
             return False
         
 
-    def jogando(self,qual_a_fase):
-        fases(qual_a_fase)
+    def jogando(self):
+        
               
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
@@ -411,7 +415,7 @@ class modo_de_jogo():
                 pygame.quit()
        
         
-        #tentativa de tutorial
+        # Tutorial:
         
             if sequencia==1:
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
@@ -471,7 +475,7 @@ class modo_de_jogo():
         if self.aba=="menu":
             self.menu()
         if self.aba=="jogando":
-            self.jogando(fase)
+            self.jogando()
         if self.aba=='main menu':
             self.main_menu()
 
@@ -522,10 +526,25 @@ all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
 assets=load_assets(img_dir)
 blocks = pygame.sprite.Group()
-# Cria tiles de acordo com o mapa
-fase=1
+nivel_da_fase=1
 
+for row in range(len(MAP1)):
+    for column in range(len(MAP1[row])):
+        tile_type = MAP1[row][column]
+        if tile_type == BLOCK:
+            tile = Tile(assets[tile_type], row, column)
+            all_sprites.add(tile)
+            blocks.add(tile)
 
+# elif nivel_da_fase==2:
+#     for row in range(len(MAP2)):
+#         for column in range(len(MAP2[row])):
+#             tile_type = MAP2[row][column]
+#             if tile_type == BLOCK:
+#                 tile = Tile(assets[tile_type], row, column)
+#                 all_sprites.add(tile)
+#                 blocks.add(tile)
+# # Cria tiles de acordo com o mapa
 
 player= heroi(vida,player_sheet,blocks)
 estado_do_jogo= modo_de_jogo(player)
