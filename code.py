@@ -2,7 +2,7 @@ import pygame, sys
 import random
 from os import path
 from pygame.locals import *
-from mapa import BLOCK,EMPTY,MAP,Tile
+from mapa import BLOCK,EMPTY,MAP1,MAP2,Tile
 #-----------------Dados iniciais de tamanho
 altura = 720
 largura = 1280
@@ -52,6 +52,26 @@ BARRA_IMG = 'barra.png'
 BARRA_VERMELHA_IMG = 'vida_inimigo.png'
 TUTORIAL = 'tutorial.png'
 
+def fases(self):
+    if fase==1:
+        for row in range(len(MAP1)):
+            for column in range(len(MAP1[row])):
+                tile_type = MAP1[row][column]
+                if tile_type == BLOCK:
+                    tile = Tile(assets[tile_type], row, column)
+                    all_sprites.add(tile)
+                    blocks.add(tile)
+
+    elif fase==2:
+        for row in range(len(MAP2)):
+            for column in range(len(MAP2[row])):
+                tile_type = MAP2[row][column]
+                if tile_type == BLOCK:
+                    tile = Tile(assets[tile_type], row, column)
+                    all_sprites.add(tile)
+                    blocks.add(tile)
+        
+        
 # Carrega todos os assets de uma vez.
 def load_assets(img_dir):
     assets = {}
@@ -160,7 +180,6 @@ class heroi(pygame.sprite.Sprite):
             defendendo: spritesheet[0:1],
             tomando_dano: spritesheet[0:1],
             dash: spritesheet[0:1]
-
             }
         
         self.estado = indefeso
@@ -172,7 +191,7 @@ class heroi(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = largura / 2
-        self.rect.bottom = row*48
+        self.rect.bottom = 48
         self.speedx = 0
         self.speedy= 0
         
@@ -378,6 +397,7 @@ def colisoes():
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,vida_inimigo,player,assets):
         pygame.sprite.Sprite.__init__(self)
+        spritesheet = carrega_spritesheet(inimigo_sheet, 4, 5)
         self.image = assets[INIMIGOS_IMG]
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
@@ -391,6 +411,7 @@ class inimigos(pygame.sprite.Sprite):
         if self.vida==0:
             self.kill()
             barra_vermelha.kill()
+            fase=2
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
             self.rect.y += self.speedy_inimigo
@@ -500,7 +521,7 @@ class modo_de_jogo():
 
 
     def menu(self):
-        global a
+        global sequencia
         
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
@@ -511,24 +532,24 @@ class modo_de_jogo():
         
         #tentativa de tutorial
         
-            if a==1:
+            if sequencia==1:
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
             
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
-                        a=2
+                        sequencia=2
                         self.timer_do_tutorial=agora
             tempo=agora-self.timer_do_tutorial                
-            if a==2:
+            if sequencia==2:
                 
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(assets[PLAYAPERTADO],((largura/2)-(play_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
-                    a=3
-            if a==3 :                
+                    sequencia=3
+            if sequencia==3 :                
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
                     window.blit(assets[PLAY], ((largura-300, altura-100)))
@@ -609,11 +630,9 @@ class adicionais(pygame.sprite.Sprite):
                 self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
 
 
-        
-        
 # ----- Inicia estruturas de dados
 player_sheet = pygame.image.load(path.join(img_dir, 'hp existindo.png')).convert_alpha()
-a=1
+sequencia=1
 clock = pygame.time.Clock()
 vida=100
 vida_inimigo=40
@@ -623,13 +642,9 @@ all_enemis = pygame.sprite.Group()
 assets=load_assets(img_dir)
 blocks = pygame.sprite.Group()
 # Cria tiles de acordo com o mapa
-for row in range(len(MAP)):
-    for column in range(len(MAP[row])):
-        tile_type = MAP[row][column]
-        if tile_type == BLOCK:
-            tile = Tile(assets[tile_type], row, column)
-            all_sprites.add(tile)
-            blocks.add(tile)
+fase=1
+
+
 
 player= heroi(vida,player_sheet,blocks)
 estado_do_jogo= modo_de_jogo(player)
@@ -645,15 +660,15 @@ keys_down = {}
 mouse_pres=[]
 game=True
 
-
+fases(fase)
 agora=pygame.time.get_ticks()
 
 # ===== Loop principal =====
 while game:
+    
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    
     # for event in pygame.event.get():
     #     if event.type == QUIT:
     #         pygame.quit()
