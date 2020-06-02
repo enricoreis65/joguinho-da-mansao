@@ -29,6 +29,10 @@ BARRA_VERMELHA_IMG = 'vida_inimigo.png'
 TUTORIAL = 'tutorial.png'
 GAMEOVER1 = 'gameovercima.png'
 GAMEOVER2 = 'gameoverbaixo.png'
+SAIR = 'sair.png'
+SAIRAPERTADO = 'sairapertado.png'
+RESUME = 'resume.png'
+RESUMEAPERTADO = 'resumeapertado.png'
 def carrega_spritesheet(spritesheet, linhas, colunas):
     
     sprite_width = spritesheet.get_width() // colunas
@@ -83,7 +87,11 @@ def load_assets(img_dir):
     assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
     assets[GAMEOVER1] = pygame.image.load(path.join(img_dir, 'gameovercima.png')).convert_alpha()
     assets[GAMEOVER2] = pygame.image.load(path.join(img_dir, 'gameoverbaixo.png')).convert_alpha()
-    
+    assets[SAIR] = pygame.image.load(path.join(img_dir, 'sair.png')).convert_alpha()
+    assets[SAIRAPERTADO] = pygame.image.load(path.join(img_dir, 'sairapertado.png')).convert_alpha()
+    assets[RESUME] = pygame.image.load(path.join(img_dir, 'resume.png')).convert_alpha()
+    assets[RESUMEAPERTADO] = pygame.image.load(path.join(img_dir, 'resumeapertado.png')).convert_alpha()
+
     # Definindo o player e imagens de teste:
     #assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
     #assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
@@ -99,7 +107,11 @@ def load_assets(img_dir):
     #assets[TESTE_IMG] = pygame.transform.scale(assets[TESTE_IMG], (heroi_largura, heroi_altura))
     assets[GAMEOVER1] = pygame.transform.scale(assets[GAMEOVER1], (gameover1_largura, gameover1_altura))
     assets[GAMEOVER2] = pygame.transform.scale(assets[GAMEOVER2], (gameover2_largura, gameover2_altura))
-
+    assets[SAIR] = pygame.transform.scale(assets[SAIR], (sair_largura, sair_altura))
+    assets[SAIRAPERTADO] = pygame.transform.scale(assets[SAIRAPERTADO], (sairapertado_largura, sairapertado_altura))
+    assets[RESUME] = pygame.transform.scale(assets[RESUME], (resume_largura, resume_altura))
+    assets[RESUMEAPERTADO] = pygame.transform.scale(assets[RESUMEAPERTADO], (resumeapertado_largura, resumeapertado_altura))
+    
     assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(largura,altura))
     # assets[TELA_1_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
     # assets[ROGER_IMG] = pygame.transform.scale(assets[ROGER_IMG],(roger_largura, roger_altura))
