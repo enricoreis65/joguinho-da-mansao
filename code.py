@@ -233,18 +233,18 @@ def colisoes_chaves():
             all_chaves.empty()
             blocks.empty()
             all_sprites.empty()
-            
+            all_enemis.empty()
             chave2=adicionais(assets[Chave2],0,0,largura-100,100)
             colisao.clear()
             
-            barra= adicionais(assets[BARRA_IMG],player,barra_largura,0,0)
-            barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
+            
+            
             
             all_sprites.add(chave2)
             all_chaves.add(chave2)
             all_sprites.add(player)
             all_sprites.add(barra)
-            all_sprites.add(barra_vermelha)
+            
             estado_do_jogo.aba = "troca_de_fase"
             
 
@@ -544,7 +544,12 @@ class modo_de_jogo():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
                     fases(2)
-                    all_sprites.add(inimigo)
+                    for i in range(2):
+                        inimigo = inimigos(vida_inimigo,player,dicio,"inimigo")
+                        barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
+                        all_sprites.add(inimigo)
+                        all_sprites.add(barra_vermelha)
+                        all_enemis.add(inimigo)
                     self.aba="jogando"
 
         pygame.display.update() 
