@@ -42,7 +42,7 @@ fullscreen = False
 
 #------------------
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,vida,player_sheet,blocks):
+    def __init__(self,vida,player_sheet,blocks,chaves):
         pygame.sprite.Sprite.__init__(self)
         
         
@@ -67,7 +67,7 @@ class heroi(pygame.sprite.Sprite):
         self.state = espera
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
-        self.rect.centerx = largura / 2
+        self.rect.centerx = 50
         self.rect.bottom = 12*48
         self.speedx = 0
         self.speedy= 0
@@ -226,79 +226,54 @@ class heroi(pygame.sprite.Sprite):
                     if self.estado == indefeso:
                         self.estado = dash
                         self.quantdash-=1             
-                    
+def colisoes_chaves():
+    if estado_do_jogo.aba=="jogando":
+        colisao=pygame.sprite.spritecollide(player,all_chaves,False, pygame.sprite.collide_mask)
+        if len(colisao)>0:
+            all_chaves.empty()
+            blocks.empty()
+            all_sprites.empty()
+            
+            chave2=adicionais(assets[Chave2],0,0,largura-100,100)
+            colisao.clear()
+            
+            barra= adicionais(assets[BARRA_IMG],player,barra_largura,0,0)
+            barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
+            
+            all_sprites.add(chave2)
+            all_chaves.add(chave2)
+            all_sprites.add(player)
+            all_sprites.add(barra)
+            all_sprites.add(barra_vermelha)
+            estado_do_jogo.aba = "troca_de_fase"
+            
 
-def colisoes():
+
+
+def colisoes_inimigo():
     
     if estado_do_jogo.aba=="jogando":
         if player.vida <= 0:
             player.kill()
             barra.kill()
             estado_do_jogo.aba = "gameover"
-            
-            
-        else:
-            if player.estado==indefeso:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)
-                
-                if len(colisao)>0:
-                    if player.rect.bottom-inimigo.rect.top<0:
-                        player.estado=tomando_dano
-                        player.hora_da_acao=agora
-                        player.vida-=10                       
-                        player.rect.x-=90
-                        
+        colisao=pygame.sprite.spritecollide(player,inimigo,False, pygame.sprite.collide_mask)    
+        if len(colisao)>0:
 
-                    elif player.rect.right-inimigo.rect.centerx<0:
-                        player.estado=tomando_dano
-                        player.hora_da_acao=agora
-                        player.vida-=10                       
-                        player.rect.x-=60
-                        
-                    elif player.rect.left-inimigo.rect.centerx>0:
-                        player.estado=tomando_dano
-                        player.hora_da_acao=agora
-                        player.vida-=10                       
-                        player.rect.x+=60
-                    
+            inimigo.dano()
         
-            if player.estado==ataque:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)   
-                if len(colisao)>0:  
-                    if player.rect.right-inimigo.rect.centerx<0:
-                        inimigo.estado=tomando_dano
-                        colisao.clear()
-                        inimigo.dano()
-                        player.estado=indefeso
-                        barra_vermelha.diminuir()                    
-                        player.rect.x-=40
-                        
-                    elif player.rect.left-inimigo.rect.centerx>0:
-                        inimigo.estado=tomando_dano
-                        colisao.clear()
-                        inimigo.dano()
-                        player.estado=indefeso
-                        barra_vermelha.diminuir()                      
-                        player.rect.x+=40
-                        
-
-
-            if player.estado==defendendo:
-                colisao=pygame.sprite.spritecollide(player,all_enemis,False, pygame.sprite.collide_mask)   
-                if len(colisao)>0:
-                    colisao.clear()
-                    inimigo.dano()
+            
                     
 
 class inimigos(pygame.sprite.Sprite):
-    def __init__(self,vida_inimigo,player,assets):
+    def __init__(self,vida_inimigo,player,assets,inimigo):
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
         self.animations = {
             espera: dicio['inimigo'][0:6],
             tomando_dano: dicio['inimigo'][0:6],
             }
-        
+        self.ele=inimigo
         
         self.animation = self.animations[self.estado]
         self.frame = 0
@@ -358,21 +333,74 @@ class inimigos(pygame.sprite.Sprite):
         if player.rect.y-self.rect.y<0 :
             self.speedy_inimigo = -1
     def dano(self):
+        
+        
+                        
+        if player.estado==indefeso:
+                
+                
+                if len(colisao)>0:
+                    if player.rect.bottom-self.rect.top<0:
+                        player.estado=tomando_dano
+                        player.hora_da_acao=agora
+                        player.vida-=10                       
+                        player.rect.x-=90
+                        
+
+                    elif player.rect.right-self.rect.centerx<0:
+                        player.estado=tomando_dano
+                        player.hora_da_acao=agora
+                        player.vida-=10                       
+                        player.rect.x-=60
+                        
+                    elif player.rect.left-self.rect.centerx>0:
+                        player.estado=tomando_dano
+                        player.hora_da_acao=agora
+                        player.vida-=10                       
+                        player.rect.x+=60
+                    colisao.clear()
+        
         if player.estado==ataque:
-            inimigo.vida-=10
-            if player.rect.right-inimigo.rect.centerx<0:
-                inimigo.rect.x+=40
-                inimigo.rect.y-=20             
-            elif player.rect.left-inimigo.rect.centerx>=0:    
-                inimigo.rect.x-=40
-                inimigo.rect.y-=20                   
+            
+            if len(colisao)>0: 
+                self.vida-=10 
+                if player.rect.right-self.rect.centerx<0:
+                    self.rect.x+=40
+                    self.rect.y-=20  
+                    self.estado=tomando_dano
+                    
+                    
+                    player.estado=indefeso
+                    barra_vermelha.diminuir()
+                                    
+                    player.rect.x-=40
+                    
+                elif player.rect.left-self.rect.centerx>0:
+                    self.estado=tomando_dano
+                    self.rect.x-=40
+                    self.rect.y-=20    
+                    
+                    player.estado=indefeso
+                    
+                    barra_vermelha.diminuir()  
+                                        
+                    player.rect.x+=40
+                colisao.clear()    
+
+
         if player.estado==defendendo:
-            if player.rect.right-inimigo.rect.centerx<0:
-                inimigo.rect.x+=60
-                inimigo.rect.y-=25             
-            elif player.rect.left-inimigo.rect.centerx>=0:    
-                inimigo.rect.x-=60
-                inimigo.rect.y-=25   
+        
+            if len(colisao)>0:
+                if player.rect.right-self.rect.centerx<0:
+                    self.rect.x+=60
+                    self.rect.y-=25    
+                
+                
+                elif player.rect.left-self.rect.centerx>=0:    
+                    self.rect.x-=60
+                    self.rect.y-=25   
+                colisao.clear()            
+                  
         
 
 class modo_de_jogo():
@@ -403,7 +431,6 @@ class modo_de_jogo():
         pygame.display.update()  
     def jogando(self):
         
-              
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
         for event in pygame.event.get():
@@ -425,9 +452,7 @@ class modo_de_jogo():
                     self.aba = 'main menu'
                 if event.key == pygame.K_l:
                     player.dash()
-                    blocks.empty()
-                    all_sprites.empty()
-                    fases(2)
+                    
                     
 
         # Verifica se soltou alguma tecla.
@@ -450,7 +475,8 @@ class modo_de_jogo():
         all_sprites.draw(window)
         window.blit(text,(10,10))
         window.blit(text2,(70,10))
-        colisoes()
+        colisoes_inimigo()
+        colisoes_chaves()
                 
         all_sprites.update()
         
@@ -499,7 +525,36 @@ class modo_de_jogo():
                             self.aba="jogando"
 
             pygame.display.update()
-       
+    def troca_de_fase(self):
+        window.fill((0, 0, 0))
+        text=font.render('fase 2', True, (255, 255, 255))
+        text_rect=text.get_rect()
+        text_largura=text_rect.width
+        text_altura=text_rect.height
+        window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
+        player.rect.centerx = 50
+        player.rect.bottom = 12*48
+        player.quantdash=3
+        player.speedx=0
+        player.speedy=0
+                
+        window.blit(assets[RESUME], ((largura-300, altura-100)))
+            
+        for event in pygame.event.get():
+            
+            pos=pygame.mouse.get_pos()
+            
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
+                    fases(2)
+                    all_sprites.add(inimigo)
+                    self.aba="jogando"
+
+        pygame.display.update() 
+
 
     def main_menu(self):
         text = font.render('Aperte Esc para voltar e X para sair', True, (255, 255, 255))
@@ -535,19 +590,24 @@ class modo_de_jogo():
             self.main_menu()
         if self.aba=="gameover":
             self.game_over()
+        if self.aba=="troca_de_fase":
+            self.troca_de_fase()
 class adicionais(pygame.sprite.Sprite):
-    def __init__(self,img,quem_ta_seguindo,largura):
+    def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.image2 = img
         self.rect = self.image.get_rect()
-        self.rect.centerx = 0
-        self.rect.bottom = 0
+        self.rect.centerx = posx
+        self.rect.centery = posy
+        self.ini_Pos=posy
         self.largura=largura
         self.largura2=largura
         self.quem_ta_seguindo=quem_ta_seguindo
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self):
+        global variavel
         if self.quem_ta_seguindo==player:
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
             self.rect.bottom = self.quem_ta_seguindo.rect.bottom-heroi_altura-2
@@ -561,18 +621,30 @@ class adicionais(pygame.sprite.Sprite):
                     self.largura2=32
                     self.largura=32
                     self.image=pygame.transform.scale(self.image2, (self.largura2, barra_altura))
-        if self.quem_ta_seguindo==inimigo:
+        if self.quem_ta_seguindo==inimigo or self.quem_ta_seguindo==inimigo2 :
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
             self.rect.bottom = self.quem_ta_seguindo.rect.bottom-heroi_altura-2
+        if self.quem_ta_seguindo==0:
+            
+            if self.rect.centery<self.ini_Pos-11 or self.rect.centery>self.ini_Pos+11 :
+                variavel*=-1
+            if variavel>0:
+                self.rect.y += 1
+            elif variavel<0:
+                self.rect.y -= 1
+
     def diminuir(self):
-        if self.quem_ta_seguindo==inimigo:
+        if self.quem_ta_seguindo==inimigo or self.quem_ta_seguindo==inimigo2 :
             if self.largura>0:
                 self.largura-=8
                 self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
+    
 def fases(fase):
     
     if fase==1:
-        
+        chave1=adicionais(assets[Chave1],0,0,largura-100,100)
+        all_sprites.add(chave1)
+        all_chaves.add(chave1)
         for row in range(len(MAP1)):
             for column in range(len(MAP1[row])):
                 tile_type = MAP1[row][column]
@@ -581,11 +653,6 @@ def fases(fase):
                     all_sprites.add(tile)
                     blocks.add(tile)
     if fase ==2:
-        all_sprites.add(player)
-        all_sprites.add(barra)
-        all_sprites.add(barra_vermelha)
-        all_sprites.add(inimigo)
-        
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
                 tile_type = MAP2[row][column]
@@ -595,7 +662,7 @@ def fases(fase):
                     blocks.add(tile2)
 
 # ----- Inicia estruturas de dados
-
+variavel=1
 sequencia=1
 clock = pygame.time.Clock()
 vida=100
@@ -605,17 +672,23 @@ all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
 assets=load_assets(img_dir)
 blocks = pygame.sprite.Group()
+all_chaves = pygame.sprite.Group()
 fase=1
 fases(fase)
 keys_down = {}
-player= heroi(vida,dicio,blocks)
+player= heroi(vida,dicio,blocks,all_chaves)
 estado_do_jogo= modo_de_jogo(player)
-inimigo= inimigos(vida_inimigo,player,dicio)
-barra= adicionais(assets[BARRA_IMG],player,barra_largura)
-barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura)
+inimigo= inimigos(vida_inimigo,player,dicio,"inimigo1")
+inimigo2= inimigos(vida_inimigo,player,dicio,"inimigo2")
+barra= adicionais(assets[BARRA_IMG],player,barra_largura,0,0)
+barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
+barra_vermelha2= adicionais(assets[BARRA_VERMELHA_IMG],inimigo2,barra_largura,0,0)
+all_sprites.add(inimigo2)
+all_enemis.add(inimigo2)
 all_sprites.add(player)
 all_sprites.add(barra)
 all_sprites.add(barra_vermelha)
+all_sprites.add(barra_vermelha2)
 all_sprites.add(inimigo)
 all_enemis.add(inimigo)
 mouse_pres=[]

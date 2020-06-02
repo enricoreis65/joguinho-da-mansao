@@ -37,3 +37,5 @@ resume_altura = 50
 resume_largura = 100
 resumeapertado_altura = 50
 resumeapertado_largura = 100
+chave_largura=80
+chave_altura=54
