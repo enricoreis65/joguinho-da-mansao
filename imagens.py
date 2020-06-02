@@ -57,7 +57,8 @@ spritesheet_todos = {'existindo':pygame.transform.scale(pygame.image.load(path.j
                      #'defendendo': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (52*4, 80*2)),
                      # dash': pygame.transform.scale("spritesheet_dashLeft.png")).concert_alpha(), (52*4, 80*2)) ,
                      'dano': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
-                     "inimigo":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha(), (52*5, 80*4))
+                     "inimigo":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha(), (52*5, 80*4)),
+                     "pulando":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoLeft.png')).convert_alpha(), (52*3, 80*2))
 }
 
 dicio={}
@@ -67,6 +68,7 @@ dicio['atacando']=carrega_spritesheet(spritesheet_todos['atacando'], 3, 2)
 dicio['andandoesq']=carrega_spritesheet(spritesheet_todos['andandoesq'], 1, 2)
 dicio['dano']=carrega_spritesheet(spritesheet_todos['dano'], 2, 2)
 dicio["inimigo"]=carrega_spritesheet(spritesheet_todos['inimigo'], 4, 5)
+dicio["pulando"]=carrega_spritesheet(spritesheet_todos['pulando'], 2, 3)
 # Carrega todos os assets de uma vez.
 def load_assets(img_dir):
     assets = {}
@@ -127,4 +129,3 @@ def load_assets(img_dir):
     assets[MENUAPERTADO] = pygame.transform.scale(assets[MENUAPERTADO],(menuapertado_largura, menuapertado_altura))
     assets[TUTORIAL] = pygame.transform.scale(assets[TUTORIAL],(largura, altura))
     return assets                        
-print(dicio['existindo'][0:3])

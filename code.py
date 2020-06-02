@@ -52,9 +52,10 @@ class heroi(pygame.sprite.Sprite):
             indefeso: dicio['existindo'][0:4],
             ataque: dicio['atacando'][2:5],
             andandoesq:dicio["andandoesq"][0:2],
-            tomando_dano:dicio["dano"][1:2]
+            tomando_dano:dicio["dano"][1:2],
+            pulando:dicio["pulando"][2:3]
             # defendendo: spritesheet[0:1],
-            # tomando_dano: spritesheet[0:1],
+            
             # dash: spritesheet[0:1]
             }
         
@@ -90,7 +91,14 @@ class heroi(pygame.sprite.Sprite):
         if elapsed2_ticks > self.frame_ticks:
             self.last_update = now
             self.frame += 1
-            if self.estado==indefeso:
+            if self.speedy!=0:
+                if self.speedx>0:
+                    self.animation = self.animations[pulando]
+                if self.speedx<0:
+                    self.animation = self.animations[pulando]
+                if self.speedx==0:
+                    self.animation = self.animations[pulando]
+            elif self.estado==indefeso:
                 if self.speedx>0:
                     self.animation = self.animations[andandoesq]
                 if self.speedx<0:
