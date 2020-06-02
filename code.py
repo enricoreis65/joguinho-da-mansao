@@ -425,8 +425,10 @@ class modo_de_jogo():
                     self.aba = 'main menu'
                 if event.key == pygame.K_l:
                     player.dash()
-                    
+                    blocks.empty()
+                    all_sprites.empty()
                     fases(2)
+                    
 
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
@@ -464,8 +466,9 @@ class modo_de_jogo():
             
             if event.type == pygame.QUIT:
                 pygame.quit()
-       
-        
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    self.aba="jogando"
         # Tutorial:
         
             if sequencia==1:
@@ -477,6 +480,7 @@ class modo_de_jogo():
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
                         sequencia=2
                         self.timer_do_tutorial=agora
+                    
             tempo=agora-self.timer_do_tutorial                
             if sequencia==2:
                 
@@ -566,7 +570,9 @@ class adicionais(pygame.sprite.Sprite):
                 self.largura-=8
                 self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
 def fases(fase):
+    
     if fase==1:
+        
         for row in range(len(MAP1)):
             for column in range(len(MAP1[row])):
                 tile_type = MAP1[row][column]
@@ -575,22 +581,18 @@ def fases(fase):
                     all_sprites.add(tile)
                     blocks.add(tile)
     if fase ==2:
-        for row in range(len(MAP1)):
-                for column in range(len(MAP1[row])):
-                    tile_type = MAP1[row][column]
-                    if tile_type == BLOCK:
-                        tile = Tile(assets[Chao], row, column)
-                        tile.kill()
-                        
-                  
-    
+        all_sprites.add(player)
+        all_sprites.add(barra)
+        all_sprites.add(barra_vermelha)
+        all_sprites.add(inimigo)
+        
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
                 tile_type = MAP2[row][column]
                 if tile_type == BLOCK:
-                    tile = Tile(assets[Chao], row, column)
-                    all_sprites.add(tile)
-                    blocks.add(tile)
+                    tile2 = Tile(assets[Chao], row, column)
+                    all_sprites.add(tile2)
+                    blocks.add(tile2)
 
 # ----- Inicia estruturas de dados
 
