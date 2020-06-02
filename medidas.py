@@ -29,3 +29,7 @@ gameover1_altura = altura
 gameover1_largura = largura
 gameover2_altura = altura
 gameover2_largura = largura
+sair_altura = 5
+sair_largura = 10
+sairapertado_altura = 5
+sairapertado_largura = 10
