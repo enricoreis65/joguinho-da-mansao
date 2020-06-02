@@ -33,3 +33,7 @@ sair_altura = 5
 sair_largura = 10
 sairapertado_altura = 5
 sairapertado_largura = 10
+resume_altura = 5
+resume_largura = 10
+resumeapertado_altura = 5
+resumeapertado_largura = 10
