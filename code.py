@@ -422,14 +422,14 @@ class modo_de_jogo():
 
             sequencia=4
             if sequencia==4:
-                window.blit(assets[MENU], ((largura/2)-(play_largura/2), altura-100))
+                window.blit(assets[MENU], ((largura/2)-(menu_largura/2), altura-100))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
                         sequencia=5
                         self.timer_do_tutorial=agora
                 tempo2 = agora - self.timer_do_tutorial
                 if sequencia==5:
-                    window.blit(assets[MENUAPERTADO],((largura/2)-(menuapertado_largura/2), altura-100))  
+                    window.blit(assets[MENUAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
                     if  tempo2 > self.duracao_do_tutorial:
                         self.timer_do_tutorial=agora
                         sequencia=6
