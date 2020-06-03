@@ -40,7 +40,7 @@ font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 
 fullscreen = False
 
-
+print('ta funcionando?')
 # SPRITESHEET
 
 #----------------------------------------------------------------------#
@@ -49,8 +49,7 @@ class heroi(pygame.sprite.Sprite):
     def __init__(self,vida,player_sheet,blocks,chaves):
         pygame.sprite.Sprite.__init__(self)
         
-        
-        
+
         self.blocks=blocks
         self.animations = {
             indefeso: dicio['existindo'][0:4],
@@ -88,9 +87,7 @@ class heroi(pygame.sprite.Sprite):
         self.duracao_do_tutorial=1000
         
     # Update    
-    def update(self):
-        global sequencia
-        
+    def update(self):        
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
 
@@ -182,32 +179,11 @@ class heroi(pygame.sprite.Sprite):
             # Estava indo para a esquerda
             elif self.speedx < 0:
                 self.rect.left = collision.rect.right
-        for event in pygame.event.get():
-            pos=pygame.mouse.get_pos()
+
         # Morre quando cai no mapa
-            if self.rect.top > altura:
-                player.kill()
-                sequencia=4
-                if sequencia==4:
-                    window.blit(assets[GAMEOVER1], (0,0))
-                    window.blit(assets[MENU], ((largura/2)-(play_largura/2), altura-100))
-                
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
-                            sequencia=5
-                            self.timer_do_tutorial=agora
-                tempo=agora-self.timer_do_tutorial  
-
-                if sequencia==5:
-                    window.blit(assets[GAMEOVER1], (0,0))
-                    window.blit(assets[MENUAPERTADO],((largura/2)-(menuapertado_largura/2), altura-100))  
-                    if  tempo> self.duracao_do_tutorial:
-                        self.timer_do_tutorial=agora
-                        sequencia=6
-
-                if sequencia==6:
-                    estado_do_jogo.aba = 'main menu'
-
+        if self.rect.top > altura:
+            player.kill()
+            estado_do_jogo.aba = 'gameover'
 
     def pulo(self):
         if self.state == espera:
@@ -433,15 +409,35 @@ class modo_de_jogo():
             return False
         
     def game_over(self):
-        global fase
+        global sequencia
         window.fill((0, 0, 0))
         window.blit(assets[GAMEOVER1], (0,0))
         window.blit(assets[GAMEOVER2], (0,0))
         for event in pygame.event.get():
+            pos=pygame.mouse.get_pos()
+            
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 pygame.quit()  
-        pygame.display.update()  
+
+            sequencia=4
+            if sequencia==4:
+                window.blit(assets[MENU], ((largura/2)-(play_largura/2), altura-100))
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
+                        sequencia=5
+                        self.timer_do_tutorial=agora
+                tempo2 = agora - self.timer_do_tutorial
+                if sequencia==5:
+                    window.blit(assets[MENUAPERTADO],((largura/2)-(menuapertado_largura/2), altura-100))  
+                    if  tempo2 > self.duracao_do_tutorial:
+                        self.timer_do_tutorial=agora
+                        sequencia=6
+                if sequencia==6:
+                    estado_do_jogo.aba = 'menu'  
+                    sequencia = 1
+
+        pygame.display.update()
 
     def jogando(self):
         
@@ -496,7 +492,6 @@ class modo_de_jogo():
 
     def menu(self):
         global sequencia
-        
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
             
@@ -504,6 +499,7 @@ class modo_de_jogo():
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
+                    sequencia = 3
                     self.aba="jogando"
         
         # Tutorial:
