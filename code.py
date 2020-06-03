@@ -1,3 +1,6 @@
+#----------------------------------------------------------------------#
+# - Imports:
+
 import pygame, sys
 import random
 from os import path
@@ -5,10 +8,10 @@ from pygame.locals import *
 from imagens import *
 from mapa import BLOCK,EMPTY,MAP1,Tile,MAP2
 from medidas import *
+from sons import *
 
-#----------------Configurações para imagens
+#----------------------------------------------------------------------#
 
-# Define a pasta que contem figuras e sons    
 
 pygame.init()
 
@@ -34,13 +37,11 @@ font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 
 fullscreen = False
 
-#----------------Configurações para imagens
-# MAPA
 
 # SPRITESHEET
 
+#----------------------------------------------------------------------#
 
-#------------------
 class heroi(pygame.sprite.Sprite):
     def __init__(self,vida,player_sheet,blocks,chaves):
         pygame.sprite.Sprite.__init__(self)
@@ -489,6 +490,7 @@ class modo_de_jogo():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     self.aba="jogando"
+        
         # Tutorial:
         
             if sequencia==1:
@@ -591,6 +593,9 @@ class modo_de_jogo():
             self.game_over()
         if self.aba=="troca_de_fase":
             self.troca_de_fase()
+
+#----------------------------------------------------------------------#
+
 class adicionais(pygame.sprite.Sprite):
     def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
         pygame.sprite.Sprite.__init__(self)
@@ -662,6 +667,7 @@ def fases(fase):
                     all_sprites.add(tile2)
                     blocks.add(tile2)
 
+#----------------------------------------------------------------------#
 # ----- Inicia estruturas de dados
 variavel=1
 sequencia=1
@@ -695,6 +701,7 @@ game=True
 
 agora=pygame.time.get_ticks()
 
+#----------------------------------------------------------------------#
 # ===== Loop principal =====
 while game:
     
