@@ -29,6 +29,7 @@ tomando_dano="tomando_dano"
 defendendo="defendendo"
 pronto_para_acao="pronto_para_acao"
 dash="dash"
+
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura))
@@ -237,9 +238,7 @@ def colisoes_chaves():
             all_enemis.empty()
             chave2=adicionais(assets[Chave2],0,0,largura-100,100)
             colisao.clear()
-            
-            
-            
+             
             
             all_sprites.add(chave2)
             all_chaves.add(chave2)
@@ -260,10 +259,7 @@ def colisoes_inimigo():
             estado_do_jogo.aba = "gameover"
         
             
-
-     
-            
-                    
+#----------------------------------------------------------------------#                 
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,vida_inimigo,player,assets,inimigo):
@@ -397,6 +393,7 @@ class inimigos(pygame.sprite.Sprite):
                         self.rect.y-=25   
                  
         
+#----------------------------------------------------------------------#
 
 class modo_de_jogo():
     def __init__(self,player):
