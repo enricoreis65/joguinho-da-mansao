@@ -10,7 +10,7 @@ from pygame.locals import *
 from imagens import *
 from mapa import BLOCK,EMPTY,MAP1,Tile,MAP2
 from medidas import *
-from sons import *
+#from sons import *
 
 #----------------------------------------------------------------------#
 
@@ -703,7 +703,7 @@ agora=pygame.time.get_ticks()
 
 #----------------------------------------------------------------------#
 # ===== Loop principal =====
-pygame.mixer.music.play(loops=-1)
+#pygame.mixer.music.play(loops=-1)
 while game:
     
     clock.tick(FPS)
