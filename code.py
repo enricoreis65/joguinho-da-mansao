@@ -14,7 +14,6 @@ from medidas import *
 
 #----------------------------------------------------------------------#
 
-
 pygame.init()
 pygame.mixer.init()
 
@@ -84,11 +83,13 @@ class heroi(pygame.sprite.Sprite):
         self.frame_ticks = 300
         self.last_update = pygame.time.get_ticks()
 
-        
         self.hora_da_acao=pygame.time.get_ticks()
+        self.timer_do_tutorial = pygame.time.get_ticks()
+        self.duracao_do_tutorial=1000
         
     # Update    
     def update(self):
+        global sequencia
         
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
@@ -143,10 +144,6 @@ class heroi(pygame.sprite.Sprite):
             if agora -self.hora_da_acao>self.acao_ticks:
                 self.estado=indefeso
 
-        
-            
-
-
         self.speedy += gravidade
         # Atualiza o estado para caindo
         if self.speedy > 0:
@@ -171,7 +168,6 @@ class heroi(pygame.sprite.Sprite):
                 # Atualiza o estado para parado
                 self.state = espera
 
-
         # Mantem dentro da tela
         if self.rect.right > largura:
             self.rect.right = largura
@@ -186,6 +182,33 @@ class heroi(pygame.sprite.Sprite):
             # Estava indo para a esquerda
             elif self.speedx < 0:
                 self.rect.left = collision.rect.right
+        for event in pygame.event.get():
+            pos=pygame.mouse.get_pos()
+        # Morre quando cai no mapa
+            if self.rect.top > altura:
+                player.kill()
+                sequencia=4
+                if sequencia==4:
+                    window.blit(assets[GAMEOVER1], (0,0))
+                    window.blit(assets[MENU], ((largura/2)-(play_largura/2), altura-100))
+                
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
+                            sequencia=5
+                            self.timer_do_tutorial=agora
+                tempo=agora-self.timer_do_tutorial  
+
+                if sequencia==5:
+                    window.blit(assets[GAMEOVER1], (0,0))
+                    window.blit(assets[MENUAPERTADO],((largura/2)-(menuapertado_largura/2), altura-100))  
+                    if  tempo> self.duracao_do_tutorial:
+                        self.timer_do_tutorial=agora
+                        sequencia=6
+
+                if sequencia==6:
+                    estado_do_jogo.aba = 'main menu'
+
+
     def pulo(self):
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
@@ -277,8 +300,6 @@ class inimigos(pygame.sprite.Sprite):
         self.animation = self.animations[self.estado]
         self.frame = 0
         self.image = self.animation[self.frame]
-
-    
     
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
@@ -323,8 +344,6 @@ class inimigos(pygame.sprite.Sprite):
         if player.rect.x-self.rect.x<0 :
             self.speedx_inimigo = -1
 
-        
-        
         if player.rect.y-self.rect.y>0 :
             self.rect.y != altura
             self.speedy_inimigo = 1 
@@ -342,7 +361,6 @@ class inimigos(pygame.sprite.Sprite):
                     player.hora_da_acao=agora
                     player.vida-=10                       
                     player.rect.x-=90
-                    
 
                 elif player.rect.right-self.rect.centerx<0:
                     player.estado=tomando_dano
@@ -424,6 +442,7 @@ class modo_de_jogo():
             if event.type == pygame.QUIT:
                 pygame.quit()  
         pygame.display.update()  
+
     def jogando(self):
         
         text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
@@ -446,9 +465,7 @@ class modo_de_jogo():
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'main menu'
                 if event.key == pygame.K_l:
-                    player.dash()
-                    
-                    
+                    player.dash() 
 
         # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
@@ -461,9 +478,7 @@ class modo_de_jogo():
                     if event.key == pygame.K_k:   
                         player.ataque()
                     if event.key == pygame.K_j:
-                        player.defesa()
-            
-                
+                        player.defesa()      
      
     # ----- Gera saídas
         window.fill((0, 0, 0))
@@ -492,7 +507,6 @@ class modo_de_jogo():
                     self.aba="jogando"
         
         # Tutorial:
-        
             if sequencia==1:
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
@@ -502,8 +516,8 @@ class modo_de_jogo():
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
                         sequencia=2
                         self.timer_do_tutorial=agora
-                    
-            tempo=agora-self.timer_do_tutorial                
+            tempo=agora-self.timer_do_tutorial  
+
             if sequencia==2:
                 
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
@@ -511,6 +525,7 @@ class modo_de_jogo():
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     sequencia=3
+
             if sequencia==3 :                
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
@@ -644,7 +659,6 @@ class adicionais(pygame.sprite.Sprite):
             elif variavel<0:
                 self.rect.y -= 1
 
-    
 def fases(fase):
     
     if fase==1:
