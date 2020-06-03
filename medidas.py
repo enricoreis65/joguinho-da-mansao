@@ -1,3 +1,7 @@
+# - CONFIGURAÇÕES DAS MEDIDAS DO JOGO:
+
+#----------------------------------------------------------------------#
+# - Imports:
 
 import pygame
 import random

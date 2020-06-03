@@ -1,3 +1,8 @@
+# - CONFIGURAÇÕES DOS MAPAS DO JOGO:
+
+#----------------------------------------------------------------------#
+# - Imports:
+
 import pygame
 import random
 from os import path

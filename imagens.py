@@ -1,3 +1,8 @@
+# - CONFIGURAÇÕES PARA AS IMAGENS DO JOGO:
+
+#----------------------------------------------------------------------#
+# - Imports:
+
 import pygame
 import random
 from os import path

@@ -1,3 +1,5 @@
+# - CÓDIGO PRINCIPAL DO JOGO:
+
 #----------------------------------------------------------------------#
 # - Imports:
 
@@ -14,6 +16,7 @@ from sons import *
 
 
 pygame.init()
+pygame.mixer.init()
 
 
 #---- Dados movimento
@@ -700,6 +703,7 @@ agora=pygame.time.get_ticks()
 
 #----------------------------------------------------------------------#
 # ===== Loop principal =====
+pygame.mixer.music.play(loops=-1)
 while game:
     
     clock.tick(FPS)
