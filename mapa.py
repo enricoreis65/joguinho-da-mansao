@@ -7,13 +7,14 @@ import pygame
 import random
 from os import path
 
-# Define os tipos de tiles
+# - Define os tipos de tiles:
 BLOCK = 0
 EMPTY = -1
+# - Define o tamanho dos tiles:
 TILE_SIZE_largura = 48
 TILE_SIZE_altura = 106
 
-# Define o mapa com os tipos de tiles
+# - Define os mapas com os tipos de tiles:
 MAP1 = [
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
@@ -49,7 +50,7 @@ MAP2 = [
     [BLOCK, BLOCK, BLOCK, BLOCK, EMPTY, EMPTY, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK],
 ]
 
-# Class que representa os blocos do cenário
+# - Class que representa os blocos do cenário:
 class Tile(pygame.sprite.Sprite):
 
     # Construtor da classe.

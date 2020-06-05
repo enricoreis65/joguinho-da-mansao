@@ -9,7 +9,8 @@ from os import path
 from medidas import *
 from pygame.locals import *
 
-# Carrega os sons do jogo
+# - Carrega os sons do jogo:
+
 #pygame.mixer.music.load('')
 #pygame.mixer.music.set_volume(0.4)
 
