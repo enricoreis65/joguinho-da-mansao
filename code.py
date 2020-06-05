@@ -264,14 +264,14 @@ def colisoes_inimigo():
 #----------------------------------------------------------------------#                 
 
 class inimigos(pygame.sprite.Sprite):
-    def __init__(self,vida_inimigo,player,assets,inimigo):
+    def __init__(self,vida_inimigo,player,assets,vidaini):
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
         self.animations = {
             espera: dicio['inimigo'][0:6],
             tomando_dano: dicio['inimigo'][0:6],
             }
-        self.ele=inimigo
+        
         
         self.animation = self.animations[self.estado]
         self.frame = 0
@@ -283,7 +283,7 @@ class inimigos(pygame.sprite.Sprite):
         self.rect.bottom = random.randint(0,altura)
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
-        self.vida=vida_inimigo
+        self.vida=vidaini
         
         self.frame_ticks = 200
         self.last_update = pygame.time.get_ticks()
@@ -294,16 +294,16 @@ class inimigos(pygame.sprite.Sprite):
         if elapsed2_ticks > self.frame_ticks:
             self.last_update = now
             self.frame += 1
-        self.animation = self.animations[self.estado]
+            self.animation = self.animations[self.estado]
 
-        if self.frame >= len(self.animation):
-            self.frame = 0
+            if self.frame >= len(self.animation):
+                self.frame = 0
    
-        center = self.rect.center
-        self.image = self.animation[self.frame]
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect = self.image.get_rect()
-        self.rect.center = center
+            center = self.rect.center
+            self.image = self.animation[self.frame]
+            self.mask = pygame.mask.from_surface(self.image)
+            self.rect = self.image.get_rect()
+            self.rect.center = center
 
         if self.vida==0:
             self.kill()
@@ -388,7 +388,7 @@ class inimigos(pygame.sprite.Sprite):
                     elif player.rect.left-self.rect.centerx>=0:    
                         self.rect.x-=60
                         self.rect.y-=25   
-                 
+            colisao2.clear
         
 #----------------------------------------------------------------------#
 
@@ -567,7 +567,7 @@ class modo_de_jogo():
                 if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
                     fases(2)
                     for i in range(2):
-                        inimigo = inimigos(vida_inimigo,player,dicio,"inimigo")
+                        inimigo = inimigos(vida_inimigo,player,dicio,vida_inimigo)
                         barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
                         all_sprites.add(inimigo)
                         all_sprites.add(barra_vermelha)
@@ -705,7 +705,7 @@ keys_down = {}
 player= heroi(vida,dicio,blocks,all_chaves)
 estado_do_jogo= modo_de_jogo()
 for i in range(2):
-    inimigo = inimigos(vida_inimigo,player,dicio,"inimigo")
+    inimigo = inimigos(vida_inimigo,player,dicio,vida_inimigo)
     barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
     all_sprites.add(inimigo)
     all_sprites.add(barra_vermelha)
