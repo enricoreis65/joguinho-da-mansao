@@ -410,32 +410,41 @@ class modo_de_jogo():
         
     def game_over(self):
         global sequencia
-        window.fill((0, 0, 0))
-        window.blit(assets[GAMEOVER1], (0,0))
-        window.blit(assets[GAMEOVER2], (0,0))
+        
+        
+        
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
+            window.fill((0, 0, 0))
             
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 pygame.quit()  
 
-            sequencia=4
-            if sequencia==4:
+            
+            if sequencia==3:
+                window.blit(assets[GAMEOVER1], (0,0))
                 window.blit(assets[MENU], ((largura/2)-(menu_largura/2), altura-100))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
-                        sequencia=5
+                        sequencia=4
+                        
                         self.timer_do_tutorial=agora
-                tempo2 = agora - self.timer_do_tutorial
-                if sequencia==5:
-                    window.blit(assets[MENUAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
-                    if  tempo2 > self.duracao_do_tutorial:
-                        self.timer_do_tutorial=agora
-                        sequencia=6
-                if sequencia==6:
-                    estado_do_jogo.aba = 'menu'  
-                    sequencia = 1
+            tempo2 = agora - self.timer_do_tutorial
+            if sequencia==4:
+                window.blit(assets[GAMEOVER1], (0,0))
+                window.blit(assets[MENUAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
+                if  tempo2 > self.duracao_do_tutorial:
+                    self.timer_do_tutorial=agora
+                    sequencia=5
+            if sequencia==5:
+                all_chaves.empty()
+                blocks.empty()
+                all_sprites.empty()
+                all_enemis.empty()
+                fases(1)
+                sequencia = 1
+                estado_do_jogo.aba = 'menu'  
 
         pygame.display.update()
 
@@ -715,7 +724,7 @@ agora=pygame.time.get_ticks()
 # ===== Loop principal =====
 #pygame.mixer.music.play(loops=-1)
 while game:
-    
+    print(sequencia)
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
