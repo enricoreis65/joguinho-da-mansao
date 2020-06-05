@@ -12,7 +12,8 @@ from pygame.locals import *
 img_dir = path.join(path.dirname(__file__), 'img')
 pygame.init()
 window = pygame.display.set_mode((largura, altura))
-# Imagens
+
+# - Imagens:
 ROGER_IMG = 'roger_imgla_inicial_img'
 SHEPPARD_IMG = 'sheppard_img'
 CAROLINE_IMG = 'caroline_img'
@@ -40,6 +41,8 @@ RESUME = 'resume.png'
 RESUMEAPERTADO = 'resumeapertado.png'
 Chave1="key1.png"
 Chave2="key2.png"
+
+# - Spritesheet:
 def carrega_spritesheet(spritesheet, linhas, colunas):
     
     sprite_width = spritesheet.get_width() // colunas
@@ -76,7 +79,8 @@ dicio['andandoesq']=carrega_spritesheet(spritesheet_todos['andandoesq'], 1, 2)
 dicio['dano']=carrega_spritesheet(spritesheet_todos['dano'], 2, 2)
 dicio["inimigo"]=carrega_spritesheet(spritesheet_todos['inimigo'], 4, 5)
 dicio["pulando"]=carrega_spritesheet(spritesheet_todos['pulando'], 2, 3)
-# Carrega todos os assets de uma vez.
+
+# - Carrega os assets de uma vez:
 def load_assets(img_dir):
     assets = {}
 

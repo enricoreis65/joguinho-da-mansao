@@ -7,7 +7,7 @@ import pygame
 import random
 from os import path
 
-#-----------------Dados iniciais de tamanho
+# - Tamanhos:
 altura = 720
 largura = 1280
 barra_largura=32
