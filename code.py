@@ -231,6 +231,7 @@ class heroi(pygame.sprite.Sprite):
                         self.estado = dash
                         self.quantdash-=1             
 def colisoes_chaves():
+    global fase
     if estado_do_jogo.aba=="jogando":
         colisao=pygame.sprite.spritecollide(player,all_chaves,False, pygame.sprite.collide_mask)
         if len(colisao)>0:
@@ -238,14 +239,11 @@ def colisoes_chaves():
             blocks.empty()
             all_sprites.empty()
             all_enemis.empty()
-            chave2=adicionais(assets[Chave2],0,0,largura-100,100)
-            colisao.clear()
-             
             
-            all_sprites.add(chave2)
-            all_chaves.add(chave2)
+            colisao.clear()
             all_sprites.add(player)
             all_sprites.add(barra)
+            fase+=1
             
             estado_do_jogo.aba = "troca_de_fase"
             
@@ -279,7 +277,7 @@ class inimigos(pygame.sprite.Sprite):
     
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
-        self.rect.centerx = largura-300
+        self.rect.centerx = random.randint(0,largura)
         self.rect.bottom = random.randint(0,altura)
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
@@ -438,13 +436,10 @@ class modo_de_jogo():
                     self.timer_do_tutorial=agora
                     sequencia=5
             if sequencia==5:
-                all_chaves.empty()
-                blocks.empty()
-                all_sprites.empty()
-                all_enemis.empty()
-                fases(1)
-                sequencia = 1
-                estado_do_jogo.aba = 'menu'  
+                game=False
+                pygame.quit()
+               
+                
 
         pygame.display.update()
 
@@ -542,8 +537,10 @@ class modo_de_jogo():
 
             pygame.display.update()
     def troca_de_fase(self):
+        global fase
+        
         window.fill((0, 0, 0))
-        text=font.render('fase 2', True, (255, 255, 255))
+        text=font.render('Nivel {0}'.format(fase), True, (255, 255, 255))
         text_rect=text.get_rect()
         text_largura=text_rect.width
         text_altura=text_rect.height
@@ -565,7 +562,7 @@ class modo_de_jogo():
         
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
-                    fases(2)
+                    fases(fase)
                     for i in range(2):
                         inimigo = inimigos(vida_inimigo,player,dicio,vida_inimigo)
                         barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
@@ -629,7 +626,8 @@ class adicionais(pygame.sprite.Sprite):
         self.largura2=largura
         self.quem_ta_seguindo=quem_ta_seguindo
         self.mask = pygame.mask.from_surface(self.image)
-        self.a=vida_inimigo
+        if quem_ta_seguindo!=0:
+            self.a=quem_ta_seguindo.vida
 
     def update(self):
         global variavel
@@ -650,11 +648,13 @@ class adicionais(pygame.sprite.Sprite):
         if self.quem_ta_seguindo!=player and self.quem_ta_seguindo!=0:
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
             self.rect.bottom = self.quem_ta_seguindo.rect.bottom-heroi_altura-2
+            
             if self.quem_ta_seguindo.vida<self.a:
                 self.a=self.quem_ta_seguindo.vida
                 if self.largura>0:
                     self.largura-=8
                     self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
+            
         if self.quem_ta_seguindo==0:
             
             if self.rect.centery<self.ini_Pos-11 or self.rect.centery>self.ini_Pos+11 :
@@ -678,6 +678,9 @@ def fases(fase):
                     all_sprites.add(tile)
                     blocks.add(tile)
     if fase ==2:
+        chave2=adicionais(assets[Chave2],0,0,largura-100,100)
+        all_sprites.add(chave2)
+        all_chaves.add(chave2)
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
                 tile_type = MAP2[row][column]
@@ -724,7 +727,7 @@ agora=pygame.time.get_ticks()
 # ===== Loop principal =====
 #pygame.mixer.music.play(loops=-1)
 while game:
-    print(sequencia)
+    
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
