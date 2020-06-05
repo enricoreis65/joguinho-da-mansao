@@ -393,7 +393,7 @@ class inimigos(pygame.sprite.Sprite):
 #----------------------------------------------------------------------#
 
 class modo_de_jogo():
-    def __init__(self,player):
+    def __init__(self):
         self.aba="menu"
         self.timer_do_tutorial = pygame.time.get_ticks()
         self.duracao_do_tutorial=1000
@@ -703,7 +703,7 @@ fase=1
 fases(fase)
 keys_down = {}
 player= heroi(vida,dicio,blocks,all_chaves)
-estado_do_jogo= modo_de_jogo(player)
+estado_do_jogo= modo_de_jogo()
 for i in range(2):
     inimigo = inimigos(vida_inimigo,player,dicio,"inimigo")
     barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
