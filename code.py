@@ -13,7 +13,7 @@ from medidas import *
 #from sons import *
 
 #----------------------------------------------------------------------#
-
+assets=load_assets(img_dir)
 pygame.init()
 pygame.mixer.init()
 
@@ -262,7 +262,7 @@ def colisoes_inimigo():
 #----------------------------------------------------------------------#                 
 
 class inimigos(pygame.sprite.Sprite):
-    def __init__(self,vida_inimigo,player,assets,vidaini):
+    def __init__(self,player,assets,vidaini):
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
         self.animations = {
@@ -282,10 +282,12 @@ class inimigos(pygame.sprite.Sprite):
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
         self.vida=vidaini
-        
         self.frame_ticks = 200
         self.last_update = pygame.time.get_ticks()
+        self.cria_barra()
+        self.variant=False
     def update(self):
+        
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
 
@@ -305,7 +307,8 @@ class inimigos(pygame.sprite.Sprite):
 
         if self.vida==0:
             self.kill()
-            barra_vermelha.kill()
+            self.barra_vermelha.kill()
+            
             
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
@@ -325,9 +328,9 @@ class inimigos(pygame.sprite.Sprite):
         if player.rect.y-self.rect.y<0 :
             self.speedy_inimigo = -1
     
-        colisao2 = pygame.sprite.spritecollide(player, all_enemis, False, pygame.sprite.collide_mask)   
+        colisao2 = pygame.sprite.collide_mask(player, self)   
         
-        if len(colisao2)>0:
+        if colisao2!=None:
                 
             if player.estado==indefeso:  
                 if player.rect.bottom-self.rect.top<0:
@@ -349,8 +352,8 @@ class inimigos(pygame.sprite.Sprite):
                     player.rect.x+=60
                 
             
-            if player.estado==ataque: 
-                self.vida-=10 
+            if player.estado==ataque:
+                self.vida=self.vida-10
                 if player.rect.right-self.rect.centerx<0:
                     self.rect.x+=40
                     self.rect.y-=20  
@@ -372,7 +375,6 @@ class inimigos(pygame.sprite.Sprite):
                      
                                         
                     player.rect.x+=40
-                
 
 
             if player.estado==defendendo:
@@ -386,8 +388,11 @@ class inimigos(pygame.sprite.Sprite):
                     elif player.rect.left-self.rect.centerx>=0:    
                         self.rect.x-=60
                         self.rect.y-=25   
-            colisao2.clear
-        
+
+    def cria_barra(self):
+        self.barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],self,barra_largura,0,0)
+        all_sprites.add(self.barra_vermelha)
+    
 #----------------------------------------------------------------------#
 
 class modo_de_jogo():
@@ -564,10 +569,8 @@ class modo_de_jogo():
                 if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
                     fases(fase)
                     for i in range(2):
-                        inimigo = inimigos(vida_inimigo,player,dicio,vida_inimigo)
-                        barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
+                        inimigo = inimigos(player,dicio,vida_inimigo)
                         all_sprites.add(inimigo)
-                        all_sprites.add(barra_vermelha)
                         all_enemis.add(inimigo)
                     self.aba="jogando"
 
@@ -699,7 +702,7 @@ vida_inimigo=40
 FPS = 60
 all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
-assets=load_assets(img_dir)
+
 blocks = pygame.sprite.Group()
 all_chaves = pygame.sprite.Group()
 fase=1
@@ -708,10 +711,8 @@ keys_down = {}
 player= heroi(vida,dicio,blocks,all_chaves)
 estado_do_jogo= modo_de_jogo()
 for i in range(2):
-    inimigo = inimigos(vida_inimigo,player,dicio,vida_inimigo)
-    barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],inimigo,barra_largura,0,0)
+    inimigo = inimigos(player,dicio,vida_inimigo)
     all_sprites.add(inimigo)
-    all_sprites.add(barra_vermelha)
     all_enemis.add(inimigo)
 barra= adicionais(assets[BARRA_IMG],player,barra_largura,0,0)
 
