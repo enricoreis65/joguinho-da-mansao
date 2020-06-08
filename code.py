@@ -76,7 +76,7 @@ class heroi(pygame.sprite.Sprite):
             andandodir:dicio["andandodir"][0:2],
 
             tomando_danoesq:dicio["danoesq"][1:2],
-            tomando_danoesq:dicio["danodir"][1:2],
+            tomando_danodir:dicio["danodir"][1:2],
 
             pulandoesq:dicio["pulandoesq"][2:3],
             pulandodir:dicio["pulandodir"][2:3]
@@ -86,7 +86,7 @@ class heroi(pygame.sprite.Sprite):
             # dash: spritesheet[0:1]
             }
         
-        self.estado = indefeso
+        self.estado = indefesodir
         self.animation = self.animations[self.estado]
         self.frame = 0
         self.image = self.animation[self.frame]
@@ -95,7 +95,7 @@ class heroi(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = 50
-        self.rect.bottom = 12*48
+        self.rect.bottom = (12*48)-10
         self.speedx = 0
         self.speedy= 0
         
@@ -122,45 +122,68 @@ class heroi(pygame.sprite.Sprite):
             self.last_update = now
             self.frame += 1
             if self.speedy!=0:
-
-                if self.ultimo_lado==4
+                if self.ultimo_lado==4:
                     self.animation = self.animations[pulandodir]
-                if self.ultimo_lado==-4
+                    self.mask = pygame.mask.from_surface(self.image)
+                    
+                if self.ultimo_lado==-4:
                     self.animation = self.animations[pulandoesq]
-               
+                    self.mask = pygame.mask.from_surface(self.image)
+                    
+                    
             elif self.estado==indefeso:
                 if self.speedx>0:
                     self.animation = self.animations[andandodir]
+                    self.mask = pygame.mask.from_surface(self.image)
+                
+                    
                 if self.speedx<0:
                     self.animation = self.animations[andandoesq]
+                    self.mask = pygame.mask.from_surface(self.image)
+                    
                 if self.speedx==0:
-                    if self.ultimo_lado==4
+                    if self.ultimo_lado==4:
                         self.animation = self.animations[indefesodir]
-                    if self.ultimo_lado==-4
-                        self.animation = self.animations[indefesoesq]
+                        self.mask = pygame.mask.from_surface(self.image)
+                      
                         
+                    if self.ultimo_lado==-4:
+                        self.animation = self.animations[indefesoesq]
+                        self.mask = pygame.mask.from_surface(self.image)
+                        
+                        
+
             elif self.estado==tomando_dano:
-                if self.ultimo_lado==4:
-                    self.animation = self.animations[tomando_danodir]
                 if self.ultimo_lado==-4:
+                    self.animation = self.animations[tomando_danodir]
+                    self.mask = pygame.mask.from_surface(self.image)
+                    
+                    
+                if self.ultimo_lado==4:
                     self.animation = self.animations[tomando_danoesq]
+                    self.mask = pygame.mask.from_surface(self.image)
+                    
+                   
                
             elif self.estado==ataque:
-
                 if self.ultimo_lado==4:
                     self.animation = self.animations[ataquedir]
+                    self.mask = pygame.mask.from_surface(self.image)
+                    
+                  
+                    
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[ataqueesq]
+                    self.mask = pygame.mask.from_surface(self.image)
+                    
                 
-            else:
-                self.animation = self.animations[self.estado]
+            
+                
 
             if self.frame >= len(self.animation):
                 self.frame = 0
-   
             center = self.rect.center
             self.image = self.animation[self.frame]
-            self.mask = pygame.mask.from_surface(self.image)
             self.rect = self.image.get_rect()
             self.rect.center = center
 
@@ -183,12 +206,14 @@ class heroi(pygame.sprite.Sprite):
         if self.speedy > 0:
             self.state = caindo
         self.rect.y += self.speedy
-        # Se bater no chão, para de cair
-        collisions = pygame.sprite.spritecollide(self, self.blocks, False)
+        # Se bater no chão, para de cai
+        collisionsblock = pygame.sprite.spritecollide(self, self.blocks, False)
         # Corrige a posição do personagem para antes da colisão
-        for collision in collisions:
+        for collision in collisionsblock:
             # Estava indo para baixo
+            
             if self.speedy > 0:
+
                 self.rect.bottom = collision.rect.top
                 # Se colidiu com algo, para de cair
                 self.speedy = 0
@@ -196,6 +221,7 @@ class heroi(pygame.sprite.Sprite):
                 self.state = espera
             # Estava indo para cima
             elif self.speedy < 0:
+                
                 self.rect.top = collision.rect.bottom
                 # Se colidiu com algo, para de cair
                 self.speedy = 0
@@ -207,9 +233,10 @@ class heroi(pygame.sprite.Sprite):
             self.rect.right = largura
         if self.rect.left < 0:
             self.rect.left = 0
-        collisions = pygame.sprite.spritecollide(self, self.blocks, False)
+        collisionsblocks2 = pygame.sprite.spritecollide(self, self.blocks, False, pygame.sprite.collide_mask)
         # Corrige a posição do personagem para antes da colisão
-        for collision in collisions:
+        print(self.rect.width)
+        for collision in collisionsblocks2:
             # Estava indo para a direita
             if self.speedx > 0:
                 self.rect.right = collision.rect.left
@@ -221,7 +248,7 @@ class heroi(pygame.sprite.Sprite):
         if self.rect.top > altura:
             player.kill()
             estado_do_jogo.aba = 'gameover'
-        print(self.ultimo_lado)
+        
     def pulo(self):
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
@@ -239,6 +266,7 @@ class heroi(pygame.sprite.Sprite):
                 self.hora_da_acao = agora
                 if self.estado == indefeso:
                     self.estado = ataque
+                
 
     def defesa(self):
         if self.state==espera:
@@ -737,7 +765,9 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        
+        #mapa=adicionais(assets[MAPA],0,0,largura-100,100)
+        #all_sprites.add(mapa)
+        #all_pistas.add(mapa)        
                     
     if fase ==2:
         for row in range(len(MAP2)):
@@ -755,7 +785,12 @@ def fases(fase):
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
+        #pegadas=adicionais(assets[PEGADAS],0,0,largura-100,100)
+        #all_sprites.add(pegadas)
+        #all_pistas.add(pegadas)
 
+#
+        
 #----------------------------------------------------------------------#
 # ----- Inicia estruturas de dados
 variavel=1
@@ -790,6 +825,7 @@ agora=pygame.time.get_ticks()
 
 #----------------------------------------------------------------------#
 # ===== Loop principal =====
+
 #pygame.mixer.music.play(loops=-1)
 while game:
     

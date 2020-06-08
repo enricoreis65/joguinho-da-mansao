@@ -44,6 +44,8 @@ Chave2="key2.png"
 PAREDE='parede.png'
 CARTA = 'carta.png'
 CARTA_ABERTA= 'carta_aberta.png'
+PEGADAS = 'pegadas.png'
+ANEL = 'anel.png'
 
 # - Spritesheet:
 def carrega_spritesheet(spritesheet, linhas, colunas):
@@ -68,8 +70,8 @@ spritesheet_todos = {'existindoesq':pygame.transform.scale(pygame.image.load(pat
                      'healing': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingLeft.png')).convert_alpha(), (52*4, 80*2)),
                      'andandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoLeft.png')).convert_alpha(), (52*2, 80)),
                       'andandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoRight.png')).convert_alpha(), (52*2, 80)),
-                     'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (52, 80*2)),  
-                     'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (52, 80*2)),
+                     'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (130,160)),  
+                     'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (130, 160)),
                      #'defendendo': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (52*4, 80*2)),
                      # dash': pygame.transform.scale("spritesheet_dashLeft.png")).concert_alpha(), (52*4, 80*2)) ,
                      'danoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
@@ -155,6 +157,8 @@ def load_assets(img_dir):
     
     #assets[CARTA] = pygame.transform.scale(assets[CARTA],(carta_largura, carta_altura))
     #assets[CARTA_ABERTA] = pygame.transform.scale(assets[CARTA_ABERTA],(carta_aberta_largura,carta_aberta_altura))
+    #assets[PEGADAS] = pygame.transform.scale(assets[PEGADAS],(pegadas_largura,pegadas_altura))
+    #assets[ANEL] = pygame.transform.scale(assets[ANEL],(anel_largura,anel_altura))
 
     assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
     assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))

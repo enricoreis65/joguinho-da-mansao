@@ -80,6 +80,7 @@ class Tile(pygame.sprite.Sprite):
 
         # Define a imagem do tile.
         self.image = tile_img
+        self.mask= pygame.mask.from_surface(self.image)
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
 
