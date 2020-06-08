@@ -353,8 +353,9 @@ class inimigos(pygame.sprite.Sprite):
                 
             
             if player.estado==ataque:
-                self.vida=self.vida-10
+        
                 if player.rect.right-self.rect.centerx<0:
+                    self.vida=self.vida-10
                     self.rect.x+=40
                     self.rect.y-=20  
                     self.estado=tomando_dano
@@ -366,6 +367,7 @@ class inimigos(pygame.sprite.Sprite):
                     player.rect.x-=40
                     
                 elif player.rect.left-self.rect.centerx>0:
+                    self.vida=self.vida-10
                     self.estado=tomando_dano
                     self.rect.x-=40
                     self.rect.y-=20    
