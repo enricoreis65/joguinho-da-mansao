@@ -536,7 +536,7 @@ class modo_de_jogo():
             if sequencia==3 :                
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
-                    window.blit(assets[RESUME], ((largura-300, altura-100)))
+                    window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100)))
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
                             window.fill((0, 0, 0))
@@ -558,7 +558,7 @@ class modo_de_jogo():
         player.speedx=0
         player.speedy=0
                 
-        window.blit(assets[RESUME], ((largura-300, altura-100)))
+        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100)))
             
         for event in pygame.event.get():
             
