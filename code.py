@@ -24,9 +24,12 @@ pulando = "pulando"
 caindo = "caindo"
 gravidade = 2
 andandoesq="andandoesq"
+
 tamanho_do_pulo = 25
 indefeso = "indefeso"
 ataque = "ataque"
+ataqueesq="atacandoesq"
+ataquedir="atacandodir"
 tomando_dano="tomando_dano"
 defendendo="defendendo"
 pronto_para_acao="pronto_para_acao"
@@ -53,7 +56,8 @@ class heroi(pygame.sprite.Sprite):
         self.blocks=blocks
         self.animations = {
             indefeso: dicio['existindo'][0:4],
-            ataque: dicio['atacando'][2:5],
+            ataqueesq: dicio['atacandoesq'][2:5],
+            ataquedir:dicio["atacandodir"][2:5],
             andandoesq:dicio["andandoesq"][0:2],
             tomando_dano:dicio["dano"][1:2],
             pulando:dicio["pulando"][2:3]
@@ -81,7 +85,7 @@ class heroi(pygame.sprite.Sprite):
         self.acao_ticks = 300*2
         self.frame_ticks = 300
         self.last_update = pygame.time.get_ticks()
-
+        self.ultimo_lado=0
         self.hora_da_acao=pygame.time.get_ticks()
         self.timer_do_tutorial = pygame.time.get_ticks()
         self.duracao_do_tutorial=1000
@@ -90,7 +94,10 @@ class heroi(pygame.sprite.Sprite):
     def update(self):        
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
-
+        if self.ultimo_lado>4:
+            self.ultimo_lado=4
+        elif self.ultimo_lado<-4:
+            self.ultimo_lado=-4
         if elapsed2_ticks > self.frame_ticks:
             self.last_update = now
             self.frame += 1
@@ -115,6 +122,13 @@ class heroi(pygame.sprite.Sprite):
                     self.animation = self.animations[tomando_dano]
                 if self.speedx==0:
                     self.animation = self.animations[tomando_dano]
+            elif self.estado==ataque:
+
+                if self.ultimo_lado==4:
+                    self.animation = self.animations[ataquedir]
+                if self.ultimo_lado==-4:
+                    self.animation = self.animations[ataqueesq]
+                
             else:
                 self.animation = self.animations[self.estado]
 
@@ -184,7 +198,7 @@ class heroi(pygame.sprite.Sprite):
         if self.rect.top > altura:
             player.kill()
             estado_do_jogo.aba = 'gameover'
-
+        print(self.ultimo_lado)
     def pulo(self):
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
@@ -241,8 +255,7 @@ def colisoes_chaves():
             all_enemis.empty()
             
             colisao.clear()
-            all_sprites.add(player)
-            all_sprites.add(barra)
+            
             fase+=1
             
             estado_do_jogo.aba = "troca_de_fase"
@@ -328,9 +341,9 @@ class inimigos(pygame.sprite.Sprite):
         if player.rect.y-self.rect.y<0 :
             self.speedy_inimigo = -1
     
-        colisao2 = pygame.sprite.collide_mask(player, self)   
+        colisao2 = pygame.sprite.collide_rect(player, self)   
         
-        if colisao2!=None:
+        if colisao2==True:
                 
             if player.estado==indefeso:  
                 if player.rect.bottom-self.rect.top<0:
@@ -429,7 +442,7 @@ class modo_de_jogo():
             
             if sequencia==3:
                 window.blit(assets[GAMEOVER1], (0,0))
-                window.blit(assets[MENU], ((largura/2)-(menu_largura/2), altura-100))
+                window.blit(assets[SAIR], ((largura/2)-(menu_largura/2), altura-100))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
                         sequencia=4
@@ -438,7 +451,7 @@ class modo_de_jogo():
             tempo2 = agora - self.timer_do_tutorial
             if sequencia==4:
                 window.blit(assets[GAMEOVER1], (0,0))
-                window.blit(assets[MENUAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
+                window.blit(assets[SAIRAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
                 if  tempo2 > self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     sequencia=5
@@ -464,8 +477,10 @@ class modo_de_jogo():
                 
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
+                    player.ultimo_lado=-4.0
                     player.speedx -= 4.0
-                if event.key == pygame.K_d:                  
+                if event.key == pygame.K_d:  
+                    player.ultimo_lado=4.0                
                     player.speedx += 4.0
                 if event.key == pygame.K_SPACE:
                     player.pulo()
@@ -536,9 +551,9 @@ class modo_de_jogo():
             if sequencia==3 :                
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
-                    window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100)))
+                    window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
+                        if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
                             window.fill((0, 0, 0))
                             self.aba="jogando"
 
@@ -558,7 +573,7 @@ class modo_de_jogo():
         player.speedx=0
         player.speedy=0
                 
-        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100)))
+        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
             
         for event in pygame.event.get():
             
@@ -568,7 +583,7 @@ class modo_de_jogo():
                 pygame.quit()
         
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button==1 and self.esta_dentro(pos,(largura)-300, altura-100):
+                if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
                     fases(fase)
                     for i in range(2):
                         inimigo = inimigos(player,dicio,vida_inimigo)
@@ -670,8 +685,7 @@ class adicionais(pygame.sprite.Sprite):
                 self.rect.y -= 1
 
 def fases(fase):
-    
-    if fase==1:
+    if fase==0:
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
@@ -682,10 +696,27 @@ def fases(fase):
                     tile = Tile(assets[Chao], row, column)
                     all_sprites.add(tile)
                     blocks.add(tile)
+                if tile_type == EMPTY:
+                    tile = Tile(assets[PAREDE], row, column)
+                    all_sprites.add(tile3)
+
+    if fase==1:
+        for row in range(len(MAP1)):
+            for column in range(len(MAP1[row])):
+                tile_type = MAP1[row][column]
+                if tile_type == BLOCK:
+                    tile = Tile(assets[Chao], row, column)
+                    all_sprites.add(tile)
+                    blocks.add(tile)
+                if tile_type == EMPTY:
+                    tile3 = Tile(assets[PAREDE], row, column)
+                    all_sprites.add(tile3)
+        chave1=adicionais(assets[Chave1],0,0,largura-100,100)
+        all_sprites.add(chave1)
+        all_chaves.add(chave1)
+        
+                    
     if fase ==2:
-        chave2=adicionais(assets[Chave2],0,0,largura-100,100)
-        all_sprites.add(chave2)
-        all_chaves.add(chave2)
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
                 tile_type = MAP2[row][column]
@@ -693,6 +724,14 @@ def fases(fase):
                     tile2 = Tile(assets[Chao], row, column)
                     all_sprites.add(tile2)
                     blocks.add(tile2)
+                if tile_type == EMPTY:
+                    tile3 = Tile(assets[PAREDE], row, column)
+                    all_sprites.add(tile3)
+        all_sprites.add(player)
+        all_sprites.add(barra)
+        chave2=adicionais(assets[Chave2],0,0,largura-100,100)
+        all_sprites.add(chave2)
+        all_chaves.add(chave2)
 
 #----------------------------------------------------------------------#
 # ----- Inicia estruturas de dados
