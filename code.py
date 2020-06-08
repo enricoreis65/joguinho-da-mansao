@@ -789,7 +789,25 @@ def fases(fase):
         #all_sprites.add(pegadas)
         #all_pistas.add(pegadas)
 
-#
+    #if fase ==3:
+        #for row in range(len(MAP3)):
+        #    for column in range(len(MAP3[row])):
+        #        tile_type = MAP3[row][column]
+        #        if tile_type == BLOCK:
+        #            tile2 = Tile(assets[Chao], row, column)
+        #            all_sprites.add(tile2)
+        #            blocks.add(tile2)
+        #        if tile_type == EMPTY:
+        #            tile3 = Tile(assets[PAREDE], row, column)
+        #            all_sprites.add(tile3)
+        #all_sprites.add(player)
+        #all_sprites.add(barra)
+        #chave3=adicionais(assets[Chave3],0,0,largura-100,100)
+        #all_sprites.add(chave3)
+        #all_chaves.add(chave3)
+        #anel=adicionais(assets[ANEL],0,0,largura-100,100)
+        #all_sprites.add(anel)
+        #all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
 # ----- Inicia estruturas de dados
