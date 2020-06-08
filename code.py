@@ -23,6 +23,7 @@ espera = "espera"
 pulando = "pulando"
 pulandoesq="pulandoesq"
 pulandodir="pulandodir"
+
 caindo = "caindo"
 gravidade = 2
 andandoesq="andandoesq"
@@ -67,13 +68,19 @@ class heroi(pygame.sprite.Sprite):
         self.animations = {
             indefesoesq: dicio['existindoesq'][0:4],
             indefesodir: dicio['existindodir'][0:4],
+
             ataqueesq: dicio['atacandoesq'][0:2],
             ataquedir:dicio["atacandodir"][0:2],
+
             andandoesq:dicio["andandoesq"][0:2],
             andandodir:dicio["andandodir"][0:2],
+
             tomando_danoesq:dicio["danoesq"][1:2],
             tomando_danoesq:dicio["danodir"][1:2],
-            pulandoesq:dicio["pulandoesq"][2:3]
+
+            pulandoesq:dicio["pulandoesq"][2:3],
+            pulandodir:dicio["pulandodir"][2:3]
+
             # defendendo: spritesheet[0:1],
             
             # dash: spritesheet[0:1]
@@ -115,26 +122,29 @@ class heroi(pygame.sprite.Sprite):
             self.last_update = now
             self.frame += 1
             if self.speedy!=0:
-                if self.speedx>0:
-                    self.animation = self.animations[pulando]
-                if self.speedx<0:
-                    self.animation = self.animations[pulando]
-                if self.speedx==0:
-                    self.animation = self.animations[pulando]
+
+                if self.ultimo_lado==4
+                    self.animation = self.animations[pulandodir]
+                if self.ultimo_lado==-4
+                    self.animation = self.animations[pulandoesq]
+               
             elif self.estado==indefeso:
                 if self.speedx>0:
-                    self.animation = self.animations[andandoesq]
+                    self.animation = self.animations[andandodir]
                 if self.speedx<0:
                     self.animation = self.animations[andandoesq]
                 if self.speedx==0:
-                    self.animation = self.animations[indefeso]
+                    if self.ultimo_lado==4
+                        self.animation = self.animations[indefesodir]
+                    if self.ultimo_lado==-4
+                        self.animation = self.animations[indefesoesq]
+                        
             elif self.estado==tomando_dano:
-                if self.speedx>0:
-                    self.animation = self.animations[tomando_dano]
-                if self.speedx<0:
-                    self.animation = self.animations[tomando_dano]
-                if self.speedx==0:
-                    self.animation = self.animations[tomando_dano]
+                if self.ultimo_lado==4:
+                    self.animation = self.animations[tomando_danodir]
+                if self.ultimo_lado==-4:
+                    self.animation = self.animations[tomando_danoesq]
+               
             elif self.estado==ataque:
 
                 if self.ultimo_lado==4:
