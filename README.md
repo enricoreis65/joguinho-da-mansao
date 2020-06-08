@@ -8,10 +8,20 @@ Luiza Valezim Augusto Pinto.
 Link do vídeo do Youtube:
 
 Detalhamento do nosso Jogo:
+
+
 ------------ Objetivo do Personagem -------------
+
+
 O que: Solucionar o assassinato de Roger Ackroyd.
+
+
 Como: Por meio de pistas que Hercule Poirot irá encontrar ao falar com as pessoas.
+
+
 Onde: Mansão do Roger Ackroyd, chamada Fernly Park, na pequena vila inglesa de King’s Abbot.
+
+
 Quando: 1933
 
 Ao final de cada fase Hercule Poirot encontra uma pista e fica mais próximo de solucionar o mistério.
