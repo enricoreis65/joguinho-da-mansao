@@ -183,9 +183,20 @@ class heroi(pygame.sprite.Sprite):
             if self.frame >= len(self.animation):
                 self.frame = 0
             center = self.rect.center
+            centerx=self.rect.centerx
+            centery=self.rect.centery
             self.image = self.animation[self.frame]
             self.rect = self.image.get_rect()
-            self.rect.center = center
+            if self.estado==ataque:
+                if self.ultimo_lado==4:
+                    self.rect.centerx = centerx+4
+                    self.rect.centery = centery
+                    
+                if self.ultimo_lado==-4:
+                    self.rect.centerx = centerx-4
+                    self.rect.centery = centery
+            else:       
+                self.rect.center = center
 
         
         # Atualização da posição do heroi
@@ -235,7 +246,7 @@ class heroi(pygame.sprite.Sprite):
             self.rect.left = 0
         collisionsblocks2 = pygame.sprite.spritecollide(self, self.blocks, False, pygame.sprite.collide_mask)
         # Corrige a posição do personagem para antes da colisão
-        print(self.rect.width)
+        
         for collision in collisionsblocks2:
             # Estava indo para a direita
             if self.speedx > 0:
@@ -416,7 +427,7 @@ class inimigos(pygame.sprite.Sprite):
                     player.rect.x+=60
                 
             
-            if player.estado==ataque:
+            if player.estado==ataque and player.ultimo_lado==4:
         
                 if player.rect.right-self.rect.centerx<0:
                     self.vida=self.vida-10
@@ -429,8 +440,8 @@ class inimigos(pygame.sprite.Sprite):
                   
                                     
                     player.rect.x-=40
-                    
-                elif player.rect.left-self.rect.centerx>0:
+            if player.estado==ataque and player.ultimo_lado==-4:        
+                if player.rect.left-self.rect.centerx>0:
                     self.vida=self.vida-10
                     self.estado=tomando_dano
                     self.rect.x-=40
@@ -438,7 +449,7 @@ class inimigos(pygame.sprite.Sprite):
                     
                     player.estado=indefeso
                     
-                     
+                        
                                         
                     player.rect.x+=40
 
