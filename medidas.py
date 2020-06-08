@@ -43,3 +43,9 @@ resumeapertado_altura = 50
 resumeapertado_largura = 100
 chave_largura=80
 chave_altura=54
+
+carta_largura=80
+carta_altura=54
+
+carta_aberta_largura=80
+carta_aberta_altura=54

@@ -21,16 +21,26 @@ pygame.mixer.init()
 #---- Dados movimento
 espera = "espera"
 pulando = "pulando"
+pulandoesq="pulandoesq"
+pulandodir="pulandodir"
 caindo = "caindo"
 gravidade = 2
 andandoesq="andandoesq"
+andandodir="andandodir"
 
 tamanho_do_pulo = 25
 indefeso = "indefeso"
+indefesoesq="indefesoesq"
+indefesodir="indefesodir"
+
 ataque = "ataque"
 ataqueesq="atacandoesq"
 ataquedir="atacandodir"
+
 tomando_dano="tomando_dano"
+tomando_danoesq="tomando_danoesq"
+tomando_danodir="tomando_danodir"
+
 defendendo="defendendo"
 pronto_para_acao="pronto_para_acao"
 dash="dash"
@@ -43,7 +53,7 @@ font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 
 fullscreen = False
 
-print('ta funcionando?')
+
 # SPRITESHEET
 
 #----------------------------------------------------------------------#
@@ -55,12 +65,15 @@ class heroi(pygame.sprite.Sprite):
 
         self.blocks=blocks
         self.animations = {
-            indefeso: dicio['existindo'][0:4],
-            ataqueesq: dicio['atacandoesq'][2:5],
-            ataquedir:dicio["atacandodir"][2:5],
+            indefesoesq: dicio['existindoesq'][0:4],
+            indefesodir: dicio['existindodir'][0:4],
+            ataqueesq: dicio['atacandoesq'][0:2],
+            ataquedir:dicio["atacandodir"][0:2],
             andandoesq:dicio["andandoesq"][0:2],
-            tomando_dano:dicio["dano"][1:2],
-            pulando:dicio["pulando"][2:3]
+            andandodir:dicio["andandodir"][0:2],
+            tomando_danoesq:dicio["danoesq"][1:2],
+            tomando_danoesq:dicio["danodir"][1:2],
+            pulandoesq:dicio["pulandoesq"][2:3]
             # defendendo: spritesheet[0:1],
             
             # dash: spritesheet[0:1]

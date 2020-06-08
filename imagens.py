@@ -42,6 +42,8 @@ RESUMEAPERTADO = 'resumeapertado.png'
 Chave1="key1.png"
 Chave2="key2.png"
 PAREDE='parede.png'
+CARTA = 'carta.png'
+CARTA_ABERTA= 'carta_aberta.png'
 
 # - Spritesheet:
 def carrega_spritesheet(spritesheet, linhas, colunas):
@@ -61,27 +63,35 @@ def carrega_spritesheet(spritesheet, linhas, colunas):
             sprites.append(image)
     return sprites
 
-spritesheet_todos = {'existindo':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_existindoLeft.png')).convert_alpha(), (52*3, 80*2)),
+spritesheet_todos = {'existindoesq':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_existindoLeft.png')).convert_alpha(), (52*3, 80*2)),
+                    'existindodir':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_existindoRight.png')).convert_alpha(), (52*3, 80*2)),
                      'healing': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingLeft.png')).convert_alpha(), (52*4, 80*2)),
                      'andandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoLeft.png')).convert_alpha(), (52*2, 80)),
-                     'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (52*5, 80*4)),  
-                     'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (52*4, 80*4)),
+                      'andandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoRight.png')).convert_alpha(), (52*2, 80)),
+                     'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (52, 80*2)),  
+                     'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (52, 80*2)),
                      #'defendendo': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (52*4, 80*2)),
                      # dash': pygame.transform.scale("spritesheet_dashLeft.png")).concert_alpha(), (52*4, 80*2)) ,
-                     'dano': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
+                     'danoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
+                     'danodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoRight.png')).convert_alpha(), (52*2, 80*2)),
                      "inimigo":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha(), (52*5, 80*4)),
-                     "pulando":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoLeft.png')).convert_alpha(), (52*3, 80*2))
+                     "pulandoesq":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoLeft.png')).convert_alpha(), (52*3, 80*2)),
+                     "pulandodir":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoRight.png')).convert_alpha(), (52*3, 80*2))
 }
 
 dicio={}
 
-dicio['existindo']=carrega_spritesheet(spritesheet_todos["existindo"], 2, 3)
-dicio['atacandodir']=carrega_spritesheet(spritesheet_todos["atacandodir"], 3, 2)
-dicio['atacandoesq']=carrega_spritesheet(spritesheet_todos['atacandoesq'], 3, 2)
+dicio['existindoesq']=carrega_spritesheet(spritesheet_todos["existindoesq"], 2, 3)
+dicio['existindodir']=carrega_spritesheet(spritesheet_todos["existindodir"], 2, 3)
+dicio['atacandodir']=carrega_spritesheet(spritesheet_todos["atacandodir"], 2, 1)
+dicio['atacandoesq']=carrega_spritesheet(spritesheet_todos['atacandoesq'], 2, 1)
 dicio['andandoesq']=carrega_spritesheet(spritesheet_todos['andandoesq'], 1, 2)
-dicio['dano']=carrega_spritesheet(spritesheet_todos['dano'], 2, 2)
+dicio['andandodir']=carrega_spritesheet(spritesheet_todos['andandodir'], 1, 2)
+dicio['danoesq']=carrega_spritesheet(spritesheet_todos['danodir'], 2, 2)
+dicio['danodir']=carrega_spritesheet(spritesheet_todos['danoesq'], 2, 2)
 dicio["inimigo"]=carrega_spritesheet(spritesheet_todos['inimigo'], 4, 5)
-dicio["pulando"]=carrega_spritesheet(spritesheet_todos['pulando'], 2, 3)
+dicio["pulandoesq"]=carrega_spritesheet(spritesheet_todos['pulandoesq'], 2, 3)
+dicio["pulandodir"]=carrega_spritesheet(spritesheet_todos['pulandodir'], 2, 3)
 
 # - Carrega os assets de uma vez:
 def load_assets(img_dir):
@@ -110,7 +120,9 @@ def load_assets(img_dir):
     assets[RESUMEAPERTADO] = pygame.image.load(path.join(img_dir, 'resumeapertado.png')).convert_alpha()
     assets[Chave1] = pygame.image.load(path.join(img_dir, 'key1.png')).convert_alpha()
     assets[Chave2] = pygame.image.load(path.join(img_dir, 'key2.png')).convert_alpha()
-
+    assets[CARTA] = pygame.image.load(path.join(img_dir, 'carta.png')).convert_alpha()
+    assets[CARTA_ABERTA] = pygame.image.load(path.join(img_dir, 'carta_aberta.png')).convert_alpha()
+    
     # Definindo o player e imagens de teste:
     #assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
     #assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
@@ -141,6 +153,9 @@ def load_assets(img_dir):
     # assets[MISS_IMG] = pygame.transform.scale(assets[MISS_IMG],(miss_largura, miss_altura))
     # assets[CHARLES_IMG] = pygame.transform.scale(assets[CHARLES_IMG],(charles_largura, charles_altura))
     
+    #assets[CARTA] = pygame.transform.scale(assets[CARTA],(carta_largura, carta_altura))
+    #assets[CARTA_ABERTA] = pygame.transform.scale(assets[CARTA_ABERTA],(carta_aberta_largura,carta_aberta_altura))
+
     assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
     assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
     assets[MENU] = pygame.transform.scale(assets[MENU],(menu_largura, menu_altura))
