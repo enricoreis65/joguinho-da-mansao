@@ -610,7 +610,7 @@ class modo_de_jogo():
         
         # Tutorial:
             if sequencia==1:
-                text= fontg.render('CODE', True, (255, 0, 0))
+                text= fontg.render('Fenrly Park', True, (255, 0, 0))
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
                 text_rect=text.get_rect()
