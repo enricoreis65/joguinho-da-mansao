@@ -49,7 +49,7 @@ dash="dash"
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
 window = pygame.display.set_mode((largura, altura))
-pygame.display.set_caption('CODE')
+pygame.display.set_caption('Fenrly Park')
 font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 fontg = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 100)
 
