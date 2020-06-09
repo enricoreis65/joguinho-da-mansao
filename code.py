@@ -51,6 +51,7 @@ dash="dash"
 window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('CODE')
 font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
+fontg = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 100)
 
 fullscreen = False
 
@@ -609,9 +610,13 @@ class modo_de_jogo():
         
         # Tutorial:
             if sequencia==1:
+                text= fontg.render('CODE', True, (255, 0, 0))
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
-            
+                text_rect=text.get_rect()
+                text_largura=text_rect.width
+                text_altura=text_rect.height
+                window.blit(text,((largura/2)-text_largura/2,11))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
