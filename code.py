@@ -29,7 +29,7 @@ gravidade = 2
 andandoesq="andandoesq"
 andandodir="andandodir"
 
-tamanho_do_pulo = 25
+tamanho_do_pulo = 27
 indefeso = "indefeso"
 indefesoesq="indefesoesq"
 indefesodir="indefesodir"
@@ -60,10 +60,10 @@ fullscreen = False
 #----------------------------------------------------------------------#
 
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,vida,player_sheet,blocks,chaves,plataformas):
+    def __init__(self,vida,player_sheet,blocks,chaves,platform):
         pygame.sprite.Sprite.__init__(self)
         
-        self.platforms = plataformas
+        self.platforms = platform
         self.blocks=blocks
         self.animations = {
             indefesoesq: dicio['existindoesq'][0:4],
@@ -111,7 +111,9 @@ class heroi(pygame.sprite.Sprite):
         self.duracao_do_tutorial=1000
         self.highest_y = self.rect.bottom
     # Update    
-    def update(self):        
+    def update(self): 
+        if self.state != caindo:
+            self.highest_y = self.rect.bottom       
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
         if self.ultimo_lado>4:
@@ -239,10 +241,10 @@ class heroi(pygame.sprite.Sprite):
                 # Atualiza o estado para parado
                 self.state = espera
         if self.speedy > 0:  # Está indo para baixo
-            collisions = pygame.sprite.spritecollide(self, self.platforms, False)
+            collisionsplata = pygame.sprite.spritecollide(self, self.platforms, False)
             # Para cada tile de plataforma que colidiu com o personagem
             # verifica se ele estava aproximadamente na parte de cima
-            for platform in collisions:
+            for platform in collisionsplata:
                 # Verifica se a altura alcançada durante o pulo está acima da
                 # plataforma.
                 if self.highest_y <= platform.rect.top:
@@ -815,21 +817,21 @@ def fases(fase):
                     tile2 = Tile(assets[PAREDE], row, column)
                     all_sprites.add(tile2)
                 if tile_type==PLATA:
-                    tile3 = Tile(assets[PLATA], row, column)
+                    tile3 = Tile(assets[PLATAa], row, column)
                     all_sprites.add(tile3)
                     all_plata.add(tile3)
                 if tile_type==PLATE:
-                    tile3 = Tile(assets[PLATE], row, column)
-                    all_sprites.add(tile3)
-                    all_plata.add(tile3)
+                    tile4 = Tile(assets[PLATEe], row, column)
+                    all_sprites.add(tile4)
+                    all_plata.add(tile4)
                 if tile_type==PLATM:
-                    tile3 = Tile(assets[PLATM], row, column)
-                    all_sprites.add(tile3)
-                    all_plata.add(tile3)
+                    tile5 = Tile(assets[PLATMm], row, column)
+                    all_sprites.add(tile5)
+                    all_plata.add(tile5)
                 if tile_type==PLATD:
-                    tile3 = Tile(assets[PLATD], row, column)
-                    all_sprites.add(tile3)
-                    all_plata.add(tile3)
+                    tile6 = Tile(assets[PLATDd], row, column)
+                    all_sprites.add(tile6)
+                    all_plata.add(tile6)
 
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)

@@ -47,10 +47,10 @@ CARTA_ABERTA= 'carta_aberta.png'
 PEGADAS = 'pegadas.png'
 ANEL = 'anel.png'
 xicara="xicara"
-PLATA="plageral"
-PLATM="plameio"
-PLATE="plaesq"
-PLATD="pladir"
+PLATAa="plageral"
+PLATMm="plameio"
+PLATEe="plaesq"
+PLATDd="pladir"
 # - Spritesheet:
 def carrega_spritesheet(spritesheet, linhas, colunas):
     
@@ -115,10 +115,10 @@ def load_assets(img_dir):
     # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
     assets[Chao] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert()
-    assets[PLATA] = pygame.image.load(path.join(img_dir, 'tile-wood.png')).convert()
-    assets[PLATM] = pygame.image.load(path.join(img_dir, 'tile-wood-2.png')).convert()
-    assets[PLATE] = pygame.image.load(path.join(img_dir, 'tile-wood-1.png')).convert()
-    assets[PLATD] = pygame.image.load(path.join(img_dir, 'tile-wood-3.png')).convert()
+    assets[PLATAa] = pygame.image.load(path.join(img_dir, 'tile-wood.png')).convert()
+    assets[PLATMm] = pygame.image.load(path.join(img_dir, 'tile-wood-2.png')).convert()
+    assets[PLATEe] = pygame.image.load(path.join(img_dir, 'tile-wood-1.png')).convert()
+    assets[PLATDd] = pygame.image.load(path.join(img_dir, 'tile-wood-3.png')).convert()
     assets[PAREDE] = pygame.image.load(path.join(img_dir, 'parede.png')).convert()
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
     assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
