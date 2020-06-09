@@ -330,6 +330,7 @@ def colisoes_chaves():
         if len(colisao)>0:
             all_chaves.empty()
             blocks.empty()
+            all_plata.empty()
             all_sprites.empty()
             all_enemis.empty()
             
