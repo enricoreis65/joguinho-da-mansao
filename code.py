@@ -10,7 +10,7 @@ from pygame.locals import *
 from imagens import *
 from mapa import BLOCK,EMPTY,MAP1,Tile,MAP2,MAP3,PLATA,PLATM,PLATE,PLATD
 from medidas import *
-#from sons import *
+from sons import *
 
 #----------------------------------------------------------------------#
 assets=load_assets(img_dir)
@@ -597,6 +597,7 @@ class modo_de_jogo():
 
 
     def menu(self):
+        
         global sequencia
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
@@ -631,8 +632,14 @@ class modo_de_jogo():
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     sequencia=3
+                    pygame.mixer.music.stop()
 
-            if sequencia==3 :                
+            if sequencia==3 :         
+                
+                pygame.mixer.music.load(path.join(sound_dir, 'segunda_musica_teste.ogg'))  
+                pygame.mixer.music.set_volume(0.4) 
+                
+
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
                     window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
@@ -640,6 +647,7 @@ class modo_de_jogo():
                         if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
                             window.fill((0, 0, 0))
                             self.aba="jogando"
+                            pygame.mixer.music.play(loops=-1)
 
             pygame.display.update()
     def troca_de_fase(self):
@@ -927,9 +935,9 @@ agora=pygame.time.get_ticks()
 
 #----------------------------------------------------------------------#
 # ===== Loop principal =====
-
-#pygame.mixer.music.play(loops=-1)
+pygame.mixer.music.play(loops=-1)
 while game:
+    
     
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
