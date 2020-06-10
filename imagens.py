@@ -61,7 +61,7 @@ Chave3 = "key3.png"
 PAREDE='parede.png'
 CARTA = 'carta.png'
 CARTA_ABERTA= 'carta_aberta.png'
-#PEGADAS = 'pegadas.png'
+PEGADAS = 'pegadas.png'
 ANEL = 'anel.png'
 
 
