@@ -770,7 +770,7 @@ class adicionais(pygame.sprite.Sprite):
                     self.largura-=8
                     self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
             
-        if self.quem_ta_seguindo==0:
+        if self.quem_ta_seguindo == 0:
             
             if self.rect.centery<self.ini_Pos-11 or self.rect.centery>self.ini_Pos+11 :
                 variavel*=-1
@@ -779,6 +779,19 @@ class adicionais(pygame.sprite.Sprite):
             elif variavel<0:
                 self.rect.y -= 1
 
+        #if self.quem_ta_seguindo == 1:
+            #colisao = pygame.sprite.collide_rect(player, self)
+            #if colisao == True:
+                # if self.rect.centery<self.ini_Pos-11 or self.rect.centery>self.ini_Pos+11 :
+                #     variavel*=-1
+                # if variavel>0:
+                #     self.rect.y += 1
+                # elif variavel<0:
+                #     self.rect.y -= 1
+
+
+
+        
 #----------------------------------------------------------------------#
 # - Definindo a classe que mostra a vida do personagem:
 class xicara(pygame.sprite.Sprite):
@@ -858,8 +871,8 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        carta = adicionais(assets[CARTA],0,0,largura-100,100)
-        all_sprites.add(carta)
+        # carta = adicionais(assets[CARTA],3,0,largura-100,100)
+        # all_sprites.add(carta)
         #all_pistas.add(carta)        
 
     #FASE 2:                
@@ -882,7 +895,7 @@ def fases(fase):
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
-        #pegadas = adicionais(assets[PEGADAS],0,0,largura-100,100)
+        #pegadas = adicionais(assets[PEGADAS],2,0,largura-100,100)
         #all_sprites.add(pegadas)
         #all_pistas.add(pegadas)
 
@@ -906,8 +919,8 @@ def fases(fase):
         chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
-        anel = adicionais(assets[ANEL],0,0,largura-100,100)
-        all_sprites.add(anel)
+        # anel = adicionais(assets[ANEL],1,0,largura-100,100)
+        # all_sprites.add(anel)
         #all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
@@ -920,6 +933,7 @@ vida=100
 vida_inimigo=40
 FPS = 60
 all_sprites = pygame.sprite.Group()
+all_pistas = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
 all_plata=pygame.sprite.Group()
 blocks = pygame.sprite.Group()
