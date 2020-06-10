@@ -9,6 +9,7 @@ from os import path
 from pygame.locals import *
 
 sound_dir = path.join(path.dirname(__file__), 'musicas')
+
 # - Carrega os sons do jogo:
 pygame.init()
 #pygame.mixer.music.load('')

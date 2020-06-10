@@ -59,6 +59,7 @@ fullscreen = False
 # SPRITESHEET
 
 #----------------------------------------------------------------------#
+# - Definindo a classe que configura o jogador:
 
 class heroi(pygame.sprite.Sprite):
     def __init__(self,vida,player_sheet,blocks,chaves,platform):
@@ -111,6 +112,7 @@ class heroi(pygame.sprite.Sprite):
         self.timer_do_tutorial = pygame.time.get_ticks()
         self.duracao_do_tutorial=1000
         self.highest_y = self.rect.bottom
+
     # Update    
     def update(self): 
         if self.state != caindo:
@@ -340,8 +342,6 @@ def colisoes_chaves():
             fase+=1
             
             estado_do_jogo.aba = "troca_de_fase"
-            
-
 
 
 def colisoes_inimigo():
@@ -354,6 +354,7 @@ def colisoes_inimigo():
         
             
 #----------------------------------------------------------------------#                 
+# - Definindo a classe que configura os inimigos:
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,player,assets,vidaini):
@@ -407,7 +408,7 @@ class inimigos(pygame.sprite.Sprite):
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
             self.rect.y += self.speedy_inimigo
-        elif player.hora_da_acao+player.acao_ticks*0.3<agora:
+        elif player.hora_da_acao+player.acao_ticks*0.5<agora:
             self.estado=espera
         if player.rect.x-self.rect.x>0 :
             self.speedx_inimigo = 1
@@ -444,7 +445,12 @@ class inimigos(pygame.sprite.Sprite):
                     player.hora_da_acao=agora
                     player.vida-=10                       
                     player.rect.x+=60
-                
+                else :
+                    player.estado=tomando_dano
+                    player.hora_da_acao=agora
+                    player.vida-=10                       
+                    player.rect.x+=60
+
             
             if player.estado==ataque and player.ultimo_lado==4:
         
@@ -490,7 +496,8 @@ class inimigos(pygame.sprite.Sprite):
         all_sprites.add(self.barra_vermelha)
     
 #----------------------------------------------------------------------#
-
+# - Definindo a classe que configura o modo de jogo (jogando, menu, main menu, troca de fases, game over):
+ 
 class modo_de_jogo():
     def __init__(self):
         self.aba="menu"
@@ -691,7 +698,8 @@ class modo_de_jogo():
         text_rect=text.get_rect()
         text_largura=text_rect.width
         text_altura=text_rect.height
-        
+        player.speedx=0
+        player.speedy=0
         for event in pygame.event.get():
             
         # ----- Verifica consequências
@@ -710,6 +718,40 @@ class modo_de_jogo():
         window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
         pygame.display.update() 
 
+    def dicas(self):
+        global fase
+        player.speedx=0
+        player.speedy=0
+        window.fill((0,0,0))
+        if fase==1:
+            window.blit(assets[CARTA_ABERTA],(0,0))
+            text = font.render('dica muito informativa', True, (0, 0, 0))
+            text_rect=text.get_rect()
+            text_largura=text_rect.width
+            text_altura=text_rect.height
+            window.blit(text,((largura/2)-text_largura/2,(250)))
+        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+        if fase==2:
+            window.blit(assets[PEGADASg],(0,0))
+            text = font.render('alberto', True, (0, 0, 0))
+            text_rect=text.get_rect()
+            text_largura=text_rect.width
+            text_altura=text_rect.height
+            window.blit(text,((300,250)))
+        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+        for event in pygame.event.get():
+            
+            pos=pygame.mouse.get_pos()
+            
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
+                    self.aba="jogando"
+        pygame.display.update()
+        
+
 
     def controlador_menu(self):
         if self.aba=="menu":
@@ -722,8 +764,17 @@ class modo_de_jogo():
             self.game_over()
         if self.aba=="troca_de_fase":
             self.troca_de_fase()
+        if self.aba=="dicas":
+            self.dicas()
+        
+            
+            
+        
 
+            
+        
 #----------------------------------------------------------------------#
+# - Definindo a classe que configura barras de vida e chaves para passar de fase:
 
 class adicionais(pygame.sprite.Sprite):
     def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
@@ -738,11 +789,12 @@ class adicionais(pygame.sprite.Sprite):
         self.largura2=largura
         self.quem_ta_seguindo=quem_ta_seguindo
         self.mask = pygame.mask.from_surface(self.image)
-        if quem_ta_seguindo!=0:
+        if quem_ta_seguindo!=0 and quem_ta_seguindo!=3 and self.quem_ta_seguindo!=2 and self.quem_ta_seguindo!=1:
             self.a=quem_ta_seguindo.vida
 
     def update(self):
         global variavel
+        global variavel2
         if self.quem_ta_seguindo==player:
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
             self.rect.bottom = self.quem_ta_seguindo.rect.bottom-heroi_altura-2
@@ -757,7 +809,7 @@ class adicionais(pygame.sprite.Sprite):
                     self.largura=32
                     self.image=pygame.transform.scale(self.image2, (self.largura2, barra_altura))
 
-        if self.quem_ta_seguindo!=player and self.quem_ta_seguindo!=0:
+        if self.quem_ta_seguindo!=player and self.quem_ta_seguindo!=0 and self.quem_ta_seguindo!=3 and self.quem_ta_seguindo!=2 and self.quem_ta_seguindo!=1 :
             self.rect.centerx = self.quem_ta_seguindo.rect.centerx
             self.rect.bottom = self.quem_ta_seguindo.rect.bottom-heroi_altura-2
             
@@ -767,7 +819,7 @@ class adicionais(pygame.sprite.Sprite):
                     self.largura-=8
                     self.image=pygame.transform.scale(self.image, (self.largura, barra_altura))
             
-        if self.quem_ta_seguindo==0:
+        if self.quem_ta_seguindo == 0:
             
             if self.rect.centery<self.ini_Pos-11 or self.rect.centery>self.ini_Pos+11 :
                 variavel*=-1
@@ -775,6 +827,25 @@ class adicionais(pygame.sprite.Sprite):
                 self.rect.y += 1
             elif variavel<0:
                 self.rect.y -= 1
+
+        if self.quem_ta_seguindo == 3 or self.quem_ta_seguindo == 2 :
+            if self.rect.centery<self.ini_Pos-5 or self.rect.centery>self.ini_Pos+5 :
+                variavel2*=-1
+            if variavel2>0:
+                self.rect.y += 1
+            elif variavel2<0:
+                self.rect.y -= 1
+            colisao=pygame.sprite.spritecollide(player,all_pistas,True)
+            if len(colisao)>0:
+                estado_do_jogo.aba="dicas"
+                
+
+
+
+        
+#----------------------------------------------------------------------#
+# - Definindo a classe que mostra a vida do personagem:
+
 class xicara(pygame.sprite.Sprite):
     def __init__(self,dicio):
         pygame.sprite.Sprite.__init__(self)
@@ -799,10 +870,10 @@ class xicara(pygame.sprite.Sprite):
         self.frame =int(10-(self.oquemostrar/10))
         self.image = self.animation[self.frame]
 
+#----------------------------------------------------------------------------------#
+#- Definindo fases do jogo:
 
-
-
-
+# PRÉ-FASES:
 def fases(fase):
     if fase==0:
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
@@ -819,6 +890,7 @@ def fases(fase):
                     tile = Tile(assets[PAREDE], row, column)
                     all_sprites.add(tile3)
 
+    #FASE 1:
     if fase==1:
         for row in range(len(MAP1)):
             for column in range(len(MAP1[row])):
@@ -847,15 +919,15 @@ def fases(fase):
                     all_sprites.add(tile6)
                     all_plata.add(tile6)
 
+        # PISTA + CHAVE DA FASE:
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        
-   
-        #mapa=adicionais(assets[MAPA],0,0,largura-100,100)
-        #all_sprites.add(mapa)
-        #all_pistas.add(mapa)        
-                    
+        carta = adicionais(assets[CARTA],3,0,100,300)
+        all_sprites.add(carta)
+        all_pistas.add(carta)        
+
+    #FASE 2:                
     if fase ==2:
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
@@ -867,16 +939,35 @@ def fases(fase):
                 if tile_type == EMPTY:
                     tile2 = Tile(assets[PAREDE], row, column)
                     all_sprites.add(tile2)
+                if tile_type==PLATA:
+                    tile3 = Tile(assets[PLATAa], row, column)
+                    all_sprites.add(tile3)
+                    all_plata.add(tile3)
+                if tile_type==PLATE:
+                    tile4 = Tile(assets[PLATEe], row, column)
+                    all_sprites.add(tile4)
+                    all_plata.add(tile4)
+                if tile_type==PLATM:
+                    tile5 = Tile(assets[PLATMm], row, column)
+                    all_sprites.add(tile5)
+                    all_plata.add(tile5)
+                if tile_type==PLATD:
+                    tile6 = Tile(assets[PLATDd], row, column)
+                    all_sprites.add(tile6)
+                    all_plata.add(tile6)
         all_sprites.add(player)
         all_sprites.add(barra)
+        all_sprites.add(mostrador_vida)
+
+        # PISTA + CHAVE DA FASE:
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
-        all_sprites.add(mostrador_vida)
-        #pegadas=adicionais(assets[PEGADAS],0,0,largura-100,100)
-        #all_sprites.add(pegadas)
-        #all_pistas.add(pegadas)
+        pegadas = adicionais(assets[PEGADAS],2,0,160,390)
+        all_sprites.add(pegadas)
+        all_pistas.add(pegadas)
 
+    #FASE 3:
     if fase ==3:
         for row in range(len(MAP3)):
            for column in range(len(MAP3[row])):
@@ -890,16 +981,19 @@ def fases(fase):
                    all_sprites.add(tile2)
         all_sprites.add(player)
         all_sprites.add(barra)
-        chave3=adicionais(assets[Chave2],0,0,largura-100,100)
+        all_sprites.add(mostrador_vida)
+
+        # PISTA + CHAVE DA FASE:
+        chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
-        all_sprites.add(mostrador_vida)
-        #anel=adicionais(assets[ANEL],0,0,largura-100,100)
+        # anel = adicionais(assets[ANEL],1,0,largura-100,100)
         # all_sprites.add(anel)
         # all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
-# ----- Inicia estruturas de dados
+# ----- Inicia estruturas de dados:
+variavel2=1
 variavel=1
 sequencia=1
 clock = pygame.time.Clock()
@@ -907,6 +1001,7 @@ vida=100
 vida_inimigo=40
 FPS = 60
 all_sprites = pygame.sprite.Group()
+all_pistas = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
 all_plata=pygame.sprite.Group()
 blocks = pygame.sprite.Group()
@@ -935,6 +1030,7 @@ agora=pygame.time.get_ticks()
 
 #----------------------------------------------------------------------#
 # ===== Loop principal =====
+
 pygame.mixer.music.play(loops=-1)
 while game:
     
