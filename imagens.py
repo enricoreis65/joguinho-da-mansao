@@ -61,7 +61,7 @@ Chave3 = "key3.png"
 PAREDE='parede.png'
 CARTA = 'carta.png'
 CARTA_ABERTA= 'carta_aberta.png'
-#PEGADAS = 'pegadas.png'
+PEGADAS = 'pegadas.png'
 ANEL = 'anel.png'
 
 
@@ -134,6 +134,7 @@ def load_assets(img_dir):
     assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
     assets[GAMEOVER1] = pygame.image.load(path.join(img_dir, 'gameovercima.png')).convert_alpha()
     assets[GAMEOVER2] = pygame.image.load(path.join(img_dir, 'gameoverbaixo.png')).convert_alpha()
+   
 
     # - Imagens dos botões:
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
@@ -149,23 +150,18 @@ def load_assets(img_dir):
     assets[Chave1] = pygame.image.load(path.join(img_dir, 'key1.png')).convert_alpha()
     assets[Chave2] = pygame.image.load(path.join(img_dir, 'key2.png')).convert_alpha()
     assets[Chave3] = pygame.image.load(path.join(img_dir, 'key3.png')).convert_alpha()
+    assets[ANEL] = pygame.image.load(path.join(img_dir, 'anel.png')).convert_alpha()
     assets[CARTA] = pygame.image.load(path.join(img_dir, 'carta.png')).convert_alpha()
     assets[CARTA_ABERTA] = pygame.image.load(path.join(img_dir, 'carta_aberta.png')).convert_alpha()
-    
+    assets[PEGADAS] = pygame.image.load(path.join(img_dir, 'pegadas.png')).convert_alpha()
+     
     # Definindo o player e imagens de teste:
-    #assets[PLAYER_PARADO_IMG] = pygame.image.load(path.join(img_dir, 'parado (2).png')).convert_alpha()
-    #assets[TESTE_IMG] = pygame.image.load(path.join(img_dir, 'hero-single.png')).convert_alpha()
+    
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
     assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha()
 
-    # assets[TELA_1_IMG] = pygame.image.load(path.join(img_dir, 'tela1.png')).convert_alpha()
-    # assets[ROGER_IMG] = pygame.image.load(path.join(img_dir, 'roger.png')).convert_alpha()
-    # assets[SHEPPARD_IMG] = pygame.image.load(path.join(img_dir, 'sheppard.png')).convert_alpha()
-    # assets[CAROLINE_IMG] = pygame.image.load(path.join(img_dir, 'caroline.png')).convert_alpha()
-    # assets[RALPH_IMG] = pygame.image.load(path.join(img_dir, 'ralph.png')).convert_alpha()
-    # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
-    # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
+   
 
 
     #----------------------------------------------------------------------#
@@ -173,21 +169,14 @@ def load_assets(img_dir):
 
     assets[BARRA_IMG]=pygame.transform.scale(assets[BARRA_IMG], (barra_largura, barra_altura))
     assets[BARRA_VERMELHA_IMG]=pygame.transform.scale(assets[BARRA_VERMELHA_IMG], (barra_largura, barra_altura))
-    #assets[PLAYER_PARADO_IMG] = pygame.transform.scale(assets[PLAYER_PARADO_IMG], (heroi_largura, heroi_altura))
-    assets[INIMIGOS_IMG] = pygame.transform.scale(assets[INIMIGOS_IMG], (vilao_largura, vilao_altura))
-    #assets[TESTE_IMG] = pygame.transform.scale(assets[TESTE_IMG], (heroi_largura, heroi_altura))
-    # assets[ROGER_IMG] = pygame.transform.scale(assets[ROGER_IMG],(roger_largura, roger_altura))
-    # assets[SHEPPARD_IMG] = pygame.transform.scale(assets[SHEPPARD_IMG],(tela_1_largura, tela_1_altura))
-    # assets[CAROLINE_IMG] = pygame.transform.scale(assets[CAROLINE_IMG],(caroline_largura, caroline_altura))
-    # assets[RALPH_IMG] = pygame.transform.scale(assets[RALPH_IMG],ralph_largura, ralph_altura))
-    # assets[MISS_IMG] = pygame.transform.scale(assets[MISS_IMG],(miss_largura, miss_altura))
-    # assets[CHARLES_IMG] = pygame.transform.scale(assets[CHARLES_IMG],(charles_largura, charles_altura))
     
+    assets[INIMIGOS_IMG] = pygame.transform.scale(assets[INIMIGOS_IMG], (vilao_largura, vilao_altura))
+   
     # - Imagens do cenário e telas:
     assets[GAMEOVER1] = pygame.transform.scale(assets[GAMEOVER1], (gameover1_largura, gameover1_altura))
     assets[GAMEOVER2] = pygame.transform.scale(assets[GAMEOVER2], (gameover2_largura, gameover2_altura))
     assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(largura,altura))
-    # assets[TELA_1_IMG] = pygame.transform.scale(assets[TELA_1_IMG],(tela_1_largura, tela_1_altura))
+    
     
 
     # - Imagens dos botões:
