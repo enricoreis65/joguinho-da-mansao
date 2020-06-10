@@ -63,6 +63,7 @@ CARTA = 'carta.png'
 CARTA_ABERTA= 'carta_aberta.png'
 PEGADAS = 'pegadas.png'
 ANEL = 'anel.png'
+PEGADASg = 'pegadasgrandes'
 
 
 #----------------------------------------------------------------------#
@@ -154,7 +155,7 @@ def load_assets(img_dir):
     assets[CARTA] = pygame.image.load(path.join(img_dir, 'carta.png')).convert_alpha()
     assets[CARTA_ABERTA] = pygame.image.load(path.join(img_dir, 'carta_aberta.png')).convert_alpha()
     assets[PEGADAS] = pygame.image.load(path.join(img_dir, 'pegadas.png')).convert_alpha()
-     
+    assets[PEGADASg] = pygame.image.load(path.join(img_dir, 'pegadas.png')).convert_alpha()
     # Definindo o player e imagens de teste:
     
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
@@ -194,6 +195,7 @@ def load_assets(img_dir):
     assets[CARTA] = pygame.transform.scale(assets[CARTA],(carta_largura, carta_altura))
     assets[CARTA_ABERTA] = pygame.transform.scale(assets[CARTA_ABERTA],(carta_aberta_largura,carta_aberta_altura))
     assets[PEGADAS] = pygame.transform.scale(assets[PEGADAS],(pegadas_largura,pegadas_altura))
+    assets[PEGADASg] = pygame.transform.scale(assets[PEGADASg],(largura,altura))
     assets[ANEL] = pygame.transform.scale(assets[ANEL],(anel_largura,anel_altura))
     assets[Chave1]=pygame.transform.scale(assets[Chave1], (chave_largura, chave_altura))
     assets[Chave2]=pygame.transform.scale(assets[Chave2], (chave_largura, chave_altura))
