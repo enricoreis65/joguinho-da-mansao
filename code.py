@@ -871,8 +871,8 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        # carta = adicionais(assets[CARTA],3,0,largura-100,100)
-        # all_sprites.add(carta)
+        carta = adicionais(assets[CARTA],3,0,largura-100,100)
+        all_sprites.add(carta)
         #all_pistas.add(carta)        
 
     #FASE 2:                
@@ -895,8 +895,8 @@ def fases(fase):
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
-        #pegadas = adicionais(assets[PEGADAS],2,0,largura-100,100)
-        #all_sprites.add(pegadas)
+        pegadas = adicionais(assets[PEGADAS],2,0,largura-100,100)
+        all_sprites.add(pegadas)
         #all_pistas.add(pegadas)
 
     #FASE 3:
@@ -919,8 +919,8 @@ def fases(fase):
         chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
-        # anel = adicionais(assets[ANEL],1,0,largura-100,100)
-        # all_sprites.add(anel)
+        anel = adicionais(assets[ANEL],1,0,largura-100,100)
+        all_sprites.add(anel)
         #all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
