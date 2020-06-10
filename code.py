@@ -59,6 +59,7 @@ fullscreen = False
 # SPRITESHEET
 
 #----------------------------------------------------------------------#
+# - Definindo a classe que configura o jogador:
 
 class heroi(pygame.sprite.Sprite):
     def __init__(self,vida,player_sheet,blocks,chaves,platform):
@@ -111,6 +112,7 @@ class heroi(pygame.sprite.Sprite):
         self.timer_do_tutorial = pygame.time.get_ticks()
         self.duracao_do_tutorial=1000
         self.highest_y = self.rect.bottom
+
     # Update    
     def update(self): 
         if self.state != caindo:
@@ -340,8 +342,6 @@ def colisoes_chaves():
             fase+=1
             
             estado_do_jogo.aba = "troca_de_fase"
-            
-
 
 
 def colisoes_inimigo():
@@ -354,6 +354,7 @@ def colisoes_inimigo():
         
             
 #----------------------------------------------------------------------#                 
+# - Definindo a classe que configura os inimigos:
 
 class inimigos(pygame.sprite.Sprite):
     def __init__(self,player,assets,vidaini):
@@ -490,7 +491,8 @@ class inimigos(pygame.sprite.Sprite):
         all_sprites.add(self.barra_vermelha)
     
 #----------------------------------------------------------------------#
-
+# - Definindo a classe que configura o modo de jogo (jogando, menu, main menu, troca de fases, game over):
+ 
 class modo_de_jogo():
     def __init__(self):
         self.aba="menu"
@@ -724,6 +726,7 @@ class modo_de_jogo():
             self.troca_de_fase()
 
 #----------------------------------------------------------------------#
+# - Definindo a classe que configura barras de vida e chaves para passar de fase:
 
 class adicionais(pygame.sprite.Sprite):
     def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
@@ -776,6 +779,8 @@ class adicionais(pygame.sprite.Sprite):
             elif variavel<0:
                 self.rect.y -= 1
 
+#----------------------------------------------------------------------#
+# - Definindo a classe que mostra a vida do personagem:
 class xicara(pygame.sprite.Sprite):
     def __init__(self,dicio):
         pygame.sprite.Sprite.__init__(self)
@@ -803,6 +808,7 @@ class xicara(pygame.sprite.Sprite):
 #----------------------------------------------------------------------------------#
 #- Definindo fases do jogo:
 
+# PRÉ-FASES:
 def fases(fase):
     if fase==0:
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
@@ -819,6 +825,7 @@ def fases(fase):
                     tile = Tile(assets[PAREDE], row, column)
                     all_sprites.add(tile3)
 
+    #FASE 1:
     if fase==1:
         for row in range(len(MAP1)):
             for column in range(len(MAP1[row])):
@@ -847,13 +854,15 @@ def fases(fase):
                     all_sprites.add(tile6)
                     all_plata.add(tile6)
 
+        # PISTA + CHAVE DA FASE:
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
         carta = adicionais(assets[CARTA],0,0,largura-100,100)
         all_sprites.add(carta)
         #all_pistas.add(carta)        
-                    
+
+    #FASE 2:                
     if fase ==2:
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
@@ -867,14 +876,17 @@ def fases(fase):
                     all_sprites.add(tile2)
         all_sprites.add(player)
         all_sprites.add(barra)
+        all_sprites.add(mostrador_vida)
+
+        # PISTA + CHAVE DA FASE:
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
-        all_sprites.add(mostrador_vida)
         pegadas = adicionais(assets[PEGADAS],0,0,largura-100,100)
         all_sprites.add(pegadas)
         #all_pistas.add(pegadas)
 
+    #FASE 3:
     if fase ==3:
         for row in range(len(MAP3)):
            for column in range(len(MAP3[row])):
@@ -888,16 +900,19 @@ def fases(fase):
                    all_sprites.add(tile2)
         all_sprites.add(player)
         all_sprites.add(barra)
+        all_sprites.add(mostrador_vida)
+
+        # PISTA + CHAVE DA FASE:
         chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
-        all_sprites.add(mostrador_vida)
         anel = adicionais(assets[ANEL],0,0,largura-100,100)
         all_sprites.add(anel)
         #all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
-# ----- Inicia estruturas de dados
+# ----- Inicia estruturas de dados:
+
 variavel=1
 sequencia=1
 clock = pygame.time.Clock()
@@ -933,6 +948,7 @@ agora=pygame.time.get_ticks()
 
 #----------------------------------------------------------------------#
 # ===== Loop principal =====
+
 pygame.mixer.music.play(loops=-1)
 while game:
     

@@ -17,6 +17,9 @@ window = pygame.display.set_mode((largura, altura))
 
 #----------------------------------------------------------------------#
 # - Imagens:
+
+#PERSONAGENS:
+PLAYER_PARADO_IMG = 'parado (2).png'
 ROGER_IMG = 'roger_imgla_inicial_img'
 SHEPPARD_IMG = 'sheppard_img'
 CAROLINE_IMG = 'caroline_img'
@@ -24,24 +27,34 @@ INIMIGOS_IMG = 'tile2-block.png'
 RALPH_IMG = 'ralph_img'
 MISS_IMG = 'miss_img'
 CHARLES_IMG = 'charles_img'
+
+BARRA_IMG = 'barra.png'
+BARRA_VERMELHA_IMG = 'vida_inimigo.png'
+
+# CENÁRIOS/TELA:
 Chao="chao"
+TELA_INICIAL_IMG = 'tela_inicial_img.png'
+TELA_1_IMG = 'tela1.png'
+TUTORIAL = 'tutorial.png'
+GAMEOVER1 = 'gameovercima.png'
+GAMEOVER2 = 'gameoverbaixo.png'
+xicara="xicara"
+PLATAa="plageral"
+PLATMm="plameio"
+PLATEe="plaesq"
+PLATDd="pladir"
+
+#BOTÕES:
 PLAY = 'play_img.png'
 PLAYAPERTADO = 'playapertado_img.png'
 MENU = 'menu_img.png'
 MENUAPERTADO = 'menuapertado_img.png'
-TELA_INICIAL_IMG = 'tela_inicial_img.png'
-TELA_1_IMG = 'tela1.png'
-PLAYER_PARADO_IMG = 'parado (2).png'
-TESTE_IMG = 'hero-single.png'
-BARRA_IMG = 'barra.png'
-BARRA_VERMELHA_IMG = 'vida_inimigo.png'
-TUTORIAL = 'tutorial.png'
-GAMEOVER1 = 'gameovercima.png'
-GAMEOVER2 = 'gameoverbaixo.png'
 SAIR = 'sair.png'
 SAIRAPERTADO = 'sairapertado.png'
 RESUME = 'resume.png'
 RESUMEAPERTADO = 'resumeapertado.png'
+
+# CHAVES E PISTAS:
 Chave1="key1.png"
 Chave2="key2.png"
 Chave3 = "key3.png"
@@ -50,14 +63,11 @@ CARTA = 'carta.png'
 CARTA_ABERTA= 'carta_aberta.png'
 PEGADAS = 'pegadas.png'
 ANEL = 'anel.png'
-xicara="xicara"
-PLATAa="plageral"
-PLATMm="plameio"
-PLATEe="plaesq"
-PLATDd="pladir"
+
 
 #----------------------------------------------------------------------#
 # - Spritesheet:
+
 def carrega_spritesheet(spritesheet, linhas, colunas):
     
     sprite_width = spritesheet.get_width() // colunas
