@@ -381,8 +381,8 @@ class inimigos(pygame.sprite.Sprite):
     
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
-        self.rect.centerx = random.randint(0,largura)
-        self.rect.bottom = random.randint(0,altura)
+        self.rect.centerx = random.randint(200,largura)
+        self.rect.bottom = random.randint(0,altura-500)
         self.speedx_inimigo = 0
         self.speedy_inimigo= 0
         self.vida=vidaini
@@ -686,6 +686,7 @@ class modo_de_jogo():
     def troca_de_fase(self):
         global fase
         pygame.mixer.music.pause()
+        andando.stop()
         
         window.fill((0, 0, 0))
         text=font.render('Nivel {0}'.format(fase), True, (255, 255, 255))
