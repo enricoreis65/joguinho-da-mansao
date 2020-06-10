@@ -39,6 +39,7 @@ TUTORIAL = 'tutorial.png'
 GAMEOVER1 = 'gameovercima.png'
 GAMEOVER2 = 'gameoverbaixo.png'
 xicara="xicara"
+xicrinha="xicrinha"
 PLATAa="plageral"
 PLATMm="plameio"
 PLATEe="plaesq"
@@ -88,7 +89,7 @@ def carrega_spritesheet(spritesheet, linhas, colunas):
 
 spritesheet_todos = {'existindoesq':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_existindoLeft.png')).convert_alpha(), (52*3, 80*2)),
                     'existindodir':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_existindoRight.png')).convert_alpha(), (52*3, 80*2)),
-                     'helandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingLeft.png')).convert_alpha(), (52*4, 80*2)),
+                     'helandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingLeft.png')).convert_alpha(), (52*5, 80*3)),
                      'andandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoLeft.png')).convert_alpha(), (52*2, 80)),
                       'andandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoRight.png')).convert_alpha(), (52*2, 80)),
                      'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (80,80*2)),  
@@ -102,7 +103,7 @@ spritesheet_todos = {'existindoesq':pygame.transform.scale(pygame.image.load(pat
                      'xicara':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'xicara_healing.png')).convert_alpha(), (largura_xicara*20, altura_xicara*20)),
                      "pulandodir":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoRight.png')).convert_alpha(), (52*3, 80*2)),
                      "xicrinha":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'xicrinha.png')).convert_alpha(), (largura_xicara*10, altura_xicara*10)),
-                     "helandodir":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingRight.png')).convert_alpha(), (52*4, 80*2))
+                     "helandodir":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingRight.png')).convert_alpha(), (52*5, 80*3))
 }
 
 dicio={}
@@ -122,7 +123,7 @@ dicio['existindoesq']=carrega_spritesheet(spritesheet_todos["existindoesq"], 2, 
 dicio['xicara']=carrega_spritesheet(spritesheet_todos["xicara"], 4, 3)
 dicio['xicrinha']=carrega_spritesheet(spritesheet_todos["xicrinha"], 2, 2)
 dicio['helandoesq']=carrega_spritesheet(spritesheet_todos["helandoesq"], 3, 5)
-dicio['helandoedir']=carrega_spritesheet(spritesheet_todos["helandodir"], 3, 5)
+dicio['helandodir']=carrega_spritesheet(spritesheet_todos["helandodir"], 3, 5)
 
 #----------------------------------------------------------------------#
 # - Carrega os assets de uma vez:

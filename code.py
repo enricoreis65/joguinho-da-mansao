@@ -23,6 +23,7 @@ espera = "espera"
 pulando = "pulando"
 pulandoesq="pulandoesq"
 pulandodir="pulandodir"
+helando="helando"
 helandodir="helandodir"
 helandoesq="helandoesq"
 caindo = "caindo"
@@ -243,15 +244,15 @@ class heroi(pygame.sprite.Sprite):
         elif self.estado==helando:
             self.rect.x += 0
 
-        if self.estado!=indefeso and self.estado!=tomando_dano and  self.estado!=helando:          
+        if self.estado==helando:
+             if agora -self.hora_da_acao>self.acao_ticks*10:
+                self.estado=indefeso
+        if self.estado!=indefeso and self.estado!=tomando_dano and self.estado!=helando:          
             if agora -self.hora_da_acao>self.acao_ticks:
                 self.estado=indefeso
 
-        elif self.estado==tomando_dano:
+        if self.estado==tomando_dano:
              if agora -self.hora_da_acao>self.acao_ticks/2:
-                self.estado=indefeso
-        if self.estado==helando:
-             if agora -self.hora_da_acao>self.acao_ticks*2:
                 self.estado=indefeso
 
 
@@ -901,28 +902,66 @@ class adicionais(pygame.sprite.Sprite):
 # - Definindo a classe que mostra a vida do personagem:
 
 class xicara(pygame.sprite.Sprite):
-    def __init__(self,dicio):
+    def __init__(self,dicio,indica,x,y):
         pygame.sprite.Sprite.__init__(self)
         
         self.animations = {
             xicara: dicio['xicara'][0:11],
+            xicrinha: dicio['xicrinha'][0:4],
             }
+        self.indica=indica
+        if self.indica=="vida":
         
-        
-        self.animation = self.animations[xicara]
+            self.animation = self.animations[xicara]
+        else:
+            self.animation = self.animations[xicrinha]
+
         self.oquemostrar=player.vida
         self.frame=0
         self.image = self.animation[self.frame]
-        
+        self.frame_ticks = 200
+        self.last_update = pygame.time.get_ticks()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
-        self.rect.centerx=36
-        self.rect.centery=24
+        self.rect.centerx=x
+        self.rect.centery=y
 
     def update(self):
-        self.oquemostrar=player.vida
-        self.frame =int(10-(self.oquemostrar/10))
-        self.image = self.animation[self.frame]
+        if self.indica=="vida":
+            self.oquemostrar=player.vida
+            if player.vida%10==0:
+                self.frame =int(10-(self.oquemostrar/10))
+                self.image = self.animation[self.frame]
+            else:
+                self.frame =int(10-((self.oquemostrar-5)/10))
+                self.image = self.animation[self.frame]
+
+        else:
+            now = pygame.time.get_ticks()
+            elapsed2_ticks = now - self.last_update
+
+            if elapsed2_ticks > self.frame_ticks:
+                self.last_update = now
+                self.frame += 1
+                self.animation = self.animations[xicrinha]
+
+                if self.frame >= len(self.animation):
+                    self.frame = 0
+    
+                center = self.rect.center
+                self.image = self.animation[self.frame]
+                self.mask = pygame.mask.from_surface(self.image)
+                self.rect = self.image.get_rect()
+                self.rect.center = center
+            colisao=pygame.sprite.spritecollide(player,all_cura,True, pygame.sprite.collide_mask)
+            if len(colisao)>0:
+                player.hora_da_acao = agora
+                player.estado=helando
+                if player.vida<=80:
+                    player.vida+=10
+                colisao.clear()
+                tomandocafe.play()
+
 
 #----------------------------------------------------------------------------------#
 #- Definindo fases do jogo:
@@ -946,6 +985,7 @@ def fases(fase):
 
     #FASE 1:
     if fase==1:
+        
         for row in range(len(MAP1)):
             for column in range(len(MAP1[row])):
                 tile_type = MAP1[row][column]
@@ -979,10 +1019,11 @@ def fases(fase):
         all_chaves.add(chave1)
         carta = adicionais(assets[CARTA],3,0,100,300)
         all_sprites.add(carta)
-        all_pistas.add(carta)        
-
+        all_pistas.add(carta)    
+        
     #FASE 2:                
     if fase ==2:
+        cura=xicara(dicio,"+vida",36,400)
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
                 tile_type = MAP2[row][column]
@@ -1012,7 +1053,8 @@ def fases(fase):
         all_sprites.add(player)
         all_sprites.add(barra)
         all_sprites.add(mostrador_vida)
-
+        all_cura.add(cura)
+        all_sprites.add(cura)
         # PISTA + CHAVE DA FASE:
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
@@ -1060,11 +1102,13 @@ all_enemis = pygame.sprite.Group()
 all_plata=pygame.sprite.Group()
 blocks = pygame.sprite.Group()
 all_chaves = pygame.sprite.Group()
+all_cura=pygame.sprite.Group()
 fase=1
 fases(fase)
 keys_down = {}
 player= heroi(vida,dicio,blocks,all_chaves,all_plata)
-mostrador_vida=xicara(dicio)
+cura1=xicara(dicio,"+vida",largura-100,500)
+mostrador_vida=xicara(dicio,"vida",36,24)
 estado_do_jogo= modo_de_jogo()
 for i in range(2):
     inimigo = inimigos(player,dicio,vida_inimigo)
@@ -1075,6 +1119,8 @@ all_sprites.add(mostrador_vida)
 
 all_sprites.add(player)
 all_sprites.add(barra)
+all_cura.add(cura1)
+all_sprites.add(cura1)    
 
 mouse_pres=[]
 game=True
