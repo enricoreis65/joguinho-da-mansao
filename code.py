@@ -8,9 +8,9 @@ import random
 from os import path
 from pygame.locals import *
 from imagens import *
-from mapa import BLOCK,EMPTY,MAP1,Tile,MAP2
+from mapa import BLOCK,EMPTY,MAP1,Tile,MAP2,MAP3,PLATA,PLATM,PLATE,PLATD
 from medidas import *
-#from sons import *
+from sons import *
 
 #----------------------------------------------------------------------#
 assets=load_assets(img_dir)
@@ -29,7 +29,7 @@ gravidade = 2
 andandoesq="andandoesq"
 andandodir="andandodir"
 
-tamanho_do_pulo = 25
+tamanho_do_pulo = 27
 indefeso = "indefeso"
 indefesoesq="indefesoesq"
 indefesodir="indefesodir"
@@ -51,6 +51,7 @@ dash="dash"
 window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Fenrly Park')
 font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
+fontg = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 100)
 
 fullscreen = False
 
@@ -60,10 +61,10 @@ fullscreen = False
 #----------------------------------------------------------------------#
 
 class heroi(pygame.sprite.Sprite):
-    def __init__(self,vida,player_sheet,blocks,chaves):
+    def __init__(self,vida,player_sheet,blocks,chaves,platform):
         pygame.sprite.Sprite.__init__(self)
         
-
+        self.platforms = platform
         self.blocks=blocks
         self.animations = {
             indefesoesq: dicio['existindoesq'][0:4],
@@ -109,9 +110,11 @@ class heroi(pygame.sprite.Sprite):
         self.hora_da_acao=pygame.time.get_ticks()
         self.timer_do_tutorial = pygame.time.get_ticks()
         self.duracao_do_tutorial=1000
-        
+        self.highest_y = self.rect.bottom
     # Update    
-    def update(self):        
+    def update(self): 
+        if self.state != caindo:
+            self.highest_y = self.rect.bottom       
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
         if self.ultimo_lado>4:
@@ -183,9 +186,20 @@ class heroi(pygame.sprite.Sprite):
             if self.frame >= len(self.animation):
                 self.frame = 0
             center = self.rect.center
+            centerx=self.rect.centerx
+            centery=self.rect.centery
             self.image = self.animation[self.frame]
             self.rect = self.image.get_rect()
-            self.rect.center = center
+            if self.estado==ataque:
+                if self.ultimo_lado==4:
+                    self.rect.centerx = centerx+4
+                    self.rect.centery = centery
+                    
+                if self.ultimo_lado==-4:
+                    self.rect.centerx = centerx-4
+                    self.rect.centery = centery
+            else:       
+                self.rect.center = center
 
         
         # Atualização da posição do heroi
@@ -227,15 +241,30 @@ class heroi(pygame.sprite.Sprite):
                 self.speedy = 0
                 # Atualiza o estado para parado
                 self.state = espera
-
+        if self.speedy > 0:  # Está indo para baixo
+            collisionsplata = pygame.sprite.spritecollide(self, self.platforms, False)
+            # Para cada tile de plataforma que colidiu com o personagem
+            # verifica se ele estava aproximadamente na parte de cima
+            for platform in collisionsplata:
+                # Verifica se a altura alcançada durante o pulo está acima da
+                # plataforma.
+                if self.highest_y <= platform.rect.top:
+                    self.rect.bottom = platform.rect.top
+                    # Atualiza a altura no mapa
+                    self.highest_y = self.rect.bottom
+                    # Para de cair
+                    self.speedy = 0
+                    # Atualiza o estado para parado
+                    self.state = espera
         # Mantem dentro da tela
         if self.rect.right > largura:
             self.rect.right = largura
         if self.rect.left < 0:
             self.rect.left = 0
+
         collisionsblocks2 = pygame.sprite.spritecollide(self, self.blocks, False, pygame.sprite.collide_mask)
         # Corrige a posição do personagem para antes da colisão
-        print(self.rect.width)
+        
         for collision in collisionsblocks2:
             # Estava indo para a direita
             if self.speedx > 0:
@@ -302,6 +331,7 @@ def colisoes_chaves():
         if len(colisao)>0:
             all_chaves.empty()
             blocks.empty()
+            all_plata.empty()
             all_sprites.empty()
             all_enemis.empty()
             
@@ -416,7 +446,7 @@ class inimigos(pygame.sprite.Sprite):
                     player.rect.x+=60
                 
             
-            if player.estado==ataque:
+            if player.estado==ataque and player.ultimo_lado==4:
         
                 if player.rect.right-self.rect.centerx<0:
                     self.vida=self.vida-10
@@ -429,8 +459,8 @@ class inimigos(pygame.sprite.Sprite):
                   
                                     
                     player.rect.x-=40
-                    
-                elif player.rect.left-self.rect.centerx>0:
+            if player.estado==ataque and player.ultimo_lado==-4:        
+                if player.rect.left-self.rect.centerx>0:
                     self.vida=self.vida-10
                     self.estado=tomando_dano
                     self.rect.x-=40
@@ -438,7 +468,7 @@ class inimigos(pygame.sprite.Sprite):
                     
                     player.estado=indefeso
                     
-                     
+                        
                                         
                     player.rect.x+=40
 
@@ -516,7 +546,6 @@ class modo_de_jogo():
 
     def jogando(self):
         
-        text = font.render(('{0}'.format(player.vida)), True, (0, 0, 255))
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
         for event in pygame.event.get():
         # ----- Verifica consequências
@@ -556,8 +585,8 @@ class modo_de_jogo():
     # ----- Gera saídas
         window.fill((0, 0, 0))
         all_sprites.draw(window)
-        window.blit(text,(10,10))
-        window.blit(text2,(70,10))
+       
+        window.blit(text2,(120,22))
         colisoes_inimigo()
         colisoes_chaves()
                 
@@ -568,6 +597,7 @@ class modo_de_jogo():
 
 
     def menu(self):
+        
         global sequencia
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
@@ -581,9 +611,13 @@ class modo_de_jogo():
         
         # Tutorial:
             if sequencia==1:
+                text= fontg.render('Fenrly Park', True, (255, 0, 0))
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
-            
+                text_rect=text.get_rect()
+                text_largura=text_rect.width
+                text_altura=text_rect.height
+                window.blit(text,((largura/2)-text_largura/2,11))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
@@ -598,8 +632,14 @@ class modo_de_jogo():
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     sequencia=3
+                    pygame.mixer.music.stop()
 
-            if sequencia==3 :                
+            if sequencia==3 :         
+                
+                pygame.mixer.music.load(path.join(sound_dir, 'segunda_musica_teste.ogg'))  
+                pygame.mixer.music.set_volume(0.4) 
+                
+
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
                     window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
@@ -607,6 +647,7 @@ class modo_de_jogo():
                         if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
                             window.fill((0, 0, 0))
                             self.aba="jogando"
+                            pygame.mixer.music.play(loops=-1)
 
             pygame.display.update()
     def troca_de_fase(self):
@@ -734,6 +775,33 @@ class adicionais(pygame.sprite.Sprite):
                 self.rect.y += 1
             elif variavel<0:
                 self.rect.y -= 1
+class xicara(pygame.sprite.Sprite):
+    def __init__(self,dicio):
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.animations = {
+            xicara: dicio['xicara'][0:11],
+            }
+        
+        
+        self.animation = self.animations[xicara]
+        self.oquemostrar=player.vida
+        self.frame=0
+        self.image = self.animation[self.frame]
+        
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.centerx=36
+        self.rect.centery=24
+
+    def update(self):
+        self.oquemostrar=player.vida
+        self.frame =int(10-(self.oquemostrar/10))
+        self.image = self.animation[self.frame]
+
+
+
+
 
 def fases(fase):
     if fase==0:
@@ -760,11 +828,30 @@ def fases(fase):
                     all_sprites.add(tile)
                     blocks.add(tile)
                 if tile_type == EMPTY:
-                    tile3 = Tile(assets[PAREDE], row, column)
+                    tile2 = Tile(assets[PAREDE], row, column)
+                    all_sprites.add(tile2)
+                if tile_type==PLATA:
+                    tile3 = Tile(assets[PLATAa], row, column)
                     all_sprites.add(tile3)
+                    all_plata.add(tile3)
+                if tile_type==PLATE:
+                    tile4 = Tile(assets[PLATEe], row, column)
+                    all_sprites.add(tile4)
+                    all_plata.add(tile4)
+                if tile_type==PLATM:
+                    tile5 = Tile(assets[PLATMm], row, column)
+                    all_sprites.add(tile5)
+                    all_plata.add(tile5)
+                if tile_type==PLATD:
+                    tile6 = Tile(assets[PLATDd], row, column)
+                    all_sprites.add(tile6)
+                    all_plata.add(tile6)
+
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
+        
+   
         #mapa=adicionais(assets[MAPA],0,0,largura-100,100)
         #all_sprites.add(mapa)
         #all_pistas.add(mapa)        
@@ -774,40 +861,42 @@ def fases(fase):
             for column in range(len(MAP2[row])):
                 tile_type = MAP2[row][column]
                 if tile_type == BLOCK:
-                    tile2 = Tile(assets[Chao], row, column)
-                    all_sprites.add(tile2)
-                    blocks.add(tile2)
+                    tile = Tile(assets[Chao], row, column)
+                    all_sprites.add(tile)
+                    blocks.add(tile)
                 if tile_type == EMPTY:
-                    tile3 = Tile(assets[PAREDE], row, column)
-                    all_sprites.add(tile3)
+                    tile2 = Tile(assets[PAREDE], row, column)
+                    all_sprites.add(tile2)
         all_sprites.add(player)
         all_sprites.add(barra)
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
+        all_sprites.add(mostrador_vida)
         #pegadas=adicionais(assets[PEGADAS],0,0,largura-100,100)
         #all_sprites.add(pegadas)
         #all_pistas.add(pegadas)
 
-    #if fase ==3:
-        #for row in range(len(MAP3)):
-        #    for column in range(len(MAP3[row])):
-        #        tile_type = MAP3[row][column]
-        #        if tile_type == BLOCK:
-        #            tile2 = Tile(assets[Chao], row, column)
-        #            all_sprites.add(tile2)
-        #            blocks.add(tile2)
-        #        if tile_type == EMPTY:
-        #            tile3 = Tile(assets[PAREDE], row, column)
-        #            all_sprites.add(tile3)
-        #all_sprites.add(player)
-        #all_sprites.add(barra)
-        #chave3=adicionais(assets[Chave3],0,0,largura-100,100)
-        #all_sprites.add(chave3)
-        #all_chaves.add(chave3)
+    if fase ==3:
+        for row in range(len(MAP3)):
+           for column in range(len(MAP3[row])):
+               tile_type = MAP3[row][column]
+               if tile_type == BLOCK:
+                   tile = Tile(assets[Chao], row, column)
+                   all_sprites.add(tile)
+                   blocks.add(tile)
+               if tile_type == EMPTY:
+                   tile2 = Tile(assets[PAREDE], row, column)
+                   all_sprites.add(tile2)
+        all_sprites.add(player)
+        all_sprites.add(barra)
+        chave3=adicionais(assets[Chave2],0,0,largura-100,100)
+        all_sprites.add(chave3)
+        all_chaves.add(chave3)
+        all_sprites.add(mostrador_vida)
         #anel=adicionais(assets[ANEL],0,0,largura-100,100)
-        #all_sprites.add(anel)
-        #all_pistas.add(anel)
+        # all_sprites.add(anel)
+        # all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
 # ----- Inicia estruturas de dados
@@ -819,22 +908,25 @@ vida_inimigo=40
 FPS = 60
 all_sprites = pygame.sprite.Group()
 all_enemis = pygame.sprite.Group()
-
+all_plata=pygame.sprite.Group()
 blocks = pygame.sprite.Group()
 all_chaves = pygame.sprite.Group()
 fase=1
 fases(fase)
 keys_down = {}
-player= heroi(vida,dicio,blocks,all_chaves)
+player= heroi(vida,dicio,blocks,all_chaves,all_plata)
+mostrador_vida=xicara(dicio)
 estado_do_jogo= modo_de_jogo()
 for i in range(2):
     inimigo = inimigos(player,dicio,vida_inimigo)
     all_sprites.add(inimigo)
     all_enemis.add(inimigo)
 barra= adicionais(assets[BARRA_IMG],player,barra_largura,0,0)
+all_sprites.add(mostrador_vida)
 
 all_sprites.add(player)
 all_sprites.add(barra)
+
 mouse_pres=[]
 game=True
 
@@ -843,9 +935,9 @@ agora=pygame.time.get_ticks()
 
 #----------------------------------------------------------------------#
 # ===== Loop principal =====
-
-#pygame.mixer.music.play(loops=-1)
+pygame.mixer.music.play(loops=-1)
 while game:
+    
     
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()

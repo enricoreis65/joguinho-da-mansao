@@ -46,7 +46,11 @@ CARTA = 'carta.png'
 CARTA_ABERTA= 'carta_aberta.png'
 PEGADAS = 'pegadas.png'
 ANEL = 'anel.png'
-
+xicara="xicara"
+PLATAa="plageral"
+PLATMm="plameio"
+PLATEe="plaesq"
+PLATDd="pladir"
 # - Spritesheet:
 def carrega_spritesheet(spritesheet, linhas, colunas):
     
@@ -70,14 +74,15 @@ spritesheet_todos = {'existindoesq':pygame.transform.scale(pygame.image.load(pat
                      'healing': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingLeft.png')).convert_alpha(), (52*4, 80*2)),
                      'andandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoLeft.png')).convert_alpha(), (52*2, 80)),
                       'andandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoRight.png')).convert_alpha(), (52*2, 80)),
-                     'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (130,160)),  
-                     'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (130, 160)),
+                     'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (80,80*2)),  
+                     'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (80, 160)),
                      #'defendendo': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (52*4, 80*2)),
                      # dash': pygame.transform.scale("spritesheet_dashLeft.png")).concert_alpha(), (52*4, 80*2)) ,
                      'danoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
                      'danodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoRight.png')).convert_alpha(), (52*2, 80*2)),
                      "inimigo":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha(), (52*5, 80*4)),
                      "pulandoesq":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoLeft.png')).convert_alpha(), (52*3, 80*2)),
+                     'xicara':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'xicara_healing.png')).convert_alpha(), (largura_xicara*20, altura_xicara*20)),
                      "pulandodir":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoRight.png')).convert_alpha(), (52*3, 80*2))
 }
 
@@ -94,6 +99,8 @@ dicio['danodir']=carrega_spritesheet(spritesheet_todos['danoesq'], 2, 2)
 dicio["inimigo"]=carrega_spritesheet(spritesheet_todos['inimigo'], 4, 5)
 dicio["pulandoesq"]=carrega_spritesheet(spritesheet_todos['pulandoesq'], 2, 3)
 dicio["pulandodir"]=carrega_spritesheet(spritesheet_todos['pulandodir'], 2, 3)
+dicio['existindoesq']=carrega_spritesheet(spritesheet_todos["existindoesq"], 2, 3)
+dicio['xicara']=carrega_spritesheet(spritesheet_todos["xicara"], 4, 3)
 
 # - Carrega os assets de uma vez:
 def load_assets(img_dir):
@@ -108,6 +115,10 @@ def load_assets(img_dir):
     # assets[MISS_IMG] = pygame.image.load(path.join(img_dir, 'miss.png')).convert_alpha()
     # assets[CHARLES_IMG] = pygame.image.load(path.join(img_dir, 'charles.png')).convert_alpha()
     assets[Chao] = pygame.image.load(path.join(img_dir, 'tile-block.png')).convert()
+    assets[PLATAa] = pygame.image.load(path.join(img_dir, 'tile-wood.png')).convert()
+    assets[PLATMm] = pygame.image.load(path.join(img_dir, 'tile-wood-2.png')).convert()
+    assets[PLATEe] = pygame.image.load(path.join(img_dir, 'tile-wood-1.png')).convert()
+    assets[PLATDd] = pygame.image.load(path.join(img_dir, 'tile-wood-3.png')).convert()
     assets[PAREDE] = pygame.image.load(path.join(img_dir, 'parede.png')).convert()
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
     assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
