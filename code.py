@@ -639,13 +639,8 @@ class modo_de_jogo():
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     sequencia=3
-                    pygame.mixer.music.stop()
 
-            if sequencia==3 :         
-                
-                pygame.mixer.music.load(path.join(sound_dir, 'code.ogg'))  
-                pygame.mixer.music.set_volume(0.4) 
-                
+            if sequencia==3 :   
 
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
