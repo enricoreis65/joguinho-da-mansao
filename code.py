@@ -115,6 +115,11 @@ class heroi(pygame.sprite.Sprite):
 
     # Update    
     def update(self): 
+        if self.vida <= 0:
+            gameoversound.play()
+            self.kill()
+            barra.kill()
+            estado_do_jogo.aba = "gameover"
         if self.state != caindo:
             self.highest_y = self.rect.bottom       
         now = pygame.time.get_ticks()
@@ -213,9 +218,13 @@ class heroi(pygame.sprite.Sprite):
             self.rect.x += self.speedx*41
             self.estado=indefeso
 
-        if self.estado!=indefeso:          
+        if self.estado!=indefeso and self.estado!=tomando_dano:          
             if agora -self.hora_da_acao>self.acao_ticks:
                 self.estado=indefeso
+        if self.estado==tomando_dano:
+             if agora -self.hora_da_acao>self.acao_ticks/2:
+                self.estado=indefeso
+
 
         self.speedy += gravidade
         # Atualiza o estado para caindo
@@ -280,9 +289,12 @@ class heroi(pygame.sprite.Sprite):
             player.kill()
             estado_do_jogo.aba = 'gameover'
         
+        
+        
     def pulo(self):
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
+            pulosond.play()
             self.state = pulando
 
     def ataque(self):
@@ -296,6 +308,8 @@ class heroi(pygame.sprite.Sprite):
             # Marca o tick da nova imagem.
                 self.hora_da_acao = agora
                 if self.estado == indefeso:
+                    cortandoar.play()
+                    
                     self.estado = ataque
                 
 
@@ -324,6 +338,7 @@ class heroi(pygame.sprite.Sprite):
                 # Marca o tick da nova imagem.
                     self.hora_da_acao = agora
                     if self.estado == indefeso:
+                        dashsound.play()
                         self.estado = dash
                         self.quantdash-=1             
 def colisoes_chaves():
@@ -331,6 +346,7 @@ def colisoes_chaves():
     if estado_do_jogo.aba=="jogando":
         colisao=pygame.sprite.spritecollide(player,all_chaves,False, pygame.sprite.collide_mask)
         if len(colisao)>0:
+            chavesound.play()
             all_chaves.empty()
             blocks.empty()
             all_plata.empty()
@@ -344,13 +360,7 @@ def colisoes_chaves():
             estado_do_jogo.aba = "troca_de_fase"
 
 
-def colisoes_inimigo():
     
-    if estado_do_jogo.aba=="jogando":
-        if player.vida <= 0:
-            player.kill()
-            barra.kill()
-            estado_do_jogo.aba = "gameover"
         
             
 #----------------------------------------------------------------------#                 
@@ -361,12 +371,11 @@ class inimigos(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
         self.animations = {
-            espera: dicio['inimigo'][0:6],
-            tomando_dano: dicio['inimigo'][0:6],
+            espera: dicio['inimigo'][0:6]
             }
         
         
-        self.animation = self.animations[self.estado]
+        self.animation = self.animations[espera]
         self.frame = 0
         self.image = self.animation[self.frame]
     
@@ -381,6 +390,8 @@ class inimigos(pygame.sprite.Sprite):
         self.last_update = pygame.time.get_ticks()
         self.cria_barra()
         self.variant=False
+        self.hora_da_acao=pygame.time.get_ticks()
+        self.sound_tick=20000
     def update(self):
         
         now = pygame.time.get_ticks()
@@ -389,7 +400,7 @@ class inimigos(pygame.sprite.Sprite):
         if elapsed2_ticks > self.frame_ticks:
             self.last_update = now
             self.frame += 1
-            self.animation = self.animations[self.estado]
+            self.animation = self.animations[espera]
 
             if self.frame >= len(self.animation):
                 self.frame = 0
@@ -408,7 +419,7 @@ class inimigos(pygame.sprite.Sprite):
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
             self.rect.y += self.speedy_inimigo
-        elif player.hora_da_acao+player.acao_ticks*0.5<agora:
+        elif player.hora_da_acao+player.acao_ticks*1.5<agora:
             self.estado=espera
         if player.rect.x-self.rect.x>0 :
             self.speedx_inimigo = 1
@@ -424,36 +435,45 @@ class inimigos(pygame.sprite.Sprite):
             self.speedy_inimigo = -1
     
         colisao2 = pygame.sprite.collide_rect(player, self)   
-        
+        if self.hora_da_acao+self.sound_tick<agora:
+            fantasmasound.play()
+            self.hora_da_acao=agora
+
         if colisao2==True:
                 
             if player.estado==indefeso:  
+                danoplayer.play()
                 if player.rect.bottom-self.rect.top<0:
                     player.estado=tomando_dano
                     player.hora_da_acao=agora
                     player.vida-=10                       
-                    player.rect.x-=90
+                    player.rect.x-=60
+                    self.rect.x+=60
 
                 elif player.rect.right-self.rect.centerx<0:
                     player.estado=tomando_dano
                     player.hora_da_acao=agora
                     player.vida-=10                       
                     player.rect.x-=60
+                    self.rect.x+=60
                     
                 elif player.rect.left-self.rect.centerx>0:
                     player.estado=tomando_dano
                     player.hora_da_acao=agora
                     player.vida-=10                       
                     player.rect.x+=60
+                    self.rect.x-=60
                 else :
                     player.estado=tomando_dano
                     player.hora_da_acao=agora
                     player.vida-=10                       
                     player.rect.x+=60
+                    self.rect.x-=60
 
             
             if player.estado==ataque and player.ultimo_lado==4:
-        
+                cortandoar.stop()
+                inimigo_acerto.play()
                 if player.rect.right-self.rect.centerx<0:
                     self.vida=self.vida-10
                     self.rect.x+=40
@@ -465,7 +485,9 @@ class inimigos(pygame.sprite.Sprite):
                   
                                     
                     player.rect.x-=40
-            if player.estado==ataque and player.ultimo_lado==-4:        
+            if player.estado==ataque and player.ultimo_lado==-4:   
+                cortandoar.stop()
+                inimigo_acerto.play()     
                 if player.rect.left-self.rect.centerx>0:
                     self.vida=self.vida-10
                     self.estado=tomando_dano
@@ -480,16 +502,17 @@ class inimigos(pygame.sprite.Sprite):
 
 
             if player.estado==defendendo:
-            
-            
-                    if player.rect.right-self.rect.centerx<0:
-                        self.rect.x+=60
-                        self.rect.y-=25    
-                    
-                    
-                    elif player.rect.left-self.rect.centerx>=0:    
-                        self.rect.x-=60
-                        self.rect.y-=25   
+                defendendosound.play()
+                self.estado="bloqueado"
+        
+                if player.rect.right-self.rect.centerx<0:
+                    self.rect.x+=90
+                    self.rect.y-=25    
+                
+                
+                elif player.rect.left-self.rect.centerx>=0:    
+                    self.rect.x-=90
+                    self.rect.y-=25   
 
     def cria_barra(self):
         self.barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],self,barra_largura,0,0)
@@ -565,9 +588,11 @@ class modo_de_jogo():
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
                     player.ultimo_lado=-4.0
+                    andando.play()
                     player.speedx -= 4.0
                 if event.key == pygame.K_d:  
-                    player.ultimo_lado=4.0                
+                    player.ultimo_lado=4.0   
+                    andando.play()             
                     player.speedx += 4.0
                 if event.key == pygame.K_SPACE:
                     player.pulo()
@@ -582,8 +607,10 @@ class modo_de_jogo():
             # Dependendo da tecla, altera a velocidade.
                     if event.key == pygame.K_a:   
                         player.speedx += 4.0
+                        andando.stop()
                     if event.key == pygame.K_d:
                         player.speedx -= 4.0
+                        andando.stop()
                     if event.key == pygame.K_k:   
                         player.ataque()
                     if event.key == pygame.K_j:
@@ -594,7 +621,7 @@ class modo_de_jogo():
         all_sprites.draw(window)
        
         window.blit(text2,(120,22))
-        colisoes_inimigo()
+        
         colisoes_chaves()
                 
         all_sprites.update()
@@ -639,12 +666,11 @@ class modo_de_jogo():
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     sequencia=3
-                    pygame.mixer.music.stop()
+                    
 
             if sequencia==3 :         
                 
-                pygame.mixer.music.load(path.join(sound_dir, 'code.ogg'))  
-                pygame.mixer.music.set_volume(0.4) 
+                 
                 
 
                 window.blit(assets[TUTORIAL], (0, 0))
@@ -654,11 +680,12 @@ class modo_de_jogo():
                         if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
                             window.fill((0, 0, 0))
                             self.aba="jogando"
-                            pygame.mixer.music.play(loops=-1)
+                            
 
             pygame.display.update()
     def troca_de_fase(self):
         global fase
+        pygame.mixer.music.pause()
         
         window.fill((0, 0, 0))
         text=font.render('Nivel {0}'.format(fase), True, (255, 255, 255))
@@ -688,6 +715,7 @@ class modo_de_jogo():
                         inimigo = inimigos(player,dicio,vida_inimigo)
                         all_sprites.add(inimigo)
                         all_enemis.add(inimigo)
+                        pygame.mixer.music.unpause()
                     self.aba="jogando"
 
         pygame.display.update() 
@@ -720,6 +748,8 @@ class modo_de_jogo():
 
     def dicas(self):
         global fase
+        pygame.mixer.music.pause()
+        andando.stop()
         player.speedx=0
         player.speedy=0
         window.fill((0,0,0))
@@ -748,6 +778,8 @@ class modo_de_jogo():
         
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
+                    pegando_item.play()
+                    pygame.mixer.music.unpause()
                     self.aba="jogando"
         pygame.display.update()
         
