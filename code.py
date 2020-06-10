@@ -775,6 +775,7 @@ class adicionais(pygame.sprite.Sprite):
                 self.rect.y += 1
             elif variavel<0:
                 self.rect.y -= 1
+
 class xicara(pygame.sprite.Sprite):
     def __init__(self,dicio):
         pygame.sprite.Sprite.__init__(self)
@@ -799,9 +800,8 @@ class xicara(pygame.sprite.Sprite):
         self.frame =int(10-(self.oquemostrar/10))
         self.image = self.animation[self.frame]
 
-
-
-
+#----------------------------------------------------------------------------------#
+#- Definindo fases do jogo:
 
 def fases(fase):
     if fase==0:
@@ -850,11 +850,9 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        
-   
-        #mapa=adicionais(assets[MAPA],0,0,largura-100,100)
-        #all_sprites.add(mapa)
-        #all_pistas.add(mapa)        
+        carta = adicionais(assets[CARTA],0,0,largura-100,100)
+        all_sprites.add(carta)
+        #all_pistas.add(carta)        
                     
     if fase ==2:
         for row in range(len(MAP2)):
@@ -873,8 +871,8 @@ def fases(fase):
         all_sprites.add(chave2)
         all_chaves.add(chave2)
         all_sprites.add(mostrador_vida)
-        #pegadas=adicionais(assets[PEGADAS],0,0,largura-100,100)
-        #all_sprites.add(pegadas)
+        pegadas = adicionais(assets[PEGADAS],0,0,largura-100,100)
+        all_sprites.add(pegadas)
         #all_pistas.add(pegadas)
 
     if fase ==3:
@@ -890,13 +888,13 @@ def fases(fase):
                    all_sprites.add(tile2)
         all_sprites.add(player)
         all_sprites.add(barra)
-        chave3=adicionais(assets[Chave2],0,0,largura-100,100)
+        chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
         all_sprites.add(mostrador_vida)
-        #anel=adicionais(assets[ANEL],0,0,largura-100,100)
-        # all_sprites.add(anel)
-        # all_pistas.add(anel)
+        anel = adicionais(assets[ANEL],0,0,largura-100,100)
+        all_sprites.add(anel)
+        #all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
 # ----- Inicia estruturas de dados
