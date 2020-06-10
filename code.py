@@ -958,7 +958,7 @@ class xicara(pygame.sprite.Sprite):
                 player.hora_da_acao = agora
                 player.estado=helando
                 if player.vida<=80:
-                    player.vida+=10
+                    player.vida+=20
                 colisao.clear()
                 tomandocafe.play()
 
