@@ -23,7 +23,8 @@ espera = "espera"
 pulando = "pulando"
 pulandoesq="pulandoesq"
 pulandodir="pulandodir"
-
+helandodir="helandodir"
+helandoesq="helandoesq"
 caindo = "caindo"
 gravidade = 2
 andandoesq="andandoesq"
@@ -81,7 +82,10 @@ class heroi(pygame.sprite.Sprite):
             tomando_danodir:dicio["danodir"][1:2],
 
             pulandoesq:dicio["pulandoesq"][2:3],
-            pulandodir:dicio["pulandodir"][2:3]
+            pulandodir:dicio["pulandodir"][2:3],
+
+            helandoesq:dicio["helandoesq"][0:14],
+            helandodir:dicio["helandodir"][0:14]
 
             # defendendo: spritesheet[0:1],
             
@@ -103,7 +107,6 @@ class heroi(pygame.sprite.Sprite):
         
         self.vida=vida
         self.quantdash=3
-        
         self.acao_ticks = 300*2
         self.frame_ticks = 300
         self.last_update = pygame.time.get_ticks()
@@ -120,17 +123,22 @@ class heroi(pygame.sprite.Sprite):
             self.kill()
             barra.kill()
             estado_do_jogo.aba = "gameover"
+
         if self.state != caindo:
-            self.highest_y = self.rect.bottom       
+            self.highest_y = self.rect.bottom   
+
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
+
         if self.ultimo_lado>4:
             self.ultimo_lado=4
         elif self.ultimo_lado<-4:
             self.ultimo_lado=-4
+
         if elapsed2_ticks > self.frame_ticks:
             self.last_update = now
             self.frame += 1
+
             if self.speedy!=0:
                 if self.ultimo_lado==4:
                     self.animation = self.animations[pulandodir]
@@ -185,18 +193,30 @@ class heroi(pygame.sprite.Sprite):
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[ataqueesq]
                     self.mask = pygame.mask.from_surface(self.image)
+
+            elif self.estado==helando:
+                if self.ultimo_lado==4:
+                    self.animation = self.animations[helandodir]
+                    self.mask = pygame.mask.from_surface(self.image)
                     
+                  
+                    
+                if self.ultimo_lado==-4:
+                    self.animation = self.animations[helandoesq]
+                    self.mask = pygame.mask.from_surface(self.image)         
                 
             
                 
 
             if self.frame >= len(self.animation):
                 self.frame = 0
+
             center = self.rect.center
             centerx=self.rect.centerx
             centery=self.rect.centery
             self.image = self.animation[self.frame]
             self.rect = self.image.get_rect()
+
             if self.estado==ataque:
                 if self.ultimo_lado==4:
                     self.rect.centerx = centerx+4
@@ -210,19 +230,28 @@ class heroi(pygame.sprite.Sprite):
 
         
         # Atualização da posição do heroi
-        if  self.estado!=dash and self.estado!=defendendo :
+        if  self.estado!=dash and self.estado!=defendendo and self.estado!=helando:
             self.rect.x += self.speedx
+
         elif self.estado==defendendo:
             self.rect.x += self.speedx*0.25
+
         elif self.estado==dash:
+
             self.rect.x += self.speedx*41
             self.estado=indefeso
+        elif self.estado==helando:
+            self.rect.x += 0
 
-        if self.estado!=indefeso and self.estado!=tomando_dano:          
+        if self.estado!=indefeso and self.estado!=tomando_dano and  self.estado!=helando:          
             if agora -self.hora_da_acao>self.acao_ticks:
                 self.estado=indefeso
-        if self.estado==tomando_dano:
+
+        elif self.estado==tomando_dano:
              if agora -self.hora_da_acao>self.acao_ticks/2:
+                self.estado=indefeso
+        if self.estado==helando:
+             if agora -self.hora_da_acao>self.acao_ticks*2:
                 self.estado=indefeso
 
 
@@ -392,6 +421,7 @@ class inimigos(pygame.sprite.Sprite):
         self.variant=False
         self.hora_da_acao=pygame.time.get_ticks()
         self.sound_tick=20000
+
     def update(self):
         
         now = pygame.time.get_ticks()
@@ -478,13 +508,9 @@ class inimigos(pygame.sprite.Sprite):
                     self.vida=self.vida-10
                     self.rect.x+=40
                     self.rect.y-=20  
-                    self.estado=tomando_dano
-                    
-                    
-                    player.estado=indefeso
-                  
-                                    
+                    self.estado=tomando_dano               
                     player.rect.x-=40
+
             if player.estado==ataque and player.ultimo_lado==-4:   
                 cortandoar.stop()
                 inimigo_acerto.play()     
@@ -492,12 +518,7 @@ class inimigos(pygame.sprite.Sprite):
                     self.vida=self.vida-10
                     self.estado=tomando_dano
                     self.rect.x-=40
-                    self.rect.y-=20    
-                    
-                    player.estado=indefeso
-                    
-                        
-                                        
+                    self.rect.y-=20                    
                     player.rect.x+=40
 
 
