@@ -882,8 +882,8 @@ def fases(fase):
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
-        pegadas = adicionais(assets[PEGADAS],0,0,largura-100,100)
-        all_sprites.add(pegadas)
+        #pegadas = adicionais(assets[PEGADAS],0,0,largura-100,100)
+        #all_sprites.add(pegadas)
         #all_pistas.add(pegadas)
 
     #FASE 3:
