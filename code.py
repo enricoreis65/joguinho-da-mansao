@@ -636,7 +636,7 @@ class modo_de_jogo():
 
             if sequencia==3 :         
                 
-                pygame.mixer.music.load(path.join(sound_dir, 'segunda_musica_teste.ogg'))  
+                pygame.mixer.music.load(path.join(sound_dir, 'code.ogg'))  
                 pygame.mixer.music.set_volume(0.4) 
                 
 

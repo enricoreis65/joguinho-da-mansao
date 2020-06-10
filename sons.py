@@ -13,7 +13,7 @@ sound_dir = path.join(path.dirname(__file__), 'musicas')
 pygame.init()
 #pygame.mixer.music.load('')
 
-pygame.mixer.music.load(path.join(sound_dir, 'musica_teste.ogg'))
+pygame.mixer.music.load(path.join(sound_dir, 'code.ogg'))
 pygame.mixer.music.set_volume(0.4)
 
 #destroy_sound = pygame.mixer.Sound('')
