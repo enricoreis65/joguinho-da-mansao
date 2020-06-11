@@ -907,14 +907,14 @@ class xicara(pygame.sprite.Sprite):
         
         self.animations = {
             xicara: dicio['xicara'][0:11],
-            xicrinha: dicio['xicrinha'][0:4],
+            mesa: dicio['mesa'][0:8],
             }
         self.indica=indica
         if self.indica=="vida":
         
             self.animation = self.animations[xicara]
         else:
-            self.animation = self.animations[xicrinha]
+            self.animation = self.animations[mesa]
 
         self.oquemostrar=player.vida
         self.frame=0
@@ -943,7 +943,7 @@ class xicara(pygame.sprite.Sprite):
             if elapsed2_ticks > self.frame_ticks:
                 self.last_update = now
                 self.frame += 1
-                self.animation = self.animations[xicrinha]
+                self.animation = self.animations[mesa]
 
                 if self.frame >= len(self.animation):
                     self.frame = 0

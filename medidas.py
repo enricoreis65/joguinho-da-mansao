@@ -23,8 +23,8 @@ gameover2_largura = largura
 
 barra_largura=32
 barra_altura=3
-largura_xicara=22
-altura_xicara=16
+largura_xicara=11
+altura_xicara=8
 
 # PERSONAGENS:
 heroi_largura=52
