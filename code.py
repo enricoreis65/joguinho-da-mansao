@@ -1107,7 +1107,7 @@ fase=1
 fases(fase)
 keys_down = {}
 player= heroi(vida,dicio,blocks,all_chaves,all_plata)
-cura1=xicara(dicio,"+vida",largura-100,500)
+cura1=xicara(dicio,"+vida",largura-100,470)
 mostrador_vida=xicara(dicio,"vida",36,24)
 estado_do_jogo= modo_de_jogo()
 for i in range(2):

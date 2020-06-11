@@ -61,5 +61,6 @@ pegadas_largura=80
 pegadas_altura=54
 anel_largura=80
 anel_altura=54
-
+largura_mesa=12
+altura_mesa=22
 
