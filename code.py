@@ -570,6 +570,7 @@ class modo_de_jogo():
             
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 pygame.quit()  
 
             
@@ -590,6 +591,7 @@ class modo_de_jogo():
                     sequencia=5
             if sequencia==5:
                 game=False
+                pygame.mixer.music.stop()
                 pygame.quit()
                
                 
@@ -602,6 +604,7 @@ class modo_de_jogo():
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 pygame.quit() 
         # Verifica se apertou alguma tecla.
             if event.type == pygame.KEYDOWN:
@@ -659,6 +662,7 @@ class modo_de_jogo():
             pos=pygame.mouse.get_pos()
             
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
@@ -729,6 +733,7 @@ class modo_de_jogo():
             pos=pygame.mouse.get_pos()
             
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 pygame.quit()
         
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -758,8 +763,10 @@ class modo_de_jogo():
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'jogando'
                 elif event.key == pygame.K_x:
+                    pygame.mixer.music.stop()
                     pygame.quit()   
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 pygame.quit() 
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -797,6 +804,7 @@ class modo_de_jogo():
             pos=pygame.mouse.get_pos()
             
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 pygame.quit()
         
             if event.type == pygame.MOUSEBUTTONDOWN:
