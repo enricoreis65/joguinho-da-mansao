@@ -48,7 +48,10 @@ defendendo="defendendo"
 defendendodir="defendendodir"
 defendendoesq="defendendoesq"
 pronto_para_acao="pronto_para_acao"
+
 dash="dash"
+dashdir='dashdir'
+dashesq="dashesq"
 
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
@@ -93,11 +96,10 @@ class heroi(pygame.sprite.Sprite):
             helandodir:dicio["helandodir"][0:14],
 
             defendendoesq:dicio["defendendoesq"][0:3],
-            defendendodir:dicio["defendendodir"][0:3]
+            defendendodir:dicio["defendendodir"][0:3],
 
-            
-            
-            # dash: spritesheet[0:1]
+            dashdir:dicio["dashdir"][0:1],
+            dashesq:dicio["dashesq"][0:1]
             }
         
         self.estado = indefesodir
@@ -246,10 +248,15 @@ class heroi(pygame.sprite.Sprite):
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[defendendoesq]
                     self.mask = pygame.mask.from_surface(self.image)
-            elif self.estado==dash: 
-                self.animation = self.animations[defendendodir]
-                self.mask = pygame.mask.from_surface(self.image)
 
+            elif self.estado==dash:
+                if self.ultimo_lado==4:
+                    self.animation = self.animations[dashdir]
+                    self.mask = pygame.mask.from_surface(self.image)
+        
+                if self.ultimo_lado==-4:
+                    self.animation = self.animations[dashesq]
+                    self.mask = pygame.mask.from_surface(self.image)
             if self.frame >= len(self.animation):
                 self.frame = 0
 
@@ -1193,6 +1200,6 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    print(player.rect.width)
+    
     
     

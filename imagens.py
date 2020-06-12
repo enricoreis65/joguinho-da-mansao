@@ -106,14 +106,15 @@ spritesheet_todos = {'existindoesq':pygame.transform.scale(pygame.image.load(pat
                      'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (80, 160)),
                      'defendendoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (80*2, 80*2)),
                      'defendendodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoRight.png')).convert_alpha(), (80*2, 80*2)),
-                     # dash': pygame.transform.scale("spritesheet_dashLeft.png")).concert_alpha(), (52*4, 80*2)) ,
+                     "dashdir": pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_dashRight.png')).convert_alpha(), (52, 80)),
+                     "dashesq": pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_dashLeft.png')).convert_alpha(), (52, 80)),
                      'danoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
                      'danodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoRight.png')).convert_alpha(), (52*2, 80*2)),
                      "inimigo":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha(), (52*5, 80*4)),
                      "pulandoesq":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoLeft.png')).convert_alpha(), (52*3, 80*2)),
                      'xicara':pygame.transform.scale(pygame.image.load(path.join(img_dir, 'xicara_healing.png')).convert_alpha(), (largura_xicara*20, altura_xicara*20)),
                      "pulandodir":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_pulandoRight.png')).convert_alpha(), (52*3, 80*2)),
-                     "mesa":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'mesa.png')).convert_alpha(), (largura_mesa*10, altura_mesa*10)),
+                     "mesa":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'mesa.png')).convert_alpha(), (largura_mesa*11, altura_mesa*11)),
                      "helandodir":pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_healingRight.png')).convert_alpha(), (52*5, 80*3))
 }
 
@@ -137,6 +138,8 @@ dicio['helandoesq']=carrega_spritesheet(spritesheet_todos["helandoesq"], 3, 5)
 dicio['helandodir']=carrega_spritesheet(spritesheet_todos["helandodir"], 3, 5)
 dicio['defendendodir']=carrega_spritesheet(spritesheet_todos["defendendodir"], 2, 2)
 dicio['defendendoesq']=carrega_spritesheet(spritesheet_todos["defendendoesq"], 2, 2)
+dicio['dashesq']=carrega_spritesheet(spritesheet_todos["dashesq"], 1, 1)
+dicio['dashdir']=carrega_spritesheet(spritesheet_todos["dashdir"], 1, 1)
 
 #----------------------------------------------------------------------#
 # - Carrega os assets de uma vez:
