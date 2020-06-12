@@ -73,7 +73,7 @@ MAP3 = [
 
 # - Class que representa os blocos do cenário:
 class Tile(pygame.sprite.Sprite):
-"""   """
+    """   """
     # Construtor da classe.
     def __init__(self, tile_img, row, column):
         """   """

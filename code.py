@@ -45,6 +45,8 @@ tomando_danoesq="tomando_danoesq"
 tomando_danodir="tomando_danodir"
 
 defendendo="defendendo"
+defendendodir="defendendodir"
+defendendoesq="defendendoesq"
 pronto_para_acao="pronto_para_acao"
 dash="dash"
 
@@ -88,9 +90,12 @@ class heroi(pygame.sprite.Sprite):
             pulandodir:dicio["pulandodir"][2:3],
 
             helandoesq:dicio["helandoesq"][0:14],
-            helandodir:dicio["helandodir"][0:14]
+            helandodir:dicio["helandodir"][0:14],
 
-            # defendendo: spritesheet[0:1],
+            defendendoesq:dicio["defendendoesq"][0:3],
+            defendendodir:dicio["defendendodir"][0:3]
+
+            
             
             # dash: spritesheet[0:1]
             }
@@ -231,7 +236,19 @@ class heroi(pygame.sprite.Sprite):
          
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[helandoesq]
-                    self.mask = pygame.mask.from_surface(self.image)         
+                    self.mask = pygame.mask.from_surface(self.image)   
+
+            elif self.estado==defendendo:
+                if self.ultimo_lado==4:
+                    self.animation = self.animations[defendendodir]
+                    self.mask = pygame.mask.from_surface(self.image)
+        
+                if self.ultimo_lado==-4:
+                    self.animation = self.animations[defendendoesq]
+                    self.mask = pygame.mask.from_surface(self.image)
+            elif self.estado==dash: 
+                self.animation = self.animations[defendendodir]
+                self.mask = pygame.mask.from_surface(self.image)
 
             if self.frame >= len(self.animation):
                 self.frame = 0
@@ -1176,6 +1193,6 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    
+    print(player.rect.width)
     
     

@@ -104,7 +104,8 @@ spritesheet_todos = {'existindoesq':pygame.transform.scale(pygame.image.load(pat
                       'andandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_andandoRight.png')).convert_alpha(), (52*2, 80)),
                      'atacandodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoRight.png')).convert_alpha(), (80,80*2)),  
                      'atacandoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_atacandoLeft.png')).convert_alpha(), (80, 160)),
-                     #'defendendo': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (52*4, 80*2)),
+                     'defendendoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoLeft.png')).convert_alpha(), (80*2, 80*2)),
+                     'defendendodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_defendendoRight.png')).convert_alpha(), (80*2, 80*2)),
                      # dash': pygame.transform.scale("spritesheet_dashLeft.png")).concert_alpha(), (52*4, 80*2)) ,
                      'danoesq': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoLeft.png')).convert_alpha(), (52*2, 80*2)),
                      'danodir': pygame.transform.scale(pygame.image.load(path.join(img_dir, 'spritesheet_danoRight.png')).convert_alpha(), (52*2, 80*2)),
@@ -134,6 +135,8 @@ dicio['xicara']=carrega_spritesheet(spritesheet_todos["xicara"], 4, 3)
 dicio['mesa']=carrega_spritesheet(spritesheet_todos["mesa"], 2, 4)
 dicio['helandoesq']=carrega_spritesheet(spritesheet_todos["helandoesq"], 3, 5)
 dicio['helandodir']=carrega_spritesheet(spritesheet_todos["helandodir"], 3, 5)
+dicio['defendendodir']=carrega_spritesheet(spritesheet_todos["defendendodir"], 2, 2)
+dicio['defendendoesq']=carrega_spritesheet(spritesheet_todos["defendendoesq"], 2, 2)
 
 #----------------------------------------------------------------------#
 # - Carrega os assets de uma vez:
