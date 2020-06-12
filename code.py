@@ -60,6 +60,8 @@ pygame.display.set_caption('Fenrly Park')
 font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 fontg = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 100)
 
+
+
 fullscreen = False
 
 
@@ -618,14 +620,15 @@ class modo_de_jogo():
     def game_over(self):
         """   """
         global sequencia
-    
+        pygame.mixer.music.stop()
+        andandosound.stop()
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
             window.fill((0, 0, 0))
             
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
-                pygame.mixer.music.stop()
+                
                 pygame.quit()  
        
             if sequencia==3:
@@ -645,7 +648,6 @@ class modo_de_jogo():
                     sequencia=5
             if sequencia==5:
                 game=False
-                pygame.mixer.music.stop()
                 pygame.quit()
 
         pygame.display.update()
@@ -665,11 +667,11 @@ class modo_de_jogo():
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
                     player.ultimo_lado=-4.0
-                    andando.play()
+                    andandosound.play()
                     player.speedx -= 4.0
                 if event.key == pygame.K_d:  
                     player.ultimo_lado=4.0   
-                    andando.play()             
+                    andandosound.play()             
                     player.speedx += 4.0
                 if event.key == pygame.K_SPACE:
                     player.pulo()
@@ -684,10 +686,10 @@ class modo_de_jogo():
             # Dependendo da tecla, altera a velocidade.
                     if event.key == pygame.K_a:   
                         player.speedx += 4.0
-                        andando.stop()
+                        andandosound.stop()
                     if event.key == pygame.K_d:
                         player.speedx -= 4.0
-                        andando.stop()
+                        andandosound.stop()
                     if event.key == pygame.K_k:   
                         player.ataque()
                     if event.key == pygame.K_j:
@@ -764,40 +766,44 @@ class modo_de_jogo():
     def troca_de_fase(self):
         """   """
         global fase
-        pygame.mixer.music.pause()
-        andando.stop()
         
-        window.fill((0, 0, 0))
-        text=font.render('Nivel {0}'.format(fase), True, (255, 255, 255))
-        text_rect=text.get_rect()
-        text_largura=text_rect.width
-        text_altura=text_rect.height
-        window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
-        player.rect.centerx = 50
-        player.rect.bottom = 12*48
-        player.quantdash=3
-        player.speedx=0
-        player.speedy=0
+        andandosound.stop()
+        if fase!=4:
+            pygame.mixer.music.pause()
+            window.fill((0, 0, 0))
+            text=font.render('Nivel {0}'.format(fase), True, (255, 255, 255))
+            text_rect=text.get_rect()
+            text_largura=text_rect.width
+            text_altura=text_rect.height
+            window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
+            player.rect.centerx = 50
+            player.rect.bottom = 12*48
+            player.quantdash=3
+            player.speedx=0
+            player.speedy=0
+                    
+            window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
                 
-        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+            for event in pygame.event.get():
+                
+                pos=pygame.mouse.get_pos()
+                
+                if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
+                    pygame.quit()
             
-        for event in pygame.event.get():
-            
-            pos=pygame.mouse.get_pos()
-            
-            if event.type == pygame.QUIT:
-                pygame.mixer.music.stop()
-                pygame.quit()
-        
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
-                    fases(fase)
-                    for i in range(2):
-                        inimigo = inimigos(player,dicio,vida_inimigo)
-                        all_sprites.add(inimigo)
-                        all_enemis.add(inimigo)
-                        pygame.mixer.music.unpause()
-                    self.aba="jogando"
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
+                        
+                        fases(fase)
+                        for i in range(2):
+                            inimigo = inimigos(player,dicio,vida_inimigo)
+                            all_sprites.add(inimigo)
+                            all_enemis.add(inimigo)
+                            pygame.mixer.music.unpause()
+                        self.aba="jogando"
+        else:
+            self.aba="mensagem"        
 
         pygame.display.update() 
 
@@ -834,7 +840,7 @@ class modo_de_jogo():
         """   """
         global fase
         pygame.mixer.music.pause()
-        andando.stop()
+        andandosound.stop()
         player.speedx=0
         player.speedy=0
         window.fill((0,0,0))
@@ -869,6 +875,33 @@ class modo_de_jogo():
                     self.aba="jogando"
         pygame.display.update()
         
+    def fim_jogo(self):
+        global fase
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
+                pygame.quit()
+                
+            pygame.mixer.music.pause()
+            andandosound.stop()
+            player.speedx=0
+            player.speedy=0
+            
+            window.fill((0,0,0))
+            
+            textf = fontg.render('Obrigado por jogar', True, (255, 255, 255))
+            textf2=fontg.render('to be continue ...', True, (255, 255, 255))
+            text_rectf=textf.get_rect()
+            text_larguraf=text_rectf.width
+            text_alturaf=text_rectf.height
+
+            text_rectf2=textf2.get_rect()
+            text_larguraf2=text_rectf2.width
+            text_alturaf2=text_rectf2.height
+            window.blit(textf,((largura/2)-text_larguraf/2,(250)))
+            window.blit(textf2,((largura/2)-text_larguraf2/2,(altura-text_alturaf2-20)))
+        
+        pygame.display.update()
 
 
     def controlador_menu(self):
@@ -885,6 +918,8 @@ class modo_de_jogo():
             self.troca_de_fase()
         if self.aba=="dicas":
             self.dicas()
+        if self.aba=="mensagem":
+            self.fim_jogo()
           
         
 #----------------------------------------------------------------------#
@@ -1029,22 +1064,6 @@ class xicara(pygame.sprite.Sprite):
 
 # PRÉ-FASES:
 def fases(fase):
-    """   """
-    if fase==0:
-        chave1=adicionais(assets[Chave1],0,0,largura-100,100)
-        all_sprites.add(chave1)
-        all_chaves.add(chave1)
-        for row in range(len(MAP1)):
-            for column in range(len(MAP1[row])):
-                tile_type = MAP1[row][column]
-                if tile_type == BLOCK:
-                    tile = Tile(assets[Chao], row, column)
-                    all_sprites.add(tile)
-                    blocks.add(tile)
-                if tile_type == EMPTY:
-                    tile = Tile(assets[PAREDE], row, column)
-                    all_sprites.add(tile3)
-
     #FASE 1:
     if fase==1:
         
@@ -1200,6 +1219,6 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    
+
     
     
