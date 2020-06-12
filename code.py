@@ -861,12 +861,7 @@ class modo_de_jogo():
             self.troca_de_fase()
         if self.aba=="dicas":
             self.dicas()
-        
-            
-            
-        
-
-            
+          
         
 #----------------------------------------------------------------------#
 # - Definindo a classe que configura barras de vida e chaves para passar de fase:
@@ -936,10 +931,6 @@ class adicionais(pygame.sprite.Sprite):
             colisao=pygame.sprite.spritecollide(player,all_pistas,True)
             if len(colisao)>0:
                 estado_do_jogo.aba="dicas"
-                
-
-
-
         
 #----------------------------------------------------------------------#
 # - Definindo a classe que mostra a vida do personagem:
