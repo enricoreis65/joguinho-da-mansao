@@ -10,7 +10,7 @@ from medidas import *
 from pygame.locals import *
 
 #----------------------------------------------------------------------#
-
+#- Inicialização:
 img_dir = path.join(path.dirname(__file__), 'img')
 pygame.init()
 window = pygame.display.set_mode((largura, altura))
@@ -71,7 +71,17 @@ PEGADASg = 'pegadasgrandes'
 # - Spritesheet:
 
 def carrega_spritesheet(spritesheet, linhas, colunas):
+    """ Carrega posição das sprites do personagem na tela. Retorna sprites do personagem. 
     
+    Keyword Arguments:
+    sprites --
+    sprite_width --
+    sprite_height --
+    linha --
+    coluna --
+    dest_rect --
+    image --
+    """
     sprite_width = spritesheet.get_width() // colunas
     sprite_height = spritesheet.get_height() // linhas
     
@@ -128,6 +138,7 @@ dicio['helandodir']=carrega_spritesheet(spritesheet_todos["helandodir"], 3, 5)
 #----------------------------------------------------------------------#
 # - Carrega os assets de uma vez:
 def load_assets(img_dir):
+    """ Carrega todos os assets do diretório img_dir. Retorna os assets. """
     assets = {}
 
     # - Imagens do cenário e telas:
@@ -141,8 +152,6 @@ def load_assets(img_dir):
     assets[TUTORIAL] = pygame.image.load(path.join(img_dir, 'tutorial.png')).convert_alpha()
     assets[GAMEOVER1] = pygame.image.load(path.join(img_dir, 'gameovercima.png')).convert_alpha()
     assets[GAMEOVER2] = pygame.image.load(path.join(img_dir, 'gameoverbaixo.png')).convert_alpha()
-   
-
     # - Imagens dos botões:
     assets[PLAY] = pygame.image.load(path.join(img_dir, 'play_img.png')).convert_alpha()
     assets[PLAYAPERTADO] = pygame.image.load(path.join(img_dir, 'playapertado_img.png')).convert_alpha()
@@ -151,8 +160,7 @@ def load_assets(img_dir):
     assets[SAIR] = pygame.image.load(path.join(img_dir, 'sair.png')).convert_alpha()
     assets[SAIRAPERTADO] = pygame.image.load(path.join(img_dir, 'sairapertado.png')).convert_alpha()
     assets[RESUME] = pygame.image.load(path.join(img_dir, 'resume.png')).convert_alpha()
-    assets[RESUMEAPERTADO] = pygame.image.load(path.join(img_dir, 'resumeapertado.png')).convert_alpha()
-    
+    assets[RESUMEAPERTADO] = pygame.image.load(path.join(img_dir, 'resumeapertado.png')).convert_alpha() 
     # - Imagens das pistas e chaves para passar de nível:
     assets[Chave1] = pygame.image.load(path.join(img_dir, 'key1.png')).convert_alpha()
     assets[Chave2] = pygame.image.load(path.join(img_dir, 'key2.png')).convert_alpha()
@@ -162,30 +170,22 @@ def load_assets(img_dir):
     assets[CARTA_ABERTA] = pygame.image.load(path.join(img_dir, 'carta_aberta.png')).convert_alpha()
     assets[PEGADAS] = pygame.image.load(path.join(img_dir, 'pegadas.png')).convert_alpha()
     assets[PEGADASg] = pygame.image.load(path.join(img_dir, 'pegadas.png')).convert_alpha()
-    # Definindo o player e imagens de teste:
-    
+    # - Inimigo e barras de vida:
     assets[BARRA_IMG] = pygame.image.load(path.join(img_dir, 'barra.png')).convert_alpha()
     assets[BARRA_VERMELHA_IMG] = pygame.image.load(path.join(img_dir, 'vida_inimigo.png')).convert_alpha()
     assets[INIMIGOS_IMG] = pygame.image.load(path.join(img_dir, 'inimigo_spritesheet.png')).convert_alpha()
 
-   
-
-
     #----------------------------------------------------------------------#
     # - Escalas das imagens:
 
+    # - Inimigo e barras de vida:
     assets[BARRA_IMG]=pygame.transform.scale(assets[BARRA_IMG], (barra_largura, barra_altura))
     assets[BARRA_VERMELHA_IMG]=pygame.transform.scale(assets[BARRA_VERMELHA_IMG], (barra_largura, barra_altura))
-    
     assets[INIMIGOS_IMG] = pygame.transform.scale(assets[INIMIGOS_IMG], (vilao_largura, vilao_altura))
-   
     # - Imagens do cenário e telas:
     assets[GAMEOVER1] = pygame.transform.scale(assets[GAMEOVER1], (gameover1_largura, gameover1_altura))
     assets[GAMEOVER2] = pygame.transform.scale(assets[GAMEOVER2], (gameover2_largura, gameover2_altura))
     assets[TELA_INICIAL_IMG] = pygame.transform.scale(assets[TELA_INICIAL_IMG],(largura,altura))
-    
-    
-
     # - Imagens dos botões:
     assets[PLAY] = pygame.transform.scale(assets[PLAY],(play_largura, play_altura))
     assets[PLAYAPERTADO] = pygame.transform.scale(assets[PLAYAPERTADO],(playapertado_largura,playapertado_altura))
@@ -196,7 +196,6 @@ def load_assets(img_dir):
     assets[SAIRAPERTADO] = pygame.transform.scale(assets[SAIRAPERTADO], (sairapertado_largura, sairapertado_altura))
     assets[RESUME] = pygame.transform.scale(assets[RESUME], (resume_largura, resume_altura))
     assets[RESUMEAPERTADO] = pygame.transform.scale(assets[RESUMEAPERTADO], (resumeapertado_largura, resumeapertado_altura))
-
     # - Imagens das pistas e chaves para passar de nível:
     assets[CARTA] = pygame.transform.scale(assets[CARTA],(carta_largura, carta_altura))
     assets[CARTA_ABERTA] = pygame.transform.scale(assets[CARTA_ABERTA],(carta_aberta_largura,carta_aberta_altura))

@@ -13,12 +13,12 @@ from medidas import *
 from sons import *
 
 #----------------------------------------------------------------------#
+#- Inicialização:
 assets=load_assets(img_dir)
 pygame.init()
 pygame.mixer.init()
 
-
-#---- Dados movimento
+#---- Dados movimento:
 espera = "espera"
 pulando = "pulando"
 pulandoesq="pulandoesq"
@@ -64,7 +64,9 @@ fullscreen = False
 # - Definindo a classe que configura o jogador:
 
 class heroi(pygame.sprite.Sprite):
+    """       """
     def __init__(self,vida,player_sheet,blocks,chaves,platform):
+        """                     """
         pygame.sprite.Sprite.__init__(self)
         
         self.platforms = platform
@@ -119,6 +121,41 @@ class heroi(pygame.sprite.Sprite):
 
     # Update    
     def update(self): 
+        """ Atualiza tela (sprites e sons), estado de jogo e configurações do jogador (estados, velocidade e posição) 
+        
+        Keyword Arguments:
+        barra -- representa a vida do personagem
+        now -- 
+        elapsed2_ticks --
+        ultimo_lado --
+        frame_ticks --
+        last_update --
+        frame --
+        speedy -- velocidade do personagem na vertical
+        speedx -- velocidade do personagem na horizontal
+        animation -- 
+        mask --
+        estado --
+        center --
+        centerx --
+        centery --
+        helando --
+        dash --
+        defendendo --
+        indefeso --
+        tomando_dano --
+        hora_da_acao --
+        agora --
+        state --
+        caindo --
+        acao_ticks --
+        collisions --
+        collisionsblock --
+        platform --
+        collisionsplata --
+        collisionsblocks2 --
+        highest_y --
+        """
         if self.vida <= 0:
             gameoversound.play()
             self.kill()
@@ -164,33 +201,25 @@ class heroi(pygame.sprite.Sprite):
                     if self.ultimo_lado==4:
                         self.animation = self.animations[indefesodir]
                         self.mask = pygame.mask.from_surface(self.image)
-                      
-                        
+                           
                     if self.ultimo_lado==-4:
                         self.animation = self.animations[indefesoesq]
                         self.mask = pygame.mask.from_surface(self.image)
-                        
-                        
 
             elif self.estado==tomando_dano:
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[tomando_danodir]
                     self.mask = pygame.mask.from_surface(self.image)
                     
-                    
                 if self.ultimo_lado==4:
                     self.animation = self.animations[tomando_danoesq]
                     self.mask = pygame.mask.from_surface(self.image)
-                    
-                   
-               
+    
             elif self.estado==ataque:
                 if self.ultimo_lado==4:
                     self.animation = self.animations[ataquedir]
                     self.mask = pygame.mask.from_surface(self.image)
-                    
-                  
-                    
+        
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[ataqueesq]
                     self.mask = pygame.mask.from_surface(self.image)
@@ -199,15 +228,10 @@ class heroi(pygame.sprite.Sprite):
                 if self.ultimo_lado==4:
                     self.animation = self.animations[helandodir]
                     self.mask = pygame.mask.from_surface(self.image)
-                    
-                  
-                    
+         
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[helandoesq]
                     self.mask = pygame.mask.from_surface(self.image)         
-                
-            
-                
 
             if self.frame >= len(self.animation):
                 self.frame = 0
@@ -233,12 +257,9 @@ class heroi(pygame.sprite.Sprite):
         # Atualização da posição do heroi
         if  self.estado!=dash and self.estado!=defendendo and self.estado!=helando:
             self.rect.x += self.speedx
-
         elif self.estado==defendendo:
             self.rect.x += self.speedx*0.25
-
         elif self.estado==dash:
-
             self.rect.x += self.speedx*41
             self.estado=indefeso
         elif self.estado==helando:
@@ -254,7 +275,6 @@ class heroi(pygame.sprite.Sprite):
         if self.estado==tomando_dano:
              if agora -self.hora_da_acao>self.acao_ticks/2:
                 self.estado=indefeso
-
 
         self.speedy += gravidade
         # Atualiza o estado para caindo
@@ -319,37 +339,45 @@ class heroi(pygame.sprite.Sprite):
             player.kill()
             estado_do_jogo.aba = 'gameover'
         
-        
-        
+     
     def pulo(self):
+        """ Define estado de pulo - jogador pulando
+
+        Keyword Arguments:
+        espera --
+        pulando --
+        tamanho_do_pulo --
+        """
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
             pulosond.play()
             self.state = pulando
 
     def ataque(self):
+        """  Define estado de ataque - jogador atacando
+        
+        Keyword Arguments:
+        cortandoar --
+        elapsed_ticks --
+        """
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
             elapsed_ticks = agora - self.hora_da_acao
-
-        # Se já pode atirar novamente...
-            
+        # Se já pode atirar novamente...    
             if elapsed_ticks > self.acao_ticks*1.5:
             # Marca o tick da nova imagem.
                 self.hora_da_acao = agora
                 if self.estado == indefeso:
-                    cortandoar.play()
-                    
+                    cortandoar.play()    
                     self.estado = ataque
                 
 
     def defesa(self):
+        """ Define o estado de defesa - jogador se defendendo"""
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
             elapsed_ticks = agora - self.hora_da_acao
-
-        # Se já pode atirar novamente...
-            
+        # Se já pode atirar novamente...   
             if elapsed_ticks > self.acao_ticks:
             # Marca o tick da nova imagem.
                 self.hora_da_acao = agora
@@ -357,6 +385,7 @@ class heroi(pygame.sprite.Sprite):
                     self.estado = defendendo
 
     def dash(self):
+        """ Define o estado de dash """
         if self.quantdash>0:
             if self.speedx!=0:   
             # Verifica quantos ticks se passaram desde o último tiro.
@@ -372,6 +401,7 @@ class heroi(pygame.sprite.Sprite):
                         self.estado = dash
                         self.quantdash-=1             
 def colisoes_chaves():
+    """ Define as colisões com as chaves para passar de fase - jogador pegando a chave """
     global fase
     if estado_do_jogo.aba=="jogando":
         colisao=pygame.sprite.spritecollide(player,all_chaves,False, pygame.sprite.collide_mask)
@@ -389,15 +419,14 @@ def colisoes_chaves():
             
             estado_do_jogo.aba = "troca_de_fase"
 
-
-    
-        
-            
+          
 #----------------------------------------------------------------------#                 
 # - Definindo a classe que configura os inimigos:
 
 class inimigos(pygame.sprite.Sprite):
+    """   """
     def __init__(self,player,assets,vidaini):
+        """  """
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
         self.animations = {
@@ -424,7 +453,7 @@ class inimigos(pygame.sprite.Sprite):
         self.sound_tick=20000
 
     def update(self):
-        
+        """  """
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
 
@@ -444,8 +473,7 @@ class inimigos(pygame.sprite.Sprite):
 
         if self.vida==0:
             self.kill()
-            self.barra_vermelha.kill()
-            
+            self.barra_vermelha.kill()  
             
         if self.estado==espera:
             self.rect.x += self.speedx_inimigo
@@ -537,6 +565,7 @@ class inimigos(pygame.sprite.Sprite):
                     self.rect.y-=25   
 
     def cria_barra(self):
+        """ Cria barra de vida dos inimigos """
         self.barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],self,barra_largura,0,0)
         all_sprites.add(self.barra_vermelha)
     
@@ -544,12 +573,15 @@ class inimigos(pygame.sprite.Sprite):
 # - Definindo a classe que configura o modo de jogo (jogando, menu, main menu, troca de fases, game over):
  
 class modo_de_jogo():
+    """   """
     def __init__(self):
+        """   """
         self.aba="menu"
         self.timer_do_tutorial = pygame.time.get_ticks()
         self.duracao_do_tutorial=1000
 
     def esta_dentro(self,pos,x,y):
+        """   """
         self.posicaox=x
         self.posicaoy=y
         
@@ -560,10 +592,9 @@ class modo_de_jogo():
             return False
         
     def game_over(self):
+        """   """
         global sequencia
-        
-        
-        
+    
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
             window.fill((0, 0, 0))
@@ -571,8 +602,7 @@ class modo_de_jogo():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 pygame.quit()  
-
-            
+       
             if sequencia==3:
                 window.blit(assets[GAMEOVER1], (0,0))
                 window.blit(assets[SAIR], ((largura/2)-(menu_largura/2), altura-100))
@@ -591,13 +621,11 @@ class modo_de_jogo():
             if sequencia==5:
                 game=False
                 pygame.quit()
-               
-                
 
         pygame.display.update()
 
     def jogando(self):
-        
+        """   """
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
         for event in pygame.event.get():
         # ----- Verifica consequências
@@ -653,7 +681,7 @@ class modo_de_jogo():
 
 
     def menu(self):
-        
+        """   """
         global sequencia
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
@@ -706,6 +734,7 @@ class modo_de_jogo():
 
             pygame.display.update()
     def troca_de_fase(self):
+        """   """
         global fase
         pygame.mixer.music.pause()
         andando.stop()
@@ -745,6 +774,7 @@ class modo_de_jogo():
 
 
     def main_menu(self):
+        """   """
         text = font.render('Aperte Esc para voltar e X para sair', True, (255, 255, 255))
         text_rect=text.get_rect()
         text_largura=text_rect.width
@@ -770,6 +800,7 @@ class modo_de_jogo():
         pygame.display.update() 
 
     def dicas(self):
+        """   """
         global fase
         pygame.mixer.music.pause()
         andando.stop()
@@ -809,6 +840,7 @@ class modo_de_jogo():
 
 
     def controlador_menu(self):
+        """   """
         if self.aba=="menu":
             self.menu()
         if self.aba=="jogando":
@@ -832,7 +864,9 @@ class modo_de_jogo():
 # - Definindo a classe que configura barras de vida e chaves para passar de fase:
 
 class adicionais(pygame.sprite.Sprite):
+    """   """
     def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
+        """   """
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.image2 = img
@@ -848,6 +882,7 @@ class adicionais(pygame.sprite.Sprite):
             self.a=quem_ta_seguindo.vida
 
     def update(self):
+        """   """
         global variavel
         global variavel2
         if self.quem_ta_seguindo==player:
@@ -902,7 +937,9 @@ class adicionais(pygame.sprite.Sprite):
 # - Definindo a classe que mostra a vida do personagem:
 
 class xicara(pygame.sprite.Sprite):
+    """   """
     def __init__(self,dicio,indica,x,y):
+        """   """
         pygame.sprite.Sprite.__init__(self)
         
         self.animations = {
@@ -927,6 +964,7 @@ class xicara(pygame.sprite.Sprite):
         self.rect.centery=y
 
     def update(self):
+        """   """
         if self.indica=="vida":
             self.oquemostrar=player.vida
             if player.vida%10==0:
@@ -968,6 +1006,7 @@ class xicara(pygame.sprite.Sprite):
 
 # PRÉ-FASES:
 def fases(fase):
+    """   """
     if fase==0:
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
