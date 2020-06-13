@@ -76,7 +76,13 @@ class Tile(pygame.sprite.Sprite):
     """   """
     # Construtor da classe.
     def __init__(self, tile_img, row, column):
-        """   """
+        """   
+        
+        Keyword Arguments:
+        tile_img --
+        row --
+        column) --
+        """
         # Construtor da classe pai (Sprite).
         pygame.sprite.Sprite.__init__(self)
 
