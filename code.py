@@ -73,7 +73,15 @@ fullscreen = False
 class heroi(pygame.sprite.Sprite):
     """       """
     def __init__(self,vida,player_sheet,blocks,chaves,platform):
-        """                     """
+        """                     
+        
+        Keyword Arguments:
+        vida --
+        player_sheet --
+        blocks --
+        chaves --
+        platform --
+        """
         pygame.sprite.Sprite.__init__(self)
         
         self.platforms = platform
@@ -130,41 +138,7 @@ class heroi(pygame.sprite.Sprite):
 
     # Update    
     def update(self): 
-        """ Atualiza tela (sprites e sons), estado de jogo e configurações do jogador (estados, velocidade e posição) 
-        
-        Keyword Arguments:
-        barra -- representa a vida do personagem
-        now -- 
-        elapsed2_ticks --
-        ultimo_lado --
-        frame_ticks --
-        last_update --
-        frame --
-        speedy -- velocidade do personagem na vertical
-        speedx -- velocidade do personagem na horizontal
-        animation -- 
-        mask --
-        estado --
-        center --
-        centerx --
-        centery --
-        helando --
-        dash --
-        defendendo --
-        indefeso --
-        tomando_dano --
-        hora_da_acao --
-        agora --
-        state --
-        caindo --
-        acao_ticks --
-        collisions --
-        collisionsblock --
-        platform --
-        collisionsplata --
-        collisionsblocks2 --
-        highest_y --
-        """
+        """ Atualiza tela (sprites e sons), estado de jogo e configurações do jogador (estados, velocidade e posição) """
         if self.vida <= 0:
             gameoversound.play()
             self.kill()
@@ -367,25 +341,14 @@ class heroi(pygame.sprite.Sprite):
         
      
     def pulo(self):
-        """ Define estado de pulo - jogador pulando
-
-        Keyword Arguments:
-        espera --
-        pulando --
-        tamanho_do_pulo --
-        """
+        """ Define estado de pulo - jogador pulando """
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
             pulosond.play()
             self.state = pulando
 
     def ataque(self):
-        """  Define estado de ataque - jogador atacando
-        
-        Keyword Arguments:
-        cortandoar --
-        elapsed_ticks --
-        """
+        """  Define estado de ataque - jogador atacando """
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
             elapsed_ticks = agora - self.hora_da_acao
@@ -399,7 +362,7 @@ class heroi(pygame.sprite.Sprite):
                 
 
     def defesa(self):
-        """ Define o estado de defesa - jogador se defendendo"""
+        """ Define o estado de defesa - jogador se defendendo """
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
             elapsed_ticks = agora - self.hora_da_acao
@@ -452,7 +415,13 @@ def colisoes_chaves():
 class inimigos(pygame.sprite.Sprite):
     """   """
     def __init__(self,player,assets,vidaini):
-        """  """
+        """  
+        
+        Keywor Arguments:
+        player --
+        assets --
+        vidaini --
+        """
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
         self.animations = {
@@ -607,7 +576,13 @@ class modo_de_jogo():
         self.duracao_do_tutorial=1000
 
     def esta_dentro(self,pos,x,y):
-        """   """
+        """   
+        
+        Keyword Arguments:
+        pos --
+        x --
+        y --
+        """
         self.posicaox=x
         self.posicaoy=y
         
@@ -749,10 +724,7 @@ class modo_de_jogo():
                     
 
             if sequencia==3 :         
-                
-                 
-                
-
+ 
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
                     window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
@@ -928,7 +900,15 @@ class modo_de_jogo():
 class adicionais(pygame.sprite.Sprite):
     """   """
     def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
-        """   """
+        """   
+        
+        Keyword Arguments:
+        img --
+        quem_ta_seguindo --
+        largura --
+        posx --
+        posy --
+        """
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.image2 = img
@@ -997,7 +977,14 @@ class adicionais(pygame.sprite.Sprite):
 class xicara(pygame.sprite.Sprite):
     """   """
     def __init__(self,dicio,indica,x,y):
-        """   """
+        """   
+        
+        Keyword Arguments:
+        dicio --
+        indica --
+        x --
+        y --
+        """
         pygame.sprite.Sprite.__init__(self)
         
         self.animations = {
