@@ -45,8 +45,13 @@ tomando_danoesq="tomando_danoesq"
 tomando_danodir="tomando_danodir"
 
 defendendo="defendendo"
+defendendodir="defendendodir"
+defendendoesq="defendendoesq"
 pronto_para_acao="pronto_para_acao"
+
 dash="dash"
+dashdir='dashdir'
+dashesq="dashesq"
 
 # ----- Gera tela principal
 #monitor_size = [pygame.display.Info().current_w, pygame.display.Info().current_h]
@@ -54,6 +59,8 @@ window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Fenrly Park')
 font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 fontg = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 100)
+
+
 
 fullscreen = False
 
@@ -66,15 +73,7 @@ fullscreen = False
 class heroi(pygame.sprite.Sprite):
     """       """
     def __init__(self,vida,player_sheet,blocks,chaves,platform):
-        """     
-        
-        Keywor Arguments:
-        vida --
-        player_sheet --
-        blocks --
-        chaves --
-        platform --
-        """
+        """                     """
         pygame.sprite.Sprite.__init__(self)
         
         self.platforms = platform
@@ -96,11 +95,13 @@ class heroi(pygame.sprite.Sprite):
             pulandodir:dicio["pulandodir"][2:3],
 
             helandoesq:dicio["helandoesq"][0:14],
-            helandodir:dicio["helandodir"][0:14]
+            helandodir:dicio["helandodir"][0:14],
 
-            # defendendo: spritesheet[0:1],
-            
-            # dash: spritesheet[0:1]
+            defendendoesq:dicio["defendendoesq"][0:3],
+            defendendodir:dicio["defendendodir"][0:3],
+
+            dashdir:dicio["dashdir"][0:1],
+            dashesq:dicio["dashesq"][0:1]
             }
         
         self.estado = indefesodir
@@ -129,7 +130,41 @@ class heroi(pygame.sprite.Sprite):
 
     # Update    
     def update(self): 
-        """ Atualiza tela (sprites e sons), estado de jogo e configurações do jogador (estados, velocidade e posição) """
+        """ Atualiza tela (sprites e sons), estado de jogo e configurações do jogador (estados, velocidade e posição) 
+        
+        Keyword Arguments:
+        barra -- representa a vida do personagem
+        now -- 
+        elapsed2_ticks --
+        ultimo_lado --
+        frame_ticks --
+        last_update --
+        frame --
+        speedy -- velocidade do personagem na vertical
+        speedx -- velocidade do personagem na horizontal
+        animation -- 
+        mask --
+        estado --
+        center --
+        centerx --
+        centery --
+        helando --
+        dash --
+        defendendo --
+        indefeso --
+        tomando_dano --
+        hora_da_acao --
+        agora --
+        state --
+        caindo --
+        acao_ticks --
+        collisions --
+        collisionsblock --
+        platform --
+        collisionsplata --
+        collisionsblocks2 --
+        highest_y --
+        """
         if self.vida <= 0:
             gameoversound.play()
             self.kill()
@@ -205,8 +240,25 @@ class heroi(pygame.sprite.Sprite):
          
                 if self.ultimo_lado==-4:
                     self.animation = self.animations[helandoesq]
-                    self.mask = pygame.mask.from_surface(self.image)         
+                    self.mask = pygame.mask.from_surface(self.image)   
 
+            elif self.estado==defendendo:
+                if self.ultimo_lado==4:
+                    self.animation = self.animations[defendendodir]
+                    self.mask = pygame.mask.from_surface(self.image)
+        
+                if self.ultimo_lado==-4:
+                    self.animation = self.animations[defendendoesq]
+                    self.mask = pygame.mask.from_surface(self.image)
+
+            elif self.estado==dash:
+                if self.ultimo_lado==4:
+                    self.animation = self.animations[dashdir]
+                    self.mask = pygame.mask.from_surface(self.image)
+        
+                if self.ultimo_lado==-4:
+                    self.animation = self.animations[dashesq]
+                    self.mask = pygame.mask.from_surface(self.image)
             if self.frame >= len(self.animation):
                 self.frame = 0
 
@@ -315,14 +367,25 @@ class heroi(pygame.sprite.Sprite):
         
      
     def pulo(self):
-        """ Define estado de pulo - jogador pulando """
+        """ Define estado de pulo - jogador pulando
+
+        Keyword Arguments:
+        espera --
+        pulando --
+        tamanho_do_pulo --
+        """
         if self.state == espera:
             self.speedy -= tamanho_do_pulo
             pulosond.play()
             self.state = pulando
 
     def ataque(self):
-        """  Define estado de ataque - jogador atacando """
+        """  Define estado de ataque - jogador atacando
+        
+        Keyword Arguments:
+        cortandoar --
+        elapsed_ticks --
+        """
         if self.state==espera:
         # Verifica quantos ticks se passaram desde o último tiro.
             elapsed_ticks = agora - self.hora_da_acao
@@ -389,13 +452,7 @@ def colisoes_chaves():
 class inimigos(pygame.sprite.Sprite):
     """   """
     def __init__(self,player,assets,vidaini):
-        """  
-        
-        Keywor Arguments:
-        player --
-        assets --
-        vidaini --
-        """
+        """  """
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
         self.animations = {
@@ -550,13 +607,7 @@ class modo_de_jogo():
         self.duracao_do_tutorial=1000
 
     def esta_dentro(self,pos,x,y):
-        """   
-        
-        Keyword Arguments:
-        pos --
-        x --
-        y --
-        """
+        """   """
         self.posicaox=x
         self.posicaoy=y
         
@@ -569,14 +620,15 @@ class modo_de_jogo():
     def game_over(self):
         """   """
         global sequencia
-    
+        pygame.mixer.music.stop()
+        andandosound.stop()
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
             window.fill((0, 0, 0))
             
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
-                pygame.mixer.music.stop()
+                
                 pygame.quit()  
        
             if sequencia==3:
@@ -596,7 +648,6 @@ class modo_de_jogo():
                     sequencia=5
             if sequencia==5:
                 game=False
-                pygame.mixer.music.stop()
                 pygame.quit()
 
         pygame.display.update()
@@ -616,11 +667,11 @@ class modo_de_jogo():
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
                     player.ultimo_lado=-4.0
-                    andando.play()
+                    andandosound.play()
                     player.speedx -= 4.0
                 if event.key == pygame.K_d:  
                     player.ultimo_lado=4.0   
-                    andando.play()             
+                    andandosound.play()             
                     player.speedx += 4.0
                 if event.key == pygame.K_SPACE:
                     player.pulo()
@@ -635,10 +686,10 @@ class modo_de_jogo():
             # Dependendo da tecla, altera a velocidade.
                     if event.key == pygame.K_a:   
                         player.speedx += 4.0
-                        andando.stop()
+                        andandosound.stop()
                     if event.key == pygame.K_d:
                         player.speedx -= 4.0
-                        andando.stop()
+                        andandosound.stop()
                     if event.key == pygame.K_k:   
                         player.ataque()
                     if event.key == pygame.K_j:
@@ -698,6 +749,9 @@ class modo_de_jogo():
                     
 
             if sequencia==3 :         
+                
+                 
+                
 
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
@@ -712,40 +766,44 @@ class modo_de_jogo():
     def troca_de_fase(self):
         """   """
         global fase
-        pygame.mixer.music.pause()
-        andando.stop()
         
-        window.fill((0, 0, 0))
-        text=font.render('Nivel {0}'.format(fase), True, (255, 255, 255))
-        text_rect=text.get_rect()
-        text_largura=text_rect.width
-        text_altura=text_rect.height
-        window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
-        player.rect.centerx = 50
-        player.rect.bottom = 12*48
-        player.quantdash=3
-        player.speedx=0
-        player.speedy=0
+        andandosound.stop()
+        if fase!=4:
+            pygame.mixer.music.pause()
+            window.fill((0, 0, 0))
+            text=font.render('Nivel {0}'.format(fase), True, (255, 255, 255))
+            text_rect=text.get_rect()
+            text_largura=text_rect.width
+            text_altura=text_rect.height
+            window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
+            player.rect.centerx = 50
+            player.rect.bottom = 12*48
+            player.quantdash=3
+            player.speedx=0
+            player.speedy=0
+                    
+            window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
                 
-        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+            for event in pygame.event.get():
+                
+                pos=pygame.mouse.get_pos()
+                
+                if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
+                    pygame.quit()
             
-        for event in pygame.event.get():
-            
-            pos=pygame.mouse.get_pos()
-            
-            if event.type == pygame.QUIT:
-                pygame.mixer.music.stop()
-                pygame.quit()
-        
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
-                    fases(fase)
-                    for i in range(2):
-                        inimigo = inimigos(player,dicio,vida_inimigo)
-                        all_sprites.add(inimigo)
-                        all_enemis.add(inimigo)
-                        pygame.mixer.music.unpause()
-                    self.aba="jogando"
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
+                        
+                        fases(fase)
+                        for i in range(2):
+                            inimigo = inimigos(player,dicio,vida_inimigo)
+                            all_sprites.add(inimigo)
+                            all_enemis.add(inimigo)
+                            pygame.mixer.music.unpause()
+                        self.aba="jogando"
+        else:
+            self.aba="mensagem"        
 
         pygame.display.update() 
 
@@ -782,7 +840,7 @@ class modo_de_jogo():
         """   """
         global fase
         pygame.mixer.music.pause()
-        andando.stop()
+        andandosound.stop()
         player.speedx=0
         player.speedy=0
         window.fill((0,0,0))
@@ -816,7 +874,36 @@ class modo_de_jogo():
                     pygame.mixer.music.unpause()
                     self.aba="jogando"
         pygame.display.update()
- 
+        
+    def fim_jogo(self):
+        global fase
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
+                pygame.quit()
+                
+            pygame.mixer.music.pause()
+            andandosound.stop()
+            player.speedx=0
+            player.speedy=0
+            
+            window.fill((0,0,0))
+            
+            textf = fontg.render('Obrigado por jogar', True, (255, 255, 255))
+            textf2=fontg.render('to be continue ...', True, (255, 255, 255))
+            text_rectf=textf.get_rect()
+            text_larguraf=text_rectf.width
+            text_alturaf=text_rectf.height
+
+            text_rectf2=textf2.get_rect()
+            text_larguraf2=text_rectf2.width
+            text_alturaf2=text_rectf2.height
+            window.blit(textf,((largura/2)-text_larguraf/2,(250)))
+            window.blit(textf2,((largura/2)-text_larguraf2/2,(altura-text_alturaf2-20)))
+        
+        pygame.display.update()
+
+
     def controlador_menu(self):
         """   """
         if self.aba=="menu":
@@ -831,6 +918,8 @@ class modo_de_jogo():
             self.troca_de_fase()
         if self.aba=="dicas":
             self.dicas()
+        if self.aba=="mensagem":
+            self.fim_jogo()
           
         
 #----------------------------------------------------------------------#
@@ -839,15 +928,7 @@ class modo_de_jogo():
 class adicionais(pygame.sprite.Sprite):
     """   """
     def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
-        """   
-        
-        Keyword Arguments:
-        img --
-        quem_ta_seguindo --
-        largura --
-        posx --
-        posy --
-        """
+        """   """
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.image2 = img
@@ -916,14 +997,7 @@ class adicionais(pygame.sprite.Sprite):
 class xicara(pygame.sprite.Sprite):
     """   """
     def __init__(self,dicio,indica,x,y):
-        """   
-        
-        Keyword Arguments:
-        dicio --
-        indica --
-        x --
-        y --
-        """
+        """   """
         pygame.sprite.Sprite.__init__(self)
         
         self.animations = {
@@ -990,22 +1064,6 @@ class xicara(pygame.sprite.Sprite):
 
 # PRÉ-FASES:
 def fases(fase):
-    """   """
-    if fase==0:
-        chave1=adicionais(assets[Chave1],0,0,largura-100,100)
-        all_sprites.add(chave1)
-        all_chaves.add(chave1)
-        for row in range(len(MAP1)):
-            for column in range(len(MAP1[row])):
-                tile_type = MAP1[row][column]
-                if tile_type == BLOCK:
-                    tile = Tile(assets[Chao], row, column)
-                    all_sprites.add(tile)
-                    blocks.add(tile)
-                if tile_type == EMPTY:
-                    tile = Tile(assets[PAREDE], row, column)
-                    all_sprites.add(tile3)
-
     #FASE 1:
     if fase==1:
         
