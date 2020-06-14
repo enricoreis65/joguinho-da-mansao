@@ -73,15 +73,15 @@ MAP3 = [
 
 # - Class que representa os blocos do cenário:
 class Tile(pygame.sprite.Sprite):
-    """   """
+    """ Define o mapa de cada fase """
     # Construtor da classe.
     def __init__(self, tile_img, row, column):
-        """   
+        """ Define os dados iniciais da posição dos blocos
         
         Keyword Arguments:
-        tile_img --
-        row --
-        column) --
+        tile_img -- imagem do bloco
+        row -- linhas
+        column -- colunas
         """
         # Construtor da classe pai (Sprite).
         pygame.sprite.Sprite.__init__(self)

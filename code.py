@@ -71,16 +71,16 @@ fullscreen = False
 # - Definindo a classe que configura o jogador:
 
 class heroi(pygame.sprite.Sprite):
-    """       """
+    """ Seta o jogador """
     def __init__(self,vida,player_sheet,blocks,chaves,platform):
-        """                     
+        """ Recebe e define os dados iniciais do jogador  
         
         Keyword Arguments:
-        vida --
-        player_sheet --
-        blocks --
-        chaves --
-        platform --
+        vida -- quantia de vida do jogador
+        player_sheet -- imagens do jogador
+        blocks -- blocos do chão
+        chaves -- objetos para passar de fase
+        platform -- plataformas de madeira/ diferenciação do chão
         """
         pygame.sprite.Sprite.__init__(self)
         
@@ -374,7 +374,7 @@ class heroi(pygame.sprite.Sprite):
                     self.estado = defendendo
 
     def dash(self):
-        """ Define o estado de dash """
+        """ Define o estado de dash - jogador dando dash """
         if self.quantdash>0:
             if self.speedx!=0:   
             # Verifica quantos ticks se passaram desde o último tiro.
@@ -413,14 +413,14 @@ def colisoes_chaves():
 # - Definindo a classe que configura os inimigos:
 
 class inimigos(pygame.sprite.Sprite):
-    """   """
+    """ Seta os inimigos(fantasmas) """
     def __init__(self,player,assets,vidaini):
-        """  
+        """ Recebe e define condições iniciais do inimigo
         
         Keywor Arguments:
-        player --
-        assets --
-        vidaini --
+        player -- jogador
+        assets -- imagens 
+        vidaini -- vida do inimigo
         """
         pygame.sprite.Sprite.__init__(self)
         self.estado=espera
@@ -560,7 +560,7 @@ class inimigos(pygame.sprite.Sprite):
                     self.rect.y-=25   
 
     def cria_barra(self):
-        """ Cria barra de vida dos inimigos """
+        """ Cria uma barra de vida para cada inimigo """
         self.barra_vermelha= adicionais(assets[BARRA_VERMELHA_IMG],self,barra_largura,0,0)
         all_sprites.add(self.barra_vermelha)
     
@@ -568,21 +568,15 @@ class inimigos(pygame.sprite.Sprite):
 # - Definindo a classe que configura o modo de jogo (jogando, menu, main menu, troca de fases, game over):
  
 class modo_de_jogo():
-    """   """
+    """ Define o que estará acontecendo na tela """
     def __init__(self):
-        """   """
+        """ Define os dados iniciais do jogo """
         self.aba="menu"
         self.timer_do_tutorial = pygame.time.get_ticks()
         self.duracao_do_tutorial=1000
 
     def esta_dentro(self,pos,x,y):
-        """   
-        
-        Keyword Arguments:
-        pos --
-        x --
-        y --
-        """
+        """ Recebe a posição do mouse e define a posição dos botões na tela """
         self.posicaox=x
         self.posicaoy=y
         
@@ -593,7 +587,7 @@ class modo_de_jogo():
             return False
         
     def game_over(self):
-        """   """
+        """ Define o que acontece quando o jogo entra em game over """
         global sequencia
         pygame.mixer.music.stop()
         andandosound.stop()
@@ -628,7 +622,7 @@ class modo_de_jogo():
         pygame.display.update()
 
     def jogando(self):
-        """   """
+        """ Define as ações que podem ocorrer durante o jogo """
         text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
         for event in pygame.event.get():
         # ----- Verifica consequências
@@ -685,7 +679,7 @@ class modo_de_jogo():
 
 
     def menu(self):
-        """   """
+        """ Define a tela inicial do jogo """
         global sequencia
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
@@ -736,7 +730,7 @@ class modo_de_jogo():
 
             pygame.display.update()
     def troca_de_fase(self):
-        """   """
+        """ Define o que ocorre quando o jogador pega a chave - trocas de fase """
         global fase
         
         andandosound.stop()
@@ -781,7 +775,7 @@ class modo_de_jogo():
 
 
     def main_menu(self):
-        """   """
+        """ Define o estado de pause """
         text = font.render('Aperte Esc para voltar e X para sair', True, (255, 255, 255))
         text_rect=text.get_rect()
         text_largura=text_rect.width
@@ -809,7 +803,7 @@ class modo_de_jogo():
         pygame.display.update() 
 
     def dicas(self):
-        """   """
+        """ Define o que ocorre quando o jogador pega as pistas """
         global fase
         pygame.mixer.music.pause()
         andandosound.stop()
@@ -848,6 +842,7 @@ class modo_de_jogo():
         pygame.display.update()
         
     def fim_jogo(self):
+        """ Define a tela de finalização após todas as fases """
         global fase
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -862,7 +857,7 @@ class modo_de_jogo():
             window.fill((0,0,0))
             
             textf = fontg.render('Obrigado por jogar', True, (255, 255, 255))
-            textf2=fontg.render('to be continue ...', True, (255, 255, 255))
+            textf2=fontg.render('to be continued ...', True, (255, 255, 255))
             text_rectf=textf.get_rect()
             text_larguraf=text_rectf.width
             text_alturaf=text_rectf.height
@@ -877,7 +872,7 @@ class modo_de_jogo():
 
 
     def controlador_menu(self):
-        """   """
+        """ Controla o que aparece em cada estado de jogo """
         if self.aba=="menu":
             self.menu()
         if self.aba=="jogando":
@@ -898,17 +893,17 @@ class modo_de_jogo():
 # - Definindo a classe que configura barras de vida e chaves para passar de fase:
 
 class adicionais(pygame.sprite.Sprite):
-    """   """
-    def __init__(self,img,quem_ta_seguindo,largura,posx,posy):
-        """   
-        
+    """ Define a posição das barras de vida, das barras de estamina, das chaves e das dicas"""
+    def __init__(self,img,quem_ta_seguindo,largura,posx,posy):  
+       """ Recebe imagem, quem será seguido, a largura da barra e as posições em x e y
+
         Keyword Arguments:
-        img --
-        quem_ta_seguindo --
-        largura --
-        posx --
-        posy --
-        """
+        img -- imagens 
+        quem_ta_seguindo -- o que está sendo seguido (fantasma segue o jogador, barra vermelha segue o fantasma)
+        largura -- largurra da barra de vida
+        posx -- posiciona objetos no eixo x
+        posy -- posiciona objetos no eixo y
+        """ 
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.image2 = img
@@ -924,7 +919,7 @@ class adicionais(pygame.sprite.Sprite):
             self.a=quem_ta_seguindo.vida
 
     def update(self):
-        """   """
+        """ Atualiza as posições de cada objeto adicional """
         global variavel
         global variavel2
         if self.quem_ta_seguindo==player:
@@ -975,15 +970,15 @@ class adicionais(pygame.sprite.Sprite):
 # - Definindo a classe que mostra a vida do personagem:
 
 class xicara(pygame.sprite.Sprite):
-    """   """
+    """ Define a xícara para recarga de vida do jogador """
     def __init__(self,dicio,indica,x,y):
-        """   
+        """ Define os dados iniciais da xícara que deve ser mostrada
         
         Keyword Arguments:
-        dicio --
-        indica --
-        x --
-        y --
+        dicio -- dicionário com as imagens da xícara
+        indica -- quantia de vida que deve ser mostrada
+        x -- posição da xícara no eixo x
+        y -- posição da xícara no eixo y
         """
         pygame.sprite.Sprite.__init__(self)
         
@@ -1009,7 +1004,7 @@ class xicara(pygame.sprite.Sprite):
         self.rect.centery=y
 
     def update(self):
-        """   """
+        """ Atualiza o que deve ser mostrado como vida do jogador """
         if self.indica=="vida":
             self.oquemostrar=player.vida
             if player.vida%10==0:
@@ -1051,6 +1046,7 @@ class xicara(pygame.sprite.Sprite):
 
 # PRÉ-FASES:
 def fases(fase):
+    """ Posiciona os blocos nas fases """
     #FASE 1:
     if fase==1:
         

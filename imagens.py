@@ -74,9 +74,9 @@ def carrega_spritesheet(spritesheet, linhas, colunas):
     """ Carrega posição das sprites do personagem na tela. Retorna sprites do personagem. 
     
     Keyword Arguments:
-    spritesheet --
-    linhas --
-    colunas --
+    spritesheet -- imagem das animações
+    linhas -- quantia de linhas que a imagem ocupa
+    colunas -- quantia de colunas que a imagem ocupa
     """
     sprite_width = spritesheet.get_width() // colunas
     sprite_height = spritesheet.get_height() // linhas
