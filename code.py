@@ -973,7 +973,7 @@ class adicionais(pygame.sprite.Sprite):
                 self.rect.y += 1
             elif variavel2<0:
                 self.rect.y -= 1
-            colisao=pygame.sprite.spritecollide(player,all_pistas,True)
+            colisao=pygame.sprite.spritecollide(player,all_pistas,True,pygame.sprite.collide_mask)
             if len(colisao)>0:
                 estado_do_jogo.aba="dicas"
         
@@ -1164,7 +1164,7 @@ def fases(fase):
         chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
-        anel = adicionais(assets[ANEL],1,0,largura-100,450)
+        anel = adicionais(assets[ANEL],1,0,largura-200,500)
         all_sprites.add(anel)
         all_pistas.add(anel)
         
