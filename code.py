@@ -701,7 +701,7 @@ class modo_de_jogo():
                 window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
                 text_rect=text.get_rect()
                 text_largura=text_rect.width
-                text_altura=text_rect.height
+                
                 window.blit(text,((largura/2)-text_largura/2,11))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
@@ -796,9 +796,7 @@ class modo_de_jogo():
             if event.type == pygame.QUIT:
                 pygame.mixer.music.stop()
                 pygame.quit() 
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
+            
 
         window.fill((0, 0, 50))
         window.blit(text,((largura/2)-text_largura/2,(altura/2)-text_altura/2))
@@ -817,7 +815,7 @@ class modo_de_jogo():
             text = font.render('dica muito informativa', True, (0, 0, 0))
             text_rect=text.get_rect()
             text_largura=text_rect.width
-            text_altura=text_rect.height
+            
             window.blit(text,((largura/2)-text_largura/2,(250)))
         window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
         if fase==2:
@@ -826,6 +824,14 @@ class modo_de_jogo():
             text_rect=text.get_rect()
             text_largura=text_rect.width
             text_altura=text_rect.height
+            window.blit(text,((300,250)))
+        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+        if fase==3:
+            
+            text = font.render('alberto', True, (0, 0, 0))
+            text_rect=text.get_rect()
+            text_largura=text_rect.width
+            
             window.blit(text,((300,250)))
         window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
         for event in pygame.event.get():
@@ -862,7 +868,7 @@ class modo_de_jogo():
             textf2=fontg.render('to be continued ...', True, (255, 255, 255))
             text_rectf=textf.get_rect()
             text_larguraf=text_rectf.width
-            text_alturaf=text_rectf.height
+            
 
             text_rectf2=textf2.get_rect()
             text_larguraf2=text_rectf2.width
@@ -1091,9 +1097,10 @@ def fases(fase):
         all_sprites.add(carta)
         all_pistas.add(carta)    
         
+        
     #FASE 2:                
     if fase ==2:
-        cura=xicara(dicio,"+vida",36,400)
+        cura=xicara(dicio,"+vida",36,364)
         for row in range(len(MAP2)):
             for column in range(len(MAP2[row])):
                 tile_type = MAP2[row][column]
@@ -1129,7 +1136,7 @@ def fases(fase):
         chave2=adicionais(assets[Chave2],0,0,largura-100,100)
         all_sprites.add(chave2)
         all_chaves.add(chave2)
-        pegadas = adicionais(assets[PEGADAS],2,0,160,390)
+        pegadas = adicionais(assets[PEGADAS],2,0,largura-100,490)
         all_sprites.add(pegadas)
         all_pistas.add(pegadas)
 
@@ -1145,6 +1152,10 @@ def fases(fase):
                if tile_type == EMPTY:
                    tile2 = Tile(assets[PAREDE], row, column)
                    all_sprites.add(tile2)
+               if tile_type==PLATA:
+                    tile3 = Tile(assets[PLATAa], row, column)
+                    all_sprites.add(tile3)
+                    all_plata.add(tile3)
         all_sprites.add(player)
         all_sprites.add(barra)
         all_sprites.add(mostrador_vida)
@@ -1153,7 +1164,7 @@ def fases(fase):
         chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
-        anel = adicionais(assets[ANEL],1,0,largura-100,100)
+        anel = adicionais(assets[ANEL],1,0,largura-100,450)
         all_sprites.add(anel)
         all_pistas.add(anel)
         

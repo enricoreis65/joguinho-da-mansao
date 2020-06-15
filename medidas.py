@@ -59,8 +59,8 @@ carta_aberta_largura=largura
 carta_aberta_altura=altura
 pegadas_largura=80
 pegadas_altura=54
-anel_largura=80
-anel_altura=54
+anel_largura=80*6
+anel_altura=54*6
 largura_mesa=12
 altura_mesa=22
 
