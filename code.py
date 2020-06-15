@@ -59,6 +59,7 @@ window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Fenrly Park')
 font = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 16)
 fontg = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 100)
+fontm = pygame.font.Font(path.join("fonts", 'Minecraft.ttf'), 30)
 
 
 
@@ -602,22 +603,22 @@ class modo_de_jogo():
                 
                 pygame.quit()  
        
-            if sequencia==7:
+            if sequencia==8:
                 window.blit(assets[GAMEOVER1], (0,0))
                 window.blit(assets[SAIR], ((largura/2)-(menu_largura/2), altura-100))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
-                        sequencia=8
+                        sequencia=9
                         
                         self.timer_do_tutorial=agora
             tempo2 = agora - self.timer_do_tutorial
-            if sequencia==8:
+            if sequencia==9:
                 window.blit(assets[GAMEOVER1], (0,0))
                 window.blit(assets[SAIRAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
                 if  tempo2 > self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
-                    sequencia=9
-            if sequencia==9:
+                    sequencia=10
+            if sequencia==10:
                 self.aba="mensagem"
 
         pygame.display.update()
@@ -695,6 +696,7 @@ class modo_de_jogo():
                     self.aba="jogando"
         
         # Tutorial:
+            tempo=agora-self.timer_do_tutorial
             if sequencia==1:
                 text= fontg.render('Fenrly Park', True, (255, 0, 0))
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
@@ -708,60 +710,119 @@ class modo_de_jogo():
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
                         sequencia=2
                         self.timer_do_tutorial=agora
-            tempo=agora-self.timer_do_tutorial  
+                        tempo=agora-self.timer_do_tutorial  
 
             if sequencia==2:
+                text= fontg.render('Fenrly Park', True, (255, 0, 0))
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
+                window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
+                text_rect=text.get_rect()
+                text_largura=text_rect.width
+                window.blit(assets[TELA_INICIAL_IMG], (0,0))
+                window.blit(text,((largura/2)-text_largura/2,11))
                 window.blit(assets[PLAYAPERTADO],((largura/2)-(play_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial-20:
                     self.timer_do_tutorial=agora
+                    tempo=agora-self.timer_do_tutorial
                     sequencia=3
                     
             if sequencia==3:
                 window.fill((5, 32, 74))
-                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
-                f2 = font.render('Fico muito feliz de encontrá-lo aqui em King’s Abbot. Sei que era bem',True, (0, 0, 0))
-                f3 = font.render('próximo de meu tio, Roger Ackroyd, portanto já assumo que saiba de sua',True, (0, 0, 0))
-                f4 = font.render('misteriosa morte ontem de noite. Escrevo-lhe esta carta com muito pesar',True, (0, 0, 0))
-                f5 = font.render('para lhe fazer um pedido. Preciso da verdade. Sei que é o único que pode',True, (0, 0, 0))
-                f6 = font.render('me ajudar nessa missão, já que o senhor é famoso por solucionar crimes',True, (0, 0, 0))
-                f2 = font.render('inimagináveis e muitas vezes considerados impossíveis. Acredito fortemente',True, (0, 0, 0))
-                f2 = font.render('que não foi Ralph Paton, meu noivo e filho adotivo de meu tio, como todos',True, (0, 0, 0))
-                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
-                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
-                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
-                text = font.render('Recebemos de Roger Ackroyd a quantia de $41260,44 xelins, correspondente',True, (0, 0, 0))
+                f1 = fontm.render('Ola, Hercule Poirot. Como vai?',True, (255, 255, 255))
+                
+                f2 = fontm.render('Fico muito feliz de encontra-lo aqui em Kings Abbot. Sei que era bem',True, (255, 255, 255))
+                f3 = fontm.render('proximo de meu tio, Roger Ackroyd, portanto ja assumo que saiba de sua',True, (255, 255, 255))
+                f4 = fontm.render('misteriosa morte ontem de noite. Escrevo-lhe esta carta com muito pesar',True, (255, 255, 255))
+                f5 = fontm.render('para lhe fazer um pedido. Preciso da verdade. Sei que e o unico que pode',True, (255, 255, 255))
+                f6 = fontm.render('me ajudar nessa missao, ja que o senhor e famoso por solucionar crimes',True, (255, 255, 255))
+                f7 = fontm.render('inimaginaveis e muitas vezes considerados impossiveis. Acredito fortemente',True, (255, 255, 255))
+                f8 = fontm.render('que nao foi Ralph Paton, meu noivo e filho adotivo de meu tio, como todos',True, (255, 255, 255))
+                f9 = fontm.render('afirmam ser... Ele podia ter um temperamento agressivo as vezes mas senhor,',True, (255, 255, 255))
+                f10 = fontm.render('afirmo que ponho minha mao no fogo por ele! Ele nunca poderia... Por favor',True, (255, 255, 255))
+                f11 = fontm.render('me ajude a descobrir a verdade.',True, (255, 255, 255))
+            
+                f12 = fontm.render('Atenciosamente,',True, (255, 255, 255))
+                f13 = fontm.render('Flora Ackroyd',True, (255, 255, 255))
+
                 text_rectf1=f1.get_rect()
-                text_larguraf1=text_rectf1.width
+                
                 text_alturaf1=text_rectf1.height
                 
-                window.blit(f1,(10,100))
-                window.blit(f2,(10,100+ text_alturaf1))
+                window.blit(f1,(30, 100))
+                window.blit(f2,(30, 100 + text_alturaf1*3))
+                window.blit(f3,(30, 100 + text_alturaf1*4))
+                window.blit(f4,(30, 100 + text_alturaf1*5))
+                window.blit(f5,(30, 100 + text_alturaf1*6))
+                window.blit(f6,(30, 100 + text_alturaf1*7))
+                window.blit(f7,(30, 100 + text_alturaf1*8))
+                window.blit(f8,(30, 100 + text_alturaf1*9))
+                window.blit(f9,(30, 100 + text_alturaf1*10))
+                window.blit(f10,(30, 100 + text_alturaf1*11))
+                window.blit(f11,(30, 100 + text_alturaf1*12))
+                window.blit(f12,(30, 100 + text_alturaf1*14))
+                window.blit(f13,(30, 100 + text_alturaf1*15))
+
                 window.blit(assets[NEXT],((largura/2)-(next_largura/2),altura-100))  
-                
-                if  tempo> self.duracao_do_tutorial:
-                    self.timer_do_tutorial=agora
-                    sequencia=4
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
+               
+                        self.timer_do_tutorial=agora
+                        tempo=agora-self.timer_do_tutorial
+                        sequencia=4
             
             if sequencia==4:
-                window.fill((5, 32, 74))
+                pygame.draw.rect(window,(5, 32, 74),((largura/2)-(next_largura/2), altura-100,next_largura,next_altura))
                 window.blit(assets[NEXTAPERTADO],((largura/2)-(nextapertado_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
+                    tempo=agora-self.timer_do_tutorial
                     sequencia=5
 
             if sequencia==5:
                 window.fill((5, 32, 74))
-                window.blit(assets[PLAY],((largura/2)-(play_largura/2), altura-100))  
-                if  tempo> self.duracao_do_tutorial:
-                    self.timer_do_tutorial=agora
-                    sequencia=6
+                h1 = fontm.render('Cara Ms. Ackroyd,',True, (255, 255, 255))
+
+                h2 = fontm.render('Infelizmente fiquei sabendo do ocorrido essa manha. Mes condoleances',True, (255, 255, 255))
+                h3 = fontm.render('mademoiselle, tenho certeza de que o Mr. Ackroyd era muito querido.',True, (255, 255, 255))
+                h4 = fontm.render('Entendo seu posicionamento para defender seu noivo, mas devo',True, (255, 255, 255))
+                h5 = fontm.render('alerta-la de que se eu comecar a investigacao, nao terei nenhum',True, (255, 255, 255))
+                h6 = fontm.render('resultado alem da verdade. Toute la verite. Se a resposta for sim,',True, (255, 255, 255))
+                h7 = fontm.render('entao aceito. E espero que voce nao se arrependa dessas palavras.',True, (255, 255, 255))
+                
+                h8 = fontm.render('Atenciosamente,',True, (255, 255, 255))
+                h9 = fontm.render('Monsieur Poirot',True, (255, 255, 255))
+                
+                text_recth1=h1.get_rect()
+                
+                text_alturah1=text_recth1.height
+                
+                window.blit(h1,(30, 100))
+                window.blit(h2,(30, 100 + text_alturah1*3))
+                window.blit(h3,(30, 100 + text_alturah1*4))
+                window.blit(h4,(30, 100 + text_alturah1*5))
+                window.blit(h5,(30, 100 + text_alturah1*6))
+                window.blit(h6,(30, 100 + text_alturah1*7))
+                window.blit(h7,(30, 100 + text_alturah1*8))
+                window.blit(h8,(30, 100 + text_alturah1*10))
+                window.blit(h9,(30, 100 + text_alturah1*11))
+
+                window.blit(assets[NEXT],((largura/2)-(next_largura/2), altura-100))  
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
+               
+                        self.timer_do_tutorial=agora
+                        tempo=agora-self.timer_do_tutorial
+                        sequencia=6
             
             if sequencia==6:
-                window.fill((5, 32, 74))
-                window.blit(assets[PLAYAPERTADO],((largura/2)-(play_largura/2), altura-100))  
+                
+                pygame.draw.rect(window,(5, 32, 74),((largura/2)-(next_largura/2), altura-100,next_largura,next_altura))
+                window.blit(assets[NEXTAPERTADO],((largura/2)-(next_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
+                    tempo=agora-self.timer_do_tutorial
                     sequencia=7
             
             # TUTORIAL
@@ -771,11 +832,19 @@ class modo_de_jogo():
                     window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
-                            window.fill((0, 0, 0))
-                            self.aba="jogando"
+                            sequencia=8
+                            self.timer_do_tutorial=agora
+                            tempo=agora-self.timer_do_tutorial
                             
+            if sequencia==8:
+                window.blit(assets[TUTORIAL], (0, 0))
+                window.blit(assets[RESUMEAPERTADO],((largura/2)-(resume_largura/2), altura-100))  
+                if  tempo> self.duracao_do_tutorial:
+                    self.aba="jogando"
+                    window.fill((0, 0, 0))         
 
             pygame.display.update()
+            
     def troca_de_fase(self):
         """ Define o que ocorre quando o jogador pega a chave - trocas de fase """
         global fase
@@ -926,15 +995,16 @@ class modo_de_jogo():
             
             window.fill((0,0,0))
             
-            textf = font.render('Obrigado por jogar Fernly Park!', True, (255, 255, 255))
+            textf = fontm.render('Obrigado por jogar Fernly Park!', True, (255, 255, 255))
             
-            textf2 = font.render('Um jogo por: ', True, (255, 255, 255))
-            textf3 = font.render('- Andressa Silva', True, (255, 255, 255))
-            textf4 = font.render('- Enrico Lopez', True, (255, 255, 255))
-            textf5 = font.render('- Luiza Valezim', True, (255, 255, 255))
-            textf6 = font.render('-- Alunos do 1 semestre de engenharia no Insper 2020.1 --', True, (255, 255, 255))
+            textf2 = fontm.render('Um jogo por: ', True, (255, 255, 255))
+
+            textf3 = fontm.render('- Andressa Silva', True, (255, 255, 255))
+            textf4 = fontm.render('- Enrico Lopez', True, (255, 255, 255))
+            textf5 = fontm.render('- Luiza Valezim', True, (255, 255, 255))
+            textf6 = fontm.render('-- Alunos do 1 semestre de engenharia no Insper 2020.1 --', True, (255, 255, 255))
             
-            textff=font.render('to be continued ...', True, (255, 255, 255))
+            textff=fontm.render('to be continued ...', True, (255, 255, 255))
             text_rectf=textf.get_rect()
             text_larguraf=text_rectf.width
             text_alturaf=text_rectf.height
@@ -1171,7 +1241,7 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        carta = adicionais(assets[CARTA],3,0,100,300+200)
+        carta = adicionais(assets[CARTA],3,0,100,300)
         all_sprites.add(carta)
         all_pistas.add(carta)    
         
@@ -1234,6 +1304,18 @@ def fases(fase):
                     tile3 = Tile(assets[PLATAa], row, column)
                     all_sprites.add(tile3)
                     all_plata.add(tile3)
+               if tile_type==PLATE:
+                    tile4 = Tile(assets[PLATEe], row, column)
+                    all_sprites.add(tile4)
+                    all_plata.add(tile4)
+               if tile_type==PLATM:
+                    tile5 = Tile(assets[PLATMm], row, column)
+                    all_sprites.add(tile5)
+                    all_plata.add(tile5)
+               if tile_type==PLATD:
+                    tile6 = Tile(assets[PLATDd], row, column)
+                    all_sprites.add(tile6)
+                    all_plata.add(tile6)
         all_sprites.add(player)
         all_sprites.add(barra)
         all_sprites.add(mostrador_vida)
