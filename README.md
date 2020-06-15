@@ -68,7 +68,7 @@ wiki/MacCompile
 ----------------------------------------
 COMO EXECUTAR O CÓDIGO PELA PRIMEIRA VEZ:
 
-Tendo-se a dependência PyGame instalada, e o código já clonado no seu aparelho, é só executar o documento cujo nome é "code.py" e começar a jogar. 
+Tendo-se a dependência PyGame instalada, e o código já clonado no seu aparelho, é só executar o documento "code.py" e começar a jogar. 
 
 
 ----------------------------------------
@@ -80,8 +80,6 @@ Aula 13 - Handout PyGame, Andrew Kurauchi. Disponível em: Blackboard. Acesso em
 Docstring Conventions. Disponível em:<https://www.python.org/dev/peps/pep-0257/>. Acesso em: 10 jun. 2020
 
 Freesound. Disponível em:<http://freesound.org/>. Acesso em: 10 jun. 2020
-
-
 
 ----------------------------------------
 
