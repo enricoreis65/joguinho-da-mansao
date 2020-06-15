@@ -65,7 +65,13 @@ rm -rf pygame
 wiki/MacCompile
 
 
-===================================================================================================
+----------------------------------------
+COMO EXECUTAR O CÓDIGO PELA PRIMEIRA VEZ:
+
+Tendo-se a dependência PyGame instalada, e o código já clonado no seu aparelho, é só executar o documento cujo nome é "code.py" e começar a jogar. 
+
+
+----------------------------------------
 
 REFERÊNCIAS:
 
@@ -76,7 +82,8 @@ Docstring Conventions. Disponível em:<https://www.python.org/dev/peps/pep-0257/
 Freesound. Disponível em:<http://freesound.org/>. Acesso em: 10 jun. 2020
 
 
-====================================================================================================
+
+----------------------------------------
 
 PROCESSO DE CRIAÇÃO:
 
