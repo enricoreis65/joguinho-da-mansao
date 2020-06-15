@@ -72,12 +72,12 @@ fullscreen = False
 
 class heroi(pygame.sprite.Sprite):
     """ Seta o jogador """
-    def __init__(self,vida,player_sheet,blocks,chaves,platform):
+    def __init__(self,vida,dicio,blocks,chaves,platform):
         """ Recebe e define os dados iniciais do jogador  
         
         Keyword Arguments:
         vida -- quantia de vida do jogador
-        player_sheet -- imagens do jogador
+        dicio-- dicionario com todas as animacoes
         blocks -- blocos do chão
         chaves -- objetos para passar de fase
         platform -- plataformas de madeira/ diferenciação do chão
@@ -337,6 +337,7 @@ class heroi(pygame.sprite.Sprite):
         # Morre quando cai no mapa
         if self.rect.top > altura:
             player.kill()
+            gameoversound.play()
             estado_do_jogo.aba = 'gameover'
         
      
@@ -388,9 +389,10 @@ class heroi(pygame.sprite.Sprite):
                     if self.estado == indefeso:
                         dashsound.play()
                         self.estado = dash
-                        self.quantdash-=1             
+                        self.quantdash-=1  
+
 def colisoes_chaves():
-    """ Define as colisões com as chaves para passar de fase - jogador pegando a chave """
+    """ Define as colisões com as chaves para passar de fase - jogador pegando a chave (funcionou melhor como uma funcao separada)"""
     global fase
     if estado_do_jogo.aba=="jogando":
         colisao=pygame.sprite.spritecollide(player,all_chaves,False, pygame.sprite.collide_mask)
@@ -414,12 +416,12 @@ def colisoes_chaves():
 
 class inimigos(pygame.sprite.Sprite):
     """ Seta os inimigos(fantasmas) """
-    def __init__(self,player,assets,vidaini):
+    def __init__(self,player,dicio,vidaini):
         """ Recebe e define condições iniciais do inimigo
         
         Keywor Arguments:
         player -- jogador
-        assets -- imagens 
+        dicio -- dicionario com todas as animacoes 
         vidaini -- vida do inimigo
         """
         pygame.sprite.Sprite.__init__(self)
@@ -495,7 +497,7 @@ class inimigos(pygame.sprite.Sprite):
 
         if colisao2==True:
                 
-            if player.estado==indefeso:  
+            if player.estado==indefeso or player.estado==helando:  
                 danoplayer.play()
                 if player.rect.bottom-self.rect.top<0:
                     player.estado=tomando_dano
@@ -895,16 +897,19 @@ class modo_de_jogo():
 class adicionais(pygame.sprite.Sprite):
     """ Define a posição das barras de vida, das barras de estamina, das chaves e das dicas"""
     def __init__(self,img,quem_ta_seguindo,largura,posx,posy):  
-       """ Recebe imagem, quem será seguido, a largura da barra e as posições em x e y
+        """ Recebe imagem, quem será seguido, a largura da barra e as posições em x e y
 
         Keyword Arguments:
         img -- imagens 
-        quem_ta_seguindo -- o que está sendo seguido (fantasma segue o jogador, barra vermelha segue o fantasma)
+        quem_ta_seguindo -- o que está sendo seguido (barra amarela segue o jogador, barra vermelha segue o fantasma ou numeros)
         largura -- largurra da barra de vida
         posx -- posiciona objetos no eixo x
         posy -- posiciona objetos no eixo y
+
         """ 
+
         pygame.sprite.Sprite.__init__(self)
+
         self.image = img
         self.image2 = img
         self.rect = self.image.get_rect()
@@ -975,11 +980,12 @@ class xicara(pygame.sprite.Sprite):
         """ Define os dados iniciais da xícara que deve ser mostrada
         
         Keyword Arguments:
-        dicio -- dicionário com as imagens da xícara
+        dicio -- dicionário com as animacoes 
         indica -- quantia de vida que deve ser mostrada
         x -- posição da xícara no eixo x
         y -- posição da xícara no eixo y
         """
+
         pygame.sprite.Sprite.__init__(self)
         
         self.animations = {
@@ -1171,7 +1177,7 @@ fase=1
 fases(fase)
 keys_down = {}
 player= heroi(vida,dicio,blocks,all_chaves,all_plata)
-cura1=xicara(dicio,"+vida",largura-100,470)
+cura1=xicara(dicio,"+vida",largura-100,459)
 mostrador_vida=xicara(dicio,"vida",36,24)
 estado_do_jogo= modo_de_jogo()
 for i in range(2):
