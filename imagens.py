@@ -54,6 +54,8 @@ SAIR = 'sair.png'
 SAIRAPERTADO = 'sairapertado.png'
 RESUME = 'resume.png'
 RESUMEAPERTADO = 'resumeapertado.png'
+NEXT = 'next.png'
+NEXTAPERTADO = 'nextapertado.png'
 
 # CHAVES E PISTAS:
 Chave1="key1.png"
@@ -163,6 +165,8 @@ def load_assets(img_dir):
     assets[SAIRAPERTADO] = pygame.image.load(path.join(img_dir, 'sairapertado.png')).convert_alpha()
     assets[RESUME] = pygame.image.load(path.join(img_dir, 'resume.png')).convert_alpha()
     assets[RESUMEAPERTADO] = pygame.image.load(path.join(img_dir, 'resumeapertado.png')).convert_alpha() 
+    assets[NEXT] = pygame.image.load(path.join(img_dir, 'next.png')).convert_alpha()
+    assets[NEXTAPERTADO] = pygame.image.load(path.join(img_dir, 'nextapertado.png')).convert_alpha()
     # - Imagens das pistas e chaves para passar de nível:
     assets[Chave1] = pygame.image.load(path.join(img_dir, 'key1.png')).convert_alpha()
     assets[Chave2] = pygame.image.load(path.join(img_dir, 'key2.png')).convert_alpha()
@@ -198,6 +202,8 @@ def load_assets(img_dir):
     assets[SAIRAPERTADO] = pygame.transform.scale(assets[SAIRAPERTADO], (sairapertado_largura, sairapertado_altura))
     assets[RESUME] = pygame.transform.scale(assets[RESUME], (resume_largura, resume_altura))
     assets[RESUMEAPERTADO] = pygame.transform.scale(assets[RESUMEAPERTADO], (resumeapertado_largura, resumeapertado_altura))
+    assets[NEXT] = pygame.transform.scale(assets[NEXT], (next_largura, next_altura))
+    assets[NEXTAPERTADO] = pygame.transform.scale(assets[NEXTAPERTADO], (nextapertado_largura, nextapertado_altura))
     # - Imagens das pistas e chaves para passar de nível:
     assets[CARTA] = pygame.transform.scale(assets[CARTA],(carta_largura, carta_altura))
     assets[CARTA_ABERTA] = pygame.transform.scale(assets[CARTA_ABERTA],(carta_aberta_largura,carta_aberta_altura))

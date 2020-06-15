@@ -49,6 +49,10 @@ resume_altura = 50
 resume_largura = 100
 resumeapertado_altura = 50
 resumeapertado_largura = 100
+next_altura = 50
+next_largura = 100
+nextapertado_altura = 50
+nextapertado_largura = 100
 
 # CHAVES E PISTAS:
 chave_largura=80

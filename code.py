@@ -602,24 +602,23 @@ class modo_de_jogo():
                 
                 pygame.quit()  
        
-            if sequencia==3:
+            if sequencia==7:
                 window.blit(assets[GAMEOVER1], (0,0))
                 window.blit(assets[SAIR], ((largura/2)-(menu_largura/2), altura-100))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
-                        sequencia=4
+                        sequencia=8
                         
                         self.timer_do_tutorial=agora
             tempo2 = agora - self.timer_do_tutorial
-            if sequencia==4:
+            if sequencia==8:
                 window.blit(assets[GAMEOVER1], (0,0))
                 window.blit(assets[SAIRAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
                 if  tempo2 > self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
-                    sequencia=5
-            if sequencia==5:
-                game=False
-                pygame.quit()
+                    sequencia=9
+            if sequencia==9:
+                self.aba="mensagem"
 
         pygame.display.update()
 
@@ -689,9 +688,10 @@ class modo_de_jogo():
             if event.type == pygame.QUIT:
                 pygame.mixer.music.stop()
                 pygame.quit()
+    #---- comando para testar
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
-                    sequencia = 3
+                    sequencia = 7
                     self.aba="jogando"
         
         # Tutorial:
@@ -711,16 +711,61 @@ class modo_de_jogo():
             tempo=agora-self.timer_do_tutorial  
 
             if sequencia==2:
-                
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(assets[PLAYAPERTADO],((largura/2)-(play_largura/2), altura-100))  
-                if  tempo> self.duracao_do_tutorial:
+                if  tempo> self.duracao_do_tutorial-20:
                     self.timer_do_tutorial=agora
                     sequencia=3
                     
+            if sequencia==3:
+                window.fill((5, 32, 74))
+                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
+                f2 = font.render('Fico muito feliz de encontrá-lo aqui em King’s Abbot. Sei que era bem',True, (0, 0, 0))
+                f3 = font.render('próximo de meu tio, Roger Ackroyd, portanto já assumo que saiba de sua',True, (0, 0, 0))
+                f4 = font.render('misteriosa morte ontem de noite. Escrevo-lhe esta carta com muito pesar',True, (0, 0, 0))
+                f5 = font.render('para lhe fazer um pedido. Preciso da verdade. Sei que é o único que pode',True, (0, 0, 0))
+                f6 = font.render('me ajudar nessa missão, já que o senhor é famoso por solucionar crimes',True, (0, 0, 0))
+                f2 = font.render('inimagináveis e muitas vezes considerados impossíveis. Acredito fortemente',True, (0, 0, 0))
+                f2 = font.render('que não foi Ralph Paton, meu noivo e filho adotivo de meu tio, como todos',True, (0, 0, 0))
+                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
+                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
+                f1 = font.render('Olá, Hercule Poirot. Como vai?',True, (0, 0, 0))
+                text = font.render('Recebemos de Roger Ackroyd a quantia de $41260,44 xelins, correspondente',True, (0, 0, 0))
+                text_rectf1=f1.get_rect()
+                text_larguraf1=text_rectf1.width
+                text_alturaf1=text_rectf1.height
+                
+                window.blit(f1,(10,100))
+                window.blit(f2,(10,100+ text_alturaf1))
+                window.blit(assets[NEXT],((largura/2)-(next_largura/2),altura-100))  
+                
+                if  tempo> self.duracao_do_tutorial:
+                    self.timer_do_tutorial=agora
+                    sequencia=4
+            
+            if sequencia==4:
+                window.fill((5, 32, 74))
+                window.blit(assets[NEXTAPERTADO],((largura/2)-(nextapertado_largura/2), altura-100))  
+                if  tempo> self.duracao_do_tutorial:
+                    self.timer_do_tutorial=agora
+                    sequencia=5
 
-            if sequencia==3 :         
- 
+            if sequencia==5:
+                window.fill((5, 32, 74))
+                window.blit(assets[PLAY],((largura/2)-(play_largura/2), altura-100))  
+                if  tempo> self.duracao_do_tutorial:
+                    self.timer_do_tutorial=agora
+                    sequencia=6
+            
+            if sequencia==6:
+                window.fill((5, 32, 74))
+                window.blit(assets[PLAYAPERTADO],((largura/2)-(play_largura/2), altura-100))  
+                if  tempo> self.duracao_do_tutorial:
+                    self.timer_do_tutorial=agora
+                    sequencia=7
+            
+            # TUTORIAL
+            if sequencia==7 :         
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
                     window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
@@ -778,7 +823,7 @@ class modo_de_jogo():
 
     def main_menu(self):
         """ Define o estado de pause """
-        text = font.render('Aperte Esc para voltar e X para sair', True, (255, 255, 255))
+        text = font.render('Aperte Esc para voltar', True, (255, 255, 255))
         text_rect=text.get_rect()
         text_largura=text_rect.width
         text_altura=text_rect.height
@@ -790,9 +835,6 @@ class modo_de_jogo():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.aba = 'jogando'
-                elif event.key == pygame.K_x:
-                    pygame.mixer.music.stop()
-                    pygame.quit()   
             if event.type == pygame.QUIT:
                 pygame.mixer.music.stop()
                 pygame.quit() 
@@ -812,27 +854,47 @@ class modo_de_jogo():
         window.fill((0,0,0))
         if fase==1:
             window.blit(assets[CARTA_ABERTA],(0,0))
-            text = font.render('dica muito informativa', True, (0, 0, 0))
-            text_rect=text.get_rect()
-            text_largura=text_rect.width
-            
-            window.blit(text,((largura/2)-text_largura/2,(250)))
-        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
-        if fase==2:
-            window.blit(assets[PEGADASg],(0,0))
-            text = font.render('alberto', True, (0, 0, 0))
+            text = font.render('Recebemos de Roger Ackroyd a quantia de $41260,44 xelins, correspondente',True, (0, 0, 0))
+            t2 =   font.render('a quarenta e um mil duzentos e sessenta xelins e quarenta e quatro cents.',True, (0, 0, 0))
+            t3 =   font.render('Para clareza nos, da empresa Orion Communications, firmamos o presente',True, (0, 0, 0))
+            t4 =   font.render('na cidade Kings Abbot de no dia 2 de março de 1933.',True, (0, 0, 0))
+            t5 =   font.render('Assinatura vendedor: Richard Moore',True, (0, 0, 0))
+            t6 =   font.render('Assinatura comprador: Roger Ackroyd',True, (0, 0, 0))
+            t7 =   font.render('O recibo de um telegrama por Roger Ackroyd… mas onde ele deve ter' ,True, (0, 0, 0))
+            t8 =   font.render('deixado? Certamente nao em seu escritorio e nem em Fernly Park, se nao a' ,True, (0, 0, 0))
+            t9 =   font.render('policia ja teria o apreendido ou eu teria notado tamanha tecnologia.' ,True, (0, 0, 0))
+  
             text_rect=text.get_rect()
             text_largura=text_rect.width
             text_altura=text_rect.height
-            window.blit(text,((300,250)))
+
+            window.blit(text,((largura/2)-(text_largura/2)-20,(100)))
+            window.blit(t2,((largura/2)-(text_largura/2)-20,(100+text_altura+3)))
+            window.blit(t3,((largura/2)-(text_largura/2)-20,(100+text_altura*2+3*2)))
+            window.blit(t4,((largura/2)-(text_largura/2)-20,(100+text_altura*3+3*3)))
+            window.blit(t5,((largura/2)-(text_largura/2)-20,(120+text_altura*4+3*4)))
+            window.blit(t6,((largura/2)-(text_largura/2)-20,(120+text_altura*5+3*5)))
+            window.blit(t7,((largura/2)-(text_largura/2)-20,(100*2+text_altura*6+3*6)))
+            window.blit(t8,((largura/2)-(text_largura/2)-20,(100*2+text_altura*7+3*7)))
+            window.blit(t9,((largura/2)-(text_largura/2)-20,(100*2+text_altura*8+3*8)))
+        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+        if fase==2:
+            
+            text = font.render('Aparentemente existem pegadas de lama no parapeito da janela ...', True, (255, 255, 255)) 
+            t2=font.render('Tem formato de uma bota... agora falta achar quem teria as botas que combinam com o formato.', True, (255, 255, 255))
+            text_rect=text.get_rect()
+            text_largura=text_rect.width
+            text_altura=text_rect.height
+            window.blit(text,((largura/2)-(text_largura/2)-20,(250)))
+            window.blit(t2,((largura/2)-(text_largura/2)-20,(250+text_altura+50)))
         window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
         if fase==3:
             
-            text = font.render('alberto', True, (0, 0, 0))
+            text = font.render('De R., 13 de marco’', True, (255, 255, 255))
             text_rect=text.get_rect()
             text_largura=text_rect.width
             
-            window.blit(text,((300,250)))
+            window.blit(text,((largura/2)-(text_largura/2)-20,(250)))
         window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
         for event in pygame.event.get():
             
@@ -851,7 +913,7 @@ class modo_de_jogo():
         
     def fim_jogo(self):
         """ Define a tela de finalização após todas as fases """
-        global fase
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.mixer.music.stop()
@@ -864,17 +926,32 @@ class modo_de_jogo():
             
             window.fill((0,0,0))
             
-            textf = fontg.render('Obrigado por jogar', True, (255, 255, 255))
-            textf2=fontg.render('to be continued ...', True, (255, 255, 255))
+            textf = font.render('Obrigado por jogar Fernly Park!', True, (255, 255, 255))
+            
+            textf2 = font.render('Um jogo por: ', True, (255, 255, 255))
+            textf3 = font.render('- Andressa Silva', True, (255, 255, 255))
+            textf4 = font.render('- Enrico Lopez', True, (255, 255, 255))
+            textf5 = font.render('- Luiza Valezim', True, (255, 255, 255))
+            textf6 = font.render('-- Alunos do 1 semestre de engenharia no Insper 2020.1 --', True, (255, 255, 255))
+            
+            textff=font.render('to be continued ...', True, (255, 255, 255))
             text_rectf=textf.get_rect()
             text_larguraf=text_rectf.width
+            text_alturaf=text_rectf.height
             
 
             text_rectf2=textf2.get_rect()
             text_larguraf2=text_rectf2.width
             text_alturaf2=text_rectf2.height
-            window.blit(textf,((largura/2)-text_larguraf/2,(250)))
-            window.blit(textf2,((largura/2)-text_larguraf2/2,(altura-text_alturaf2-20)))
+            
+            window.blit(textf,((largura/2)-(text_larguraf/2),(100)))
+            window.blit(textf2,((largura/2)-(text_larguraf/2),(100+text_alturaf)))
+            window.blit(textf3,((largura/2)-(text_larguraf/2),(100+50+text_alturaf*2)))
+            window.blit(textf4,((largura/2)-(text_larguraf/2),(100+50*2+text_alturaf*3)))
+            window.blit(textf5,((largura/2)-(text_larguraf/2),(100+50*3+text_alturaf*4)))
+            window.blit(textf6,((largura/2)-(text_larguraf/2),(100+50*4+text_alturaf*5)))
+            
+            window.blit(textff,((largura/2)-text_larguraf2/2,(altura-text_alturaf2-20)))
         
         pygame.display.update()
 
@@ -976,6 +1053,7 @@ class adicionais(pygame.sprite.Sprite):
             colisao=pygame.sprite.spritecollide(player,all_pistas,True,pygame.sprite.collide_mask)
             if len(colisao)>0:
                 estado_do_jogo.aba="dicas"
+                colisao.clear()
         
 #----------------------------------------------------------------------#
 # - Definindo a classe que mostra a vida do personagem:
@@ -1093,7 +1171,7 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        carta = adicionais(assets[CARTA],3,0,100,300)
+        carta = adicionais(assets[CARTA],3,0,100,300+200)
         all_sprites.add(carta)
         all_pistas.add(carta)    
         
