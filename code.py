@@ -404,6 +404,8 @@ def colisoes_chaves():
             all_plata.empty()
             all_sprites.empty()
             all_enemis.empty()
+            all_pistas.empty()
+            all_cura.empty()
             
             colisao.clear()
             
@@ -966,10 +968,23 @@ class modo_de_jogo():
         if fase==3:
             
             text = font.render('De R., 13 de marco', True, (255, 255, 255))
+            
+            a1 = font.render('Achei esse anel de noivado em um laguinho perto da casa.', True, (255, 255, 255))
+            a2 = font.render('Aparentemente foi jogado pela janela. Quem sera R?', True, (255, 255, 255))
+            a3 = font.render('Roger? Depois da morte de Mrs. Ackroyd nao esperaria', True, (255, 255, 255))
+            a4 = font.render('ele se comprometendo com alguem, mas certamente ele a irritou', True, (255, 255, 255))
+            a5 = font.render('criando, assim, uma possivel suspeita para o caso.', True, (255,255,255))
             text_rect=text.get_rect()
             text_largura=text_rect.width
+            text_altura=text_rect.height
             
-            window.blit(text,((largura/2)-(text_largura/2)-20,(250)))
+            window.blit(text,((largura/2)-(text_largura/2)-80,(250)))
+            window.blit(a1,((largura/2)-(text_largura/2)-80,(270+text_altura)))
+            window.blit(a2,((largura/2)-(text_largura/2)-80,(270+text_altura*2)))
+            window.blit(a3,((largura/2)-(text_largura/2)-80,(270+text_altura*3)))
+            window.blit(a4,((largura/2)-(text_largura/2)-80,(270+text_altura*4)))
+            window.blit(a5,((largura/2)-(text_largura/2)-80,(270+text_altura*5)))
+
         window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
         for event in pygame.event.get():
             
@@ -1197,13 +1212,13 @@ class xicara(pygame.sprite.Sprite):
                 self.mask = pygame.mask.from_surface(self.image)
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-            colisao=pygame.sprite.spritecollide(player,all_cura,True, pygame.sprite.collide_mask)
-            if len(colisao)>0:
+            colisaoh=pygame.sprite.spritecollide(player,all_cura,True, pygame.sprite.collide_mask)
+            if len(colisaoh)>0:
                 player.hora_da_acao = agora
                 player.estado=helando
                 if player.vida<=80:
                     player.vida+=20
-                colisao.clear()
+                colisaoh.clear()
                 tomandocafe.play()
 
 
