@@ -73,8 +73,23 @@ Aula 13 - Handout PyGame, Andrew Kurauchi. Disponível em: Blackboard. Acesso em
 
 Docstring Conventions. Disponível em:<https://www.python.org/dev/peps/pep-0257/>. Acesso em: 10 jun. 2020
 
+Freesound. Disponível em:<http://freesound.org/>. Acesso em: 10 jun. 2020
+
+
 =======================================================================================================================================
 
-PROCESO DE CRIAÇÃO:
+PROCESSO DE CRIAÇÃO:
+
+Imagens - Para a criação das imagens em pixels, foram utilizados os seguintes sites:
+
+https://www.piskelapp.com/
+
+https://www.pixilart.com/
+
+Sons - A trilha sonora foi gravada pela equipe e os demais sons obtidos na plataforma Freesound, referenciada acima.
+
+Código - O código foi criado pela equipe com base no Handout e em arquivos de códicos para PyGame disponíveis no link a seguir:
+
+https://github.com/Insper/pygame-snippets
 
 
