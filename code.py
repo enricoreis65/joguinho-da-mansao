@@ -450,7 +450,7 @@ class inimigos(pygame.sprite.Sprite):
         self.sound_tick=20000
 
     def update(self):
-        """  """
+        """Atualiza tela (sprites e sons), configurações dos inimigos (estados, velocidade , posição e colisoes)  """
         now = pygame.time.get_ticks()
         elapsed2_ticks = now - self.last_update
 
@@ -960,7 +960,7 @@ class adicionais(pygame.sprite.Sprite):
             elif variavel<0:
                 self.rect.y -= 1
 
-        if self.quem_ta_seguindo == 3 or self.quem_ta_seguindo == 2 :
+        if self.quem_ta_seguindo == 3 or self.quem_ta_seguindo == 2 or self.quem_ta_seguindo ==1 :
             if self.rect.centery<self.ini_Pos-5 or self.rect.centery>self.ini_Pos+5 :
                 variavel2*=-1
             if variavel2>0:
@@ -981,7 +981,7 @@ class xicara(pygame.sprite.Sprite):
         
         Keyword Arguments:
         dicio -- dicionário com as animacoes 
-        indica -- quantia de vida que deve ser mostrada
+        indica -- quantia de vida que deve ser mostrada ou se nao deve mostrar
         x -- posição da xícara no eixo x
         y -- posição da xícara no eixo y
         """
@@ -1153,9 +1153,9 @@ def fases(fase):
         chave3=adicionais(assets[Chave3],0,0,largura-100,100)
         all_sprites.add(chave3)
         all_chaves.add(chave3)
-        # anel = adicionais(assets[ANEL],1,0,largura-100,100)
-        # all_sprites.add(anel)
-        # all_pistas.add(anel)
+        anel = adicionais(assets[ANEL],1,0,largura-100,100)
+        all_sprites.add(anel)
+        all_pistas.add(anel)
         
 #----------------------------------------------------------------------#
 # ----- Inicia estruturas de dados:
