@@ -625,7 +625,7 @@ class modo_de_jogo():
 
     def jogando(self):
         """ Define as ações que podem ocorrer durante o jogo """
-        text2= font.render(('{0}'.format(player.quantdash)), True, (255, 255, 0))
+        text2= font.render(('| '*player.quantdash), True, (255, 255, 0))
         for event in pygame.event.get():
         # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -670,7 +670,7 @@ class modo_de_jogo():
         window.fill((0, 0, 0))
         all_sprites.draw(window)
        
-        window.blit(text2,(120,22))
+        window.blit(text2,(110,13))
         
         colisoes_chaves()
                 
@@ -1247,7 +1247,7 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        carta = adicionais(assets[CARTA],3,0,100,300+200)
+        carta = adicionais(assets[CARTA],3,0,100,300)
         all_sprites.add(carta)
         all_pistas.add(carta)    
         
@@ -1385,6 +1385,3 @@ while game:
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
     agora=pygame.time.get_ticks() 
-    
-    
-    
