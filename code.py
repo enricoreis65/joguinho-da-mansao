@@ -692,7 +692,7 @@ class modo_de_jogo():
     #---- comando para testar
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
-                    sequencia = 7
+                    sequencia = 8
                     self.aba="jogando"
         
         # Tutorial:
@@ -923,29 +923,35 @@ class modo_de_jogo():
         window.fill((0,0,0))
         if fase==1:
             window.blit(assets[CARTA_ABERTA],(0,0))
-            text = font.render('Recebemos de Roger Ackroyd a quantia de $41260,44 xelins, correspondente',True, (0, 0, 0))
-            t2 =   font.render('a quarenta e um mil duzentos e sessenta xelins e quarenta e quatro cents.',True, (0, 0, 0))
-            t3 =   font.render('Para clareza nos, da empresa Orion Communications, firmamos o presente',True, (0, 0, 0))
-            t4 =   font.render('na cidade Kings Abbot de no dia 2 de março de 1933.',True, (0, 0, 0))
-            t5 =   font.render('Assinatura vendedor: Richard Moore',True, (0, 0, 0))
-            t6 =   font.render('Assinatura comprador: Roger Ackroyd',True, (0, 0, 0))
-            t7 =   font.render('O recibo de um telegrama por Roger Ackroyd… mas onde ele deve ter' ,True, (0, 0, 0))
-            t8 =   font.render('deixado? Certamente nao em seu escritorio e nem em Fernly Park, se nao a' ,True, (0, 0, 0))
-            t9 =   font.render('policia ja teria o apreendido ou eu teria notado tamanha tecnologia.' ,True, (0, 0, 0))
+            text = font.render('Recebemos de Roger Ackroyd a quantia de $41260,44 xelins,',True, (0, 0, 0))
+            t2 =   font.render('correspondente a quarenta e um mil duzentos e sessenta xelins',True, (0, 0, 0))
+            t3 =   font.render('e quarenta e quatro cents. Para clareza nos, da empresa Orion',True, (0, 0, 0))
+            t4 =   font.render('Communications, firmamos o presente na cidade Kings Abbot de',True, (0, 0, 0))
+            t5 =   font.render('no dia 2 de marco de 1933.',True, (0, 0, 0))
+            t6 =   font.render('Assinatura vendedor: Richard Moore',True, (0, 0, 0))
+            t7 =   font.render('Assinatura comprador: Roger Ackroyd',True, (0, 0, 0))
+            t8 =   font.render('Pensamento: O recibo de um telegrama por Roger Ackroyd... mas onde ele' ,True, (0, 0, 0))
+            t9 =   font.render('deve ter deixado? Certamente nao em seu escritorio e nem em Fernly' ,True, (0, 0, 0))
+            t10 =  font.render('Park, se nao a policia ja teria o apreendido ou eu teria notado' ,True, (0, 0, 0))
+            t11 =  font.render('tamanha tecnologia.', True, (0,0,0))
   
             text_rect=text.get_rect()
             text_largura=text_rect.width
             text_altura=text_rect.height
 
-            window.blit(text,((largura/2)-(text_largura/2)-20,(100)))
-            window.blit(t2,((largura/2)-(text_largura/2)-20,(100+text_altura+3)))
-            window.blit(t3,((largura/2)-(text_largura/2)-20,(100+text_altura*2+3*2)))
-            window.blit(t4,((largura/2)-(text_largura/2)-20,(100+text_altura*3+3*3)))
-            window.blit(t5,((largura/2)-(text_largura/2)-20,(120+text_altura*4+3*4)))
-            window.blit(t6,((largura/2)-(text_largura/2)-20,(120+text_altura*5+3*5)))
-            window.blit(t7,((largura/2)-(text_largura/2)-20,(100*2+text_altura*6+3*6)))
-            window.blit(t8,((largura/2)-(text_largura/2)-20,(100*2+text_altura*7+3*7)))
-            window.blit(t9,((largura/2)-(text_largura/2)-20,(100*2+text_altura*8+3*8)))
+            window.blit(text,((largura/2)-(text_largura/2)-80,(150)))
+            window.blit(t2,((largura/2)-(text_largura/2)-80,(150+text_altura+3)))
+            window.blit(t3,((largura/2)-(text_largura/2)-80,(150+text_altura*2+3*2)))
+            window.blit(t4,((largura/2)-(text_largura/2)-80,(150+text_altura*3+3*3)))
+            window.blit(t5,((largura/2)-(text_largura/2)-80,(150+text_altura*4+3*4)))
+            window.blit(t6,((largura/2)-(text_largura/2)-80,(170+text_altura*5+3*5)))
+            window.blit(t7,((largura/2)-(text_largura/2)-80,(170+text_altura*6+3*6)))
+            window.blit(t8,((largura/2)-(text_largura/2)-80,(190+text_altura*7+3*7)))
+            window.blit(t9,((largura/2)-(text_largura/2)-80,(190+text_altura*8+3*8)))
+            window.blit(t10,((largura/2)-(text_largura/2)-80,(190+text_altura*9+3*9)))
+            window.blit(t11,((largura/2)-(text_largura/2)-80,(190+text_altura*10+3*10)))
+            
+
         window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
         if fase==2:
             
@@ -959,7 +965,7 @@ class modo_de_jogo():
         window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
         if fase==3:
             
-            text = font.render('De R., 13 de marco’', True, (255, 255, 255))
+            text = font.render('De R., 13 de marco', True, (255, 255, 255))
             text_rect=text.get_rect()
             text_largura=text_rect.width
             
@@ -1014,12 +1020,12 @@ class modo_de_jogo():
             text_larguraf2=text_rectf2.width
             text_alturaf2=text_rectf2.height
             
-            window.blit(textf,((largura/2)-(text_larguraf/2),(100)))
-            window.blit(textf2,((largura/2)-(text_larguraf/2),(100+text_alturaf)))
-            window.blit(textf3,((largura/2)-(text_larguraf/2),(100+50+text_alturaf*2)))
-            window.blit(textf4,((largura/2)-(text_larguraf/2),(100+50*2+text_alturaf*3)))
-            window.blit(textf5,((largura/2)-(text_larguraf/2),(100+50*3+text_alturaf*4)))
-            window.blit(textf6,((largura/2)-(text_larguraf/2),(100+50*4+text_alturaf*5)))
+            window.blit(textf,((largura/4)-(text_larguraf/2),(100)))
+            window.blit(textf2,((largura/4)-(text_larguraf/2),(100+text_alturaf)))
+            window.blit(textf3,((largura/4)-(text_larguraf/2),(100+50+text_alturaf*2)))
+            window.blit(textf4,((largura/4)-(text_larguraf/2),(100+50*2+text_alturaf*3)))
+            window.blit(textf5,((largura/4)-(text_larguraf/2),(100+50*3+text_alturaf*4)))
+            window.blit(textf6,((largura/4)-(text_larguraf/2),(100+50*4+text_alturaf*5)))
             
             window.blit(textff,((largura/2)-text_larguraf2/2,(altura-text_alturaf2-20)))
         
@@ -1120,10 +1126,10 @@ class adicionais(pygame.sprite.Sprite):
                 self.rect.y += 1
             elif variavel2<0:
                 self.rect.y -= 1
-            colisao=pygame.sprite.spritecollide(player,all_pistas,True,pygame.sprite.collide_mask)
-            if len(colisao)>0:
+            colisaod=pygame.sprite.spritecollide(player,all_pistas,True,pygame.sprite.collide_mask)
+            if len(colisaod)>0:
+                colisaod.clear()
                 estado_do_jogo.aba="dicas"
-                colisao.clear()
         
 #----------------------------------------------------------------------#
 # - Definindo a classe que mostra a vida do personagem:
@@ -1241,7 +1247,7 @@ def fases(fase):
         chave1=adicionais(assets[Chave1],0,0,largura-100,100)
         all_sprites.add(chave1)
         all_chaves.add(chave1)
-        carta = adicionais(assets[CARTA],3,0,100,300)
+        carta = adicionais(assets[CARTA],3,0,100,300+200)
         all_sprites.add(carta)
         all_pistas.add(carta)    
         
