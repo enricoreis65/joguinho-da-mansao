@@ -640,11 +640,13 @@ class modo_de_jogo():
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_a:
                     player.ultimo_lado=-4.0
-                    andandosound.play()
+                    if player.estado!=helando:
+                        andandosound.play()
                     player.speedx -= 4.0
                 if event.key == pygame.K_d:  
                     player.ultimo_lado=4.0   
-                    andandosound.play()             
+                    if player.estado!=helando:
+                        andandosound.play()             
                     player.speedx += 4.0
                 if event.key == pygame.K_SPACE:
                     player.pulo()
