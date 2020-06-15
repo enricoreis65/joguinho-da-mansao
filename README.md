@@ -5,7 +5,7 @@ Andressa Silva de Oliveira;
 Enrico Lopez Borges de Carvalho;
 Luiza Valezim Augusto Pinto.
 
-Link do vídeo do Youtube:
+Link do vídeo do Youtube: https://www.youtube.com/watch?v=f8PYZumlMps
 
 Detalhamento do nosso Jogo:
 
