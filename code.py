@@ -414,9 +414,23 @@ def colisoes_chaves():
             estado_do_jogo.aba = "troca_de_fase"
 
           
-#----------------------------------------------------------------------#                 
-# - Definindo a classe que configura os inimigos:
+#----------------------------------------------------------------------#    
+# Refatorando        
+def dano_pela_esquerda(self, player):
+    player.estado=tomando_dano
+    player.hora_da_acao=agora
+    player.vida-=10                       
+    player.rect.x-=60
+    self.rect.x+=60
 
+def dano_pela_direita(self, player):
+    player.estado=tomando_dano
+    player.hora_da_acao=agora
+    player.vida-=10                       
+    player.rect.x+=60
+    self.rect.x-=60     
+
+# - Definindo a classe que configura os inimigos:
 class inimigos(pygame.sprite.Sprite):
     """ Seta os inimigos(fantasmas) """
     def __init__(self,player,dicio,vidaini):
@@ -503,31 +517,16 @@ class inimigos(pygame.sprite.Sprite):
             if player.estado==indefeso or player.estado==helando:  
                 danoplayer.play()
                 if player.rect.bottom-self.rect.top<0:
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x-=60
-                    self.rect.x+=60
+                    dano_pela_esquerda(self, player)
 
                 elif player.rect.right-self.rect.centerx<0:
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x-=60
-                    self.rect.x+=60
-                    
+                    dano_pela_esquerda(self, player)
+                            
                 elif player.rect.left-self.rect.centerx>0:
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x+=60
-                    self.rect.x-=60
+                    dano_pela_direita(self, player)
+
                 else :
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x+=60
-                    self.rect.x-=60
+                    dano_pela_direita(self, player)
 
             
             if player.estado==ataque and player.ultimo_lado==4:
@@ -585,8 +584,8 @@ class modo_de_jogo():
         self.posicaox=x
         self.posicaoy=y
         
-        if pos[0]> self.posicaox and pos[0]<self.posicaox+playapertado_largura:
-            if pos[1]>self.posicaoy and pos[1]<self.posicaoy+playapertado_altura:
+        if pos[0]> self.posicaox and pos[0]<self.posicaox+botao_largura:
+            if pos[1]>self.posicaoy and pos[1]<self.posicaoy+botao_altura:
                 return True
         else:
             return False
@@ -607,16 +606,16 @@ class modo_de_jogo():
                 sequencia=9
             if sequencia==9:
                 window.blit(assets[GAMEOVER1], (0,0))
-                window.blit(assets[SAIR], ((largura/2)-(menu_largura/2), altura-100))
+                window.blit(assets[SAIR], ((largura/2)-(botao_largura/2), altura-100))
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(menu_largura/2), altura-100):
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(botao_largura/2), altura-100):
                         sequencia=10
                         
                         self.timer_do_tutorial=agora
             tempo2 = agora - self.timer_do_tutorial
             if sequencia==10:
                 window.blit(assets[GAMEOVER1], (0,0))
-                window.blit(assets[SAIRAPERTADO],((largura/2)-(menu_largura/2), altura-100))  
+                window.blit(assets[SAIRAPERTADO],((largura/2)-(botao_largura/2), altura-100))  
                 if  tempo2 > self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     sequencia=11
@@ -704,14 +703,14 @@ class modo_de_jogo():
             if sequencia==1:
                 text= fontg.render('Fenrly Park', True, (255, 0, 0))
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
-                window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
+                window.blit(assets[PLAY], ((largura/2)-(botao_largura/2), altura-100))
                 text_rect=text.get_rect()
                 text_largura=text_rect.width
                 
                 window.blit(text,((largura/2)-text_largura/2,11))
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
-                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(botao_largura/2), altura-100):
                         sequencia=2
                         self.timer_do_tutorial=agora
                         tempo=agora-self.timer_do_tutorial  
@@ -719,12 +718,12 @@ class modo_de_jogo():
             if sequencia==2:
                 text= fontg.render('Fenrly Park', True, (255, 0, 0))
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
-                window.blit(assets[PLAY], ((largura/2)-(play_largura/2), altura-100))
+                window.blit(assets[PLAY], ((largura/2)-(botao_largura/2), altura-100))
                 text_rect=text.get_rect()
                 text_largura=text_rect.width
                 window.blit(assets[TELA_INICIAL_IMG], (0,0))
                 window.blit(text,((largura/2)-text_largura/2,11))
-                window.blit(assets[PLAYAPERTADO],((largura/2)-(play_largura/2), altura-100))  
+                window.blit(assets[PLAYAPERTADO],((largura/2)-(botao_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial-20:
                     self.timer_do_tutorial=agora
                     tempo=agora-self.timer_do_tutorial
@@ -766,18 +765,18 @@ class modo_de_jogo():
                 window.blit(f12,(30, 100 + text_alturaf1*14))
                 window.blit(f13,(30, 100 + text_alturaf1*15))
 
-                window.blit(assets[NEXT],((largura/2)-(next_largura/2),altura-100))  
+                window.blit(assets[NEXT],((largura/2)-(botao_largura/2),altura-100))  
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
-                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(botao_largura/2), altura-100):
                
                         self.timer_do_tutorial=agora
                         tempo=agora-self.timer_do_tutorial
                         sequencia=4
             
             if sequencia==4:
-                pygame.draw.rect(window,(5, 32, 74),((largura/2)-(next_largura/2), altura-100,next_largura,next_altura))
-                window.blit(assets[NEXTAPERTADO],((largura/2)-(nextapertado_largura/2), altura-100))  
+                pygame.draw.rect(window,(5, 32, 74),((largura/2)-(botao_largura/2), altura-100,botao_largura,botao_altura))
+                window.blit(assets[NEXTAPERTADO],((largura/2)-(botao_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     tempo=agora-self.timer_do_tutorial
@@ -811,10 +810,10 @@ class modo_de_jogo():
                 window.blit(h8,(30, 100 + text_alturah1*10))
                 window.blit(h9,(30, 100 + text_alturah1*11))
 
-                window.blit(assets[NEXT],((largura/2)-(next_largura/2), altura-100))  
+                window.blit(assets[NEXT],((largura/2)-(botao_largura/2), altura-100))  
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
-                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(play_largura/2), altura-100):
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(botao_largura/2), altura-100):
                
                         self.timer_do_tutorial=agora
                         tempo=agora-self.timer_do_tutorial
@@ -822,8 +821,8 @@ class modo_de_jogo():
             
             if sequencia==6:
                 
-                pygame.draw.rect(window,(5, 32, 74),((largura/2)-(next_largura/2), altura-100,next_largura,next_altura))
-                window.blit(assets[NEXTAPERTADO],((largura/2)-(next_largura/2), altura-100))  
+                pygame.draw.rect(window,(5, 32, 74),((largura/2)-(botao_largura/2), altura-100,botao_largura,botao_altura))
+                window.blit(assets[NEXTAPERTADO],((largura/2)-(botao_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial:
                     self.timer_do_tutorial=agora
                     tempo=agora-self.timer_do_tutorial
@@ -833,16 +832,16 @@ class modo_de_jogo():
             if sequencia==7 :         
                 window.blit(assets[TUTORIAL], (0, 0))
                 if  tempo> self.duracao_do_tutorial:
-                    window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+                    window.blit(assets[RESUME], ((largura/2)-(botao_largura/2), altura-100))
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
+                        if event.button==1 and self.esta_dentro(pos,(largura/2)-(botao_largura/2), altura-100):
                             sequencia=8
                             self.timer_do_tutorial=agora
                             tempo=agora-self.timer_do_tutorial
                             
             if sequencia==8:
                 window.blit(assets[TUTORIAL], (0, 0))
-                window.blit(assets[RESUMEAPERTADO],((largura/2)-(resume_largura/2), altura-100))  
+                window.blit(assets[RESUMEAPERTADO],((largura/2)-(botao_largura/2), altura-100))  
                 if  tempo> self.duracao_do_tutorial:
                     self.aba="jogando"
                     window.fill((0, 0, 0))         
@@ -868,7 +867,7 @@ class modo_de_jogo():
             player.speedx=0
             player.speedy=0
                     
-            window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+            window.blit(assets[RESUME], ((largura/2)-(botao_largura/2), altura-100))
                 
             for event in pygame.event.get():
                 
@@ -879,7 +878,7 @@ class modo_de_jogo():
                     pygame.quit()
             
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
+                    if event.button==1 and self.esta_dentro(pos,(largura/2)-(botao_largura/2), altura-100):
                         
                         fases(fase)
                         for i in range(2):
@@ -956,7 +955,7 @@ class modo_de_jogo():
             window.blit(t11,((largura/2)-(text_largura/2)-80,(190+text_altura*10+3*10)))
             
 
-        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+        window.blit(assets[RESUME], ((largura/2)-(botao_largura/2), altura-100))
         if fase==2:
             
             text = font.render('Aparentemente existem pegadas de lama no parapeito da janela ...', True, (255, 255, 255)) 
@@ -966,7 +965,7 @@ class modo_de_jogo():
             text_altura=text_rect.height
             window.blit(text,((largura/2)-(text_largura/2)-20,(250)))
             window.blit(t2,((largura/2)-(text_largura/2)-20,(250+text_altura+50)))
-        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+        window.blit(assets[RESUME], ((largura/2)-(botao_largura/2), altura-100))
         if fase==3:
             
             text = font.render('De R., 13 de marco', True, (255, 255, 255))
@@ -987,7 +986,7 @@ class modo_de_jogo():
             window.blit(a4,((largura/2)-(text_largura/2)-80,(270+text_altura*4)))
             window.blit(a5,((largura/2)-(text_largura/2)-80,(270+text_altura*5)))
 
-        window.blit(assets[RESUME], ((largura/2)-(resume_largura/2), altura-100))
+        window.blit(assets[RESUME], ((largura/2)-(botao_largura/2), altura-100))
         for event in pygame.event.get():
             
             pos=pygame.mouse.get_pos()
@@ -997,7 +996,7 @@ class modo_de_jogo():
                 pygame.quit()
         
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button==1 and self.esta_dentro(pos,(largura/2)-(resume_largura/2), altura-100):
+                if event.button==1 and self.esta_dentro(pos,(largura/2)-(botao_largura/2), altura-100):
                     pegando_item.play()
                     pygame.mixer.music.unpause()
                     self.aba="jogando"
@@ -1397,7 +1396,6 @@ agora=pygame.time.get_ticks()
 
 pygame.mixer.music.play(loops=-1)
 while game:
-    
     
     clock.tick(FPS)
     estado_do_jogo.controlador_menu()
