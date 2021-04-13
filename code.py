@@ -414,9 +414,23 @@ def colisoes_chaves():
             estado_do_jogo.aba = "troca_de_fase"
 
           
-#----------------------------------------------------------------------#                 
-# - Definindo a classe que configura os inimigos:
+#----------------------------------------------------------------------#    
+# Refatorando        
+def dano_pela_esquerda(self, player):
+    player.estado=tomando_dano
+    player.hora_da_acao=agora
+    player.vida-=10                       
+    player.rect.x-=60
+    self.rect.x+=60
 
+def dano_pela_direita(self, player):
+    player.estado=tomando_dano
+    player.hora_da_acao=agora
+    player.vida-=10                       
+    player.rect.x+=60
+    self.rect.x-=60     
+
+# - Definindo a classe que configura os inimigos:
 class inimigos(pygame.sprite.Sprite):
     """ Seta os inimigos(fantasmas) """
     def __init__(self,player,dicio,vidaini):
@@ -503,31 +517,16 @@ class inimigos(pygame.sprite.Sprite):
             if player.estado==indefeso or player.estado==helando:  
                 danoplayer.play()
                 if player.rect.bottom-self.rect.top<0:
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x-=60
-                    self.rect.x+=60
+                    dano_pela_esquerda(self, player)
 
                 elif player.rect.right-self.rect.centerx<0:
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x-=60
-                    self.rect.x+=60
-                    
+                    dano_pela_esquerda(self, player)
+                            
                 elif player.rect.left-self.rect.centerx>0:
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x+=60
-                    self.rect.x-=60
+                    dano_pela_direita(self, player)
+
                 else :
-                    player.estado=tomando_dano
-                    player.hora_da_acao=agora
-                    player.vida-=10                       
-                    player.rect.x+=60
-                    self.rect.x-=60
+                    dano_pela_direita(self, player)
 
             
             if player.estado==ataque and player.ultimo_lado==4:
